@@ -4,12 +4,17 @@ import javax.swing.JFrame;
 import java.awt.Canvas;
 import java.awt.Dimension;
 
+/*
+* This is the Display class
+* it contains everything needed to display
+* our game on a window
+* */
 public class Display {
     private JFrame frame; //The appearing window
-    private Canvas canvas; //Game graphics, we add graphics/sprites through this
+    private Canvas canvas; //Game graphics, we add graphics/sprites through this, allows us to draw things into the screen
 
     private int width, height; //These two variable actually represent pixels;
-    private String title;
+    private String title; //Title of the game
 
     public Display(String title, int width, int height) {
         this.width = width;
@@ -19,9 +24,17 @@ public class Display {
         createDisplay();
     }
 
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
     private void createDisplay() {
-        frame = new JFrame(title);
-        frame.setSize(width, height); //Sets up our size
+        frame = new JFrame(title); //Initializing the window
+        frame.setSize(width, height); //Sets up the size
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //This line is needed to close the game when the window is closed
         frame.setResizable(false); //turn off resizability
         frame.setVisible(true);
@@ -35,7 +48,7 @@ public class Display {
         canvas.setMaximumSize(dimension);
         canvas.setMinimumSize(dimension);
 
-        frame.add(canvas);
-        frame.pack();
+        frame.add(canvas); //We need to add our graphics to the window we created
+        frame.pack(); //This line is needed to "refresh" the window with the added canvas; similar to source ~/.bashrc
     }
 }

@@ -2,14 +2,24 @@ package com.company.launcher;
 
 import com.company.display.Display;
 
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.image.BufferStrategy;
+
+/*
+* Main game class
+* Contains main game logic
+* */
 public class Game implements Runnable {
-    private Display display;
+    private Display display; //Display object from the Display class
+    private String title; //Game title
+    private int width, height; //Display size
 
-    private Thread thread;
-    private boolean isRunning;
+    private Thread thread; //The thread in which the game is running
+    private boolean isRunning; //This is the boolean needed to represent the game state
 
-    private int width, height;
-    private String title;
+    private BufferStrategy bufferStrategy; //A way for computer to draw things into the screen; Refer to the class description for more information (done easily in IDE)
+    private Graphics graphics; //Graphics class allows us to draw things into the Canvas
 
     public Game(String title, int width, int height) {
         this.isRunning = false;
@@ -44,7 +54,7 @@ public class Game implements Runnable {
     }
 
     /*
-     * Main operator of the game.
+     * Main operator of the game. This method is called only once/
      * This method contains the game loop.
      * Update -> Render -> loop
      * */
@@ -60,17 +70,46 @@ public class Game implements Runnable {
         stop();
     }
 
+    private void init() {
+        display = new Display(title, width, height);
+    }
+
     private void update() {
 
     }
 
+    /*
+    * Every time this method is called, we want to
+    * clear the screen and draw what we want on the new screen
+    * (Otherwise we would be drawing on a "dirty" screen)
+    * */
     private void render() {
+        bufferStrategy = display.getCanvas().getBufferStrategy();
+        if (bufferStrategy == null) {
+            /*
+            * At first, we don't have anything to draw, hence there is no buffer.
+            * This if statement checks for that (.getBufferStrategy() returns null)
+            * and creates a new BufferStrategy
+            * */
+            display.getCanvas().createBufferStrategy(3);
+            return; //exit the method
+        }
+        graphics = bufferStrategy.getDrawGraphics();
 
+        graphics.clearRect(0, 0, width, height); //Clears the entire screen
+
+        // Drawing starts here  ////////
+        graphics.setColor(Color.CYAN);
+        graphics.fillRect(50, 50, 50, 50);
+        graphics.setColor(Color.pink);
+        graphics.fillOval(10, 10, 15, 20);
+        // Drawing ends here    ////////
+
+        bufferStrategy.show(); //This line updates the screen by working with buffers
+        graphics.dispose(); //Disposes of this graphics context and releases any system resources that it is using
     }
 
-    private void init() {
-        display = new Display(title, width, height);
-    }
+
 
     /*
     * This method successfully stops the thread
