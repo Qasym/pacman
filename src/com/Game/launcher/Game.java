@@ -2,8 +2,6 @@ package com.Game.launcher;
 
 import com.Game.display.Display;
 import com.Game.launcher.gfx.Assets;
-import com.Game.launcher.gfx.ImageLoader;
-import com.Game.launcher.gfx.SpriteSheet;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -59,14 +57,43 @@ public class Game implements Runnable {
      * Main operator of the game. This method is called only once/
      * This method contains the game loop.
      * Update -> Render -> loop
+     *
+     * Additional explanation on how fps works:
+     * Let's say we measure 1 second in nanoseconds (for precision purposes), that is 1e9
+     * fps signifies how many frames per second we want to have in our game, for my machine it is 30
+     * timePerTick is a period at which we have to "tick" and proceed with the tick() and render() methods
+     * timePerTick = 1e9 / fps, it means that we will have fps(=30) ticks in one second, thus fps(=30) tick() and render() calls
+     * (now - lastTime) / timePerTick is actually a measurement of what proportion of time has passed so far, we add that to delta
+     * if (delta == 1) it means that enough time has passed to achieve 1 "timePerTick", this means that we have to call tick() and render() methods
      * */
     @Override
     public void run() {
         init();
 
+        //FPS control code
+        byte fps = 30; //fps answers the question "how many times do I want to call tick() and render() methods in one second?"
+        double timePerTick = 1e9 / fps; //timePerTick is the maximum amount of time in nanoseconds I have to execute tick() and render() methods to achieve desired fps
+        double delta = 0; //delta specifies when we have to call the tick() and render() methods again
+        long now, lastTime = System.nanoTime(); //now is the variable needed in the loop, and lastTime is the time before running the loop
+        long timer = 0; //times until we get to 1 second
+        int ticks = 0; //counts how many times tick() and render() methods were executed in 1 second
+
         while (isRunning) {
-            update();
-            render();
+            now = System.nanoTime();
+            delta += (now - lastTime) / timePerTick;
+            timer += (now - lastTime);
+            lastTime = now; //lastTime is updated to "now" (which is actually in the past at this point)
+
+            if (delta >= 1) { //when 1 tick passes
+                tick();
+                render();
+                delta--;
+                ticks++;
+            }
+            if (timer >= 1e9) { //when fps(=30) # of ticks pass
+                System.out.println("Ticks and Frames: " + ticks);
+                ticks = 0; timer = 0;
+            }
         }
 
         stop();
@@ -77,8 +104,10 @@ public class Game implements Runnable {
         Assets.init();
     }
 
-    private void update() {
+    int x = 0;
 
+    private void tick() { //update or "tick"
+        x += 1;
     }
 
     /*
@@ -102,7 +131,7 @@ public class Game implements Runnable {
         graphics.clearRect(0, 0, width, height); //Clears the entire screen
 
         // Drawing starts here  ////////
-        graphics.drawImage(Assets.getPacmanRight(), 15, 15, null);
+        graphics.drawImage(Assets.getPacmanRight(), x, 15, null);
         // Drawing ends here    ////////
 
         bufferStrategy.show(); //This line updates the screen by working with buffers
