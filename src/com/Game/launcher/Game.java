@@ -1,6 +1,7 @@
 package com.Game.launcher;
 
 import com.Game.display.Display;
+import com.Game.launcher.gfx.Assets;
 import com.Game.launcher.gfx.ImageLoader;
 import com.Game.launcher.gfx.SpriteSheet;
 
@@ -73,6 +74,7 @@ public class Game implements Runnable {
 
     private void init() {
         display = new Display(title, width, height);
+        Assets.init();
     }
 
     private void update() {
@@ -100,12 +102,7 @@ public class Game implements Runnable {
         graphics.clearRect(0, 0, width, height); //Clears the entire screen
 
         // Drawing starts here  ////////
-        graphics.setColor(Color.gray);
-        graphics.fillRect(0, 0, width, height);
-
-        SpriteSheet spriteSheet = new SpriteSheet(ImageLoader.loadImage("/textures/Pac-Man.png"));
-
-        graphics.drawImage(spriteSheet.crop(0, 0, 16, 17), 0, 0, null);
+        graphics.drawImage(Assets.getPacmanRight(), 15, 15, null);
         // Drawing ends here    ////////
 
         bufferStrategy.show(); //This line updates the screen by working with buffers
