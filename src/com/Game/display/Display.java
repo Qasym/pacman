@@ -1,4 +1,4 @@
-package com.company.display;
+package com.Game.display;
 
 import javax.swing.JFrame;
 import java.awt.Canvas;

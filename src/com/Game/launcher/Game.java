@@ -1,9 +1,10 @@
-package com.company.launcher;
+package com.Game.launcher;
 
-import com.company.display.Display;
+import com.Game.display.Display;
+import com.Game.launcher.gfx.ImageLoader;
+import com.Game.launcher.gfx.SpriteSheet;
 
-import java.awt.Graphics;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 /*
@@ -12,8 +13,8 @@ import java.awt.image.BufferStrategy;
 * */
 public class Game implements Runnable {
     private Display display; //Display object from the Display class
-    private String title; //Game title
-    private int width, height; //Display size
+    private final String title; //Game title
+    private final int width, height; //Display size
 
     private Thread thread; //The thread in which the game is running
     private boolean isRunning; //This is the boolean needed to represent the game state
@@ -99,10 +100,12 @@ public class Game implements Runnable {
         graphics.clearRect(0, 0, width, height); //Clears the entire screen
 
         // Drawing starts here  ////////
-        graphics.setColor(Color.CYAN);
-        graphics.fillRect(50, 50, 50, 50);
-        graphics.setColor(Color.pink);
-        graphics.fillOval(10, 10, 15, 20);
+        graphics.setColor(Color.gray);
+        graphics.fillRect(0, 0, width, height);
+
+        SpriteSheet spriteSheet = new SpriteSheet(ImageLoader.loadImage("/textures/Pac-Man.png"));
+
+        graphics.drawImage(spriteSheet.crop(0, 0, 16, 17), 0, 0, null);
         // Drawing ends here    ////////
 
         bufferStrategy.show(); //This line updates the screen by working with buffers
