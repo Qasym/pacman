@@ -14,7 +14,7 @@ public abstract class Entity {
 
     public Entity(float x, float y) { //we need to give a position to an entity
         this.x = x; this.y = y;
-        speed = 50; //default speed, this value is temporary
+        speed = 5; //default speed, this value is temporary
     }
 
     public abstract void tick();

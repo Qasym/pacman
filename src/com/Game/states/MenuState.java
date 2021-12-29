@@ -1,10 +1,12 @@
 package com.Game.states;
 
+import com.Game.launcher.Game;
+
 import java.awt.*;
 
 public class MenuState extends State {
-    public MenuState() {
-
+    public MenuState(Game game) {
+        super(game);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.Game.states;
 
+import com.Game.launcher.Game;
+
 import java.awt.*;
 
 /*
@@ -20,7 +22,13 @@ public abstract class State {
         return currentState;
     }
     ///---GAME STATE MANAGER---///
-    
+
+    protected Game game;
+
+    public State(Game game) {
+        this.game = game;
+    }
+
     public abstract void tick();
     public abstract void render(Graphics g);
 }

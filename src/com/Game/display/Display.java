@@ -47,6 +47,8 @@ public class Display {
         canvas.setPreferredSize(dimension);
         canvas.setMaximumSize(dimension);
         canvas.setMinimumSize(dimension);
+        canvas.setFocusable(false); //this line is needed to make our window focused, not the thing we draw with(canvas),
+                                    //for ex. keyboard inputs will be sent to the window, not to canvas
 
         frame.add(canvas); //We need to add our graphics to the window we created
         frame.pack(); //This line is needed to "refresh" the window with the added canvas; similar to source ~/.bashrc

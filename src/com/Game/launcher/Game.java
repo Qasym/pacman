@@ -2,12 +2,13 @@ package com.Game.launcher;
 
 import com.Game.display.Display;
 import com.Game.gfx.Assets;
+import com.Game.input.KeyManager;
 import com.Game.states.GameState;
 import com.Game.states.MenuState;
 import com.Game.states.SettingsState;
 import com.Game.states.State;
 
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 /*
@@ -26,12 +27,14 @@ public class Game implements Runnable {
     private Graphics graphics; //Graphics class allows us to draw things into the Canvas
 
     private State gameState, menuState, settingsState;
+    private KeyManager keyManager;
 
     public Game(String title, int width, int height) {
         this.isRunning = false;
         this.width = width;
         this.height = height;
         this.title = title;
+        keyManager = new KeyManager();
     }
 
     /*
@@ -101,14 +104,18 @@ public class Game implements Runnable {
         display = new Display(title, width, height);
         Assets.init(); //initializing all the assets, we need this to avoid cropping all images over and over again in render method
 
-        gameState = new GameState();
-        menuState = new MenuState();
-        settingsState = new SettingsState();
+        //initializing the states
+        gameState = new GameState(this);
+        menuState = new MenuState(this);
+        settingsState = new SettingsState(this);
 
+        display.getFrame().addKeyListener(keyManager); //this line "connects" the keyboard and the opened window
         State.setState(gameState); //temporary
     }
 
     private void tick() { //update or "tick"
+        keyManager.tick(); //we have to tick so that our keyboard works properly
+
         if (State.getState() != null) { //if our state is not null, we have to tick
             gameState.tick();
         }
@@ -161,6 +168,10 @@ public class Game implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public KeyManager getKeyManager() {
+        return keyManager;
     }
 
 
