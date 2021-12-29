@@ -3,6 +3,8 @@ package com.Game.launcher;
 import com.Game.display.Display;
 import com.Game.gfx.Assets;
 import com.Game.states.GameState;
+import com.Game.states.MenuState;
+import com.Game.states.SettingsState;
 import com.Game.states.State;
 
 import java.awt.*;
@@ -23,7 +25,7 @@ public class Game implements Runnable {
     private BufferStrategy bufferStrategy; //A way for computer to draw things into the screen; Refer to the class description for more information (done easily in IDE)
     private Graphics graphics; //Graphics class allows us to draw things into the Canvas
 
-    private State gameState;
+    private State gameState, menuState, settingsState;
 
     public Game(String title, int width, int height) {
         this.isRunning = false;
@@ -97,10 +99,13 @@ public class Game implements Runnable {
 
     private void init() {
         display = new Display(title, width, height);
-        Assets.init();
+        Assets.init(); //initializing all the assets, we need this to avoid cropping all images over and over again in render method
 
         gameState = new GameState();
-        State.setState(gameState);
+        menuState = new MenuState();
+        settingsState = new SettingsState();
+
+        State.setState(gameState); //temporary
     }
 
     private void tick() { //update or "tick"

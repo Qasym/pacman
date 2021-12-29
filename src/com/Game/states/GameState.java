@@ -1,21 +1,23 @@
 package com.Game.states;
 
-import com.Game.gfx.Assets;
+import com.Game.entity.Pacman;
 
-import java.awt.*;
+import java.awt.Graphics;
 
 public class GameState extends State {
-    public GameState() {
+    private final Pacman pacman;
 
+    public GameState() {
+        pacman = new Pacman(0, 0);
     }
 
     @Override
     public void tick() {
-
+        pacman.tick();
     }
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.getPacmanRight(), 0, 0, null);
+        pacman.render(g);
     }
 }

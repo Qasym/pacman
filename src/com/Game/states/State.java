@@ -20,7 +20,7 @@ public abstract class State {
         return currentState;
     }
     ///---GAME STATE MANAGER---///
-
+    
     public abstract void tick();
     public abstract void render(Graphics g);
 }
