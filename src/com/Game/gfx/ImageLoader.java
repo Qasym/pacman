@@ -1,4 +1,4 @@
-package com.Game.launcher.gfx;
+package com.Game.gfx;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

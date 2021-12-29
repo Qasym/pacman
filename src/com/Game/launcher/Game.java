@@ -1,7 +1,9 @@
 package com.Game.launcher;
 
 import com.Game.display.Display;
-import com.Game.launcher.gfx.Assets;
+import com.Game.gfx.Assets;
+import com.Game.states.GameState;
+import com.Game.states.State;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -16,10 +18,12 @@ public class Game implements Runnable {
     private final int width, height; //Display size
 
     private Thread thread; //The thread in which the game is running
-    private boolean isRunning; //This is the boolean needed to represent the game state
+    private boolean isRunning; //This is the boolean needed to represent the game states
 
     private BufferStrategy bufferStrategy; //A way for computer to draw things into the screen; Refer to the class description for more information (done easily in IDE)
     private Graphics graphics; //Graphics class allows us to draw things into the Canvas
+
+    private State gameState;
 
     public Game(String title, int width, int height) {
         this.isRunning = false;
@@ -43,7 +47,7 @@ public class Game implements Runnable {
     * 2) When a synchronized method exits, it automatically establishes
     * a happens-before relationship with any subsequent invocation of a
     * synchronized method for the same object. This guarantees that the
-    * change to the state of the object are visible to all threads.
+    * change to the states of the object are visible to all threads.
     * */
     public synchronized void start() {
         if (isRunning) return;
@@ -75,24 +79,16 @@ public class Game implements Runnable {
         double timePerTick = 1e9 / fps; //timePerTick is the maximum amount of time in nanoseconds I have to execute tick() and render() methods to achieve desired fps
         double delta = 0; //delta specifies when we have to call the tick() and render() methods again
         long now, lastTime = System.nanoTime(); //now is the variable needed in the loop, and lastTime is the time before running the loop
-        long timer = 0; //times until we get to 1 second
-        int ticks = 0; //counts how many times tick() and render() methods were executed in 1 second
 
         while (isRunning) {
             now = System.nanoTime();
             delta += (now - lastTime) / timePerTick;
-            timer += (now - lastTime);
             lastTime = now; //lastTime is updated to "now" (which is actually in the past at this point)
 
             if (delta >= 1) { //when 1 tick passes
                 tick();
                 render();
                 delta--;
-                ticks++;
-            }
-            if (timer >= 1e9) { //when fps(=30) # of ticks pass
-                System.out.println("Ticks and Frames: " + ticks);
-                ticks = 0; timer = 0;
             }
         }
 
@@ -102,12 +98,15 @@ public class Game implements Runnable {
     private void init() {
         display = new Display(title, width, height);
         Assets.init();
+
+        gameState = new GameState();
+        State.setState(gameState);
     }
 
-    int x = 0;
-
     private void tick() { //update or "tick"
-        x += 1;
+        if (State.getState() != null) { //if our state is not null, we have to tick
+            gameState.tick();
+        }
     }
 
     /*
@@ -131,7 +130,11 @@ public class Game implements Runnable {
         graphics.clearRect(0, 0, width, height); //Clears the entire screen
 
         // Drawing starts here  ////////
-        graphics.drawImage(Assets.getPacmanRight(), x, 15, null);
+
+        if (State.getState() != null) { //if our state is not null, we have to render
+            gameState.render(graphics);
+        }
+
         // Drawing ends here    ////////
 
         bufferStrategy.show(); //This line updates the screen by working with buffers
