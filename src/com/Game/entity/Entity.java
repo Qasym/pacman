@@ -10,11 +10,55 @@ import java.awt.Graphics;
  * */
 public abstract class Entity {
     protected float x, y; //position variables, they are floating point to achieve smoothness
-    public int speed;
+    public float speed; //the "speed" at which our entities move
+    public int width, height; //size of our entity
+    public static final byte DEFAULT_ENTITY_WIDTH = 32;
+    public static final byte DEFAULT_ENTITY_HEIGHT = 32;
 
-    public Entity(float x, float y) { //we need to give a position to an entity
+    public Entity(float x, float y, int width, int height) { //we need to give a position to an entity
         this.x = x; this.y = y;
+        this.width = width; this.height = height;
         speed = 5; //default speed, this value is temporary
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public abstract void tick();

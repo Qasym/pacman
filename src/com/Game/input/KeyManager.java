@@ -33,7 +33,7 @@ public class KeyManager implements KeyListener {
     *
     * This method below only sets true for one of WASD keys,
     * meaning that only they can cause anything in our code
-    * other keys are ignored
+    * other keys are ignored (except for escape)
     * */
     @Override
     public void keyPressed(KeyEvent e) {

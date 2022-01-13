@@ -11,11 +11,11 @@ import java.awt.image.BufferedImage;
 * */
 public class Pacman extends Entity {
     private boolean powerBuff = false, speedBuff = false; //buffs I would like to add to my Pacman implementation
-    private Game game;
-    private BufferedImage pacmanSprite = Assets.getPacmanRight();
+    private Game game; //we need to have access to the game instance in order to handle keyboard input
+    private BufferedImage pacmanSprite = Assets.getPacmanRight(); //pacman sprite that is going to change if we change direction
 
     public Pacman(Game game, float x, float y) {
-        super(x, y);
+        super(x, y, Entity.DEFAULT_ENTITY_WIDTH, Entity.DEFAULT_ENTITY_HEIGHT);
         this.game = game;
     }
 
@@ -38,6 +38,6 @@ public class Pacman extends Entity {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(pacmanSprite, (int) x, (int) y, null);
+        g.drawImage(pacmanSprite, (int) x, (int) y, width, height, null);
     }
 }
