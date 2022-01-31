@@ -44,7 +44,7 @@ public class KeyManager implements KeyListener {
             }
             keys[code] = true;
         } else if (code == KeyEvent.VK_ESCAPE) { //close the game when 'Esc' is pressed
-            System.exit(123);
+            System.exit(0);
         }
     }
 

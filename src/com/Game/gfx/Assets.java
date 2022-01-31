@@ -1,6 +1,7 @@
 package com.Game.gfx;
 
 import com.Game.tile.Tile;
+import com.Game.utils.Utils;
 
 import java.awt.image.BufferedImage;
 
@@ -105,13 +106,13 @@ public class Assets {
     * This method is called only once
     * */
     public static void init() {
-        SpriteSheet pacmanSprites = new SpriteSheet(ImageLoader.loadImage("/textures/entities/Pac-Man.png"));
-        SpriteSheet monsterSprites = new SpriteSheet(ImageLoader.loadImage("/textures/entities/Monster.png"));
-        wallSprite = new SpriteSheet(ImageLoader.loadImage("/textures/tiles/wall.png"));
-        appleSprite = new SpriteSheet(ImageLoader.loadImage("/textures/tiles/apple.png"));
-        angrySprite = new SpriteSheet(ImageLoader.loadImage("/textures/tiles/angry.png"));
-        speedSprite = new SpriteSheet(ImageLoader.loadImage("/textures/tiles/speed.png"));
-        background = new SpriteSheet(ImageLoader.loadImage("/textures/tiles/background.png"));
+        SpriteSheet pacmanSprites = new SpriteSheet(Utils.loadImage("/textures/entities/Pac-Man.png"));
+        SpriteSheet monsterSprites = new SpriteSheet(Utils.loadImage("/textures/entities/Monster.png"));
+        wallSprite = new SpriteSheet(Utils.loadImage("/textures/tiles/wall.png"));
+        appleSprite = new SpriteSheet(Utils.loadImage("/textures/tiles/apple.png"));
+        angrySprite = new SpriteSheet(Utils.loadImage("/textures/tiles/angry.png"));
+        speedSprite = new SpriteSheet(Utils.loadImage("/textures/tiles/speed.png"));
+        background = new SpriteSheet(Utils.loadImage("/textures/tiles/background.png"));
         PacmanAssets.loadPacman(pacmanSprites);
         MonsterAssets.loadMonster(monsterSprites);
     }

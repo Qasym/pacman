@@ -1,6 +1,13 @@
 Requirements:
 Java 17
 
+Statuses used in the project:
+0   >> Project closed voluntarily
+-1  >> Unknown error
+101 >> File related error
+102 >> Image load failed error
+
+
 Credits:
 --Sprites--
 https://www.piskelapp.com/p/create/sprite

@@ -15,7 +15,7 @@ public class GameState extends State {
         super(game);
         pacman = new Pacman(game,0, 0);
 
-        world = new World("");
+        world = new World("res/worlds/base_world");
     }
 
     @Override
