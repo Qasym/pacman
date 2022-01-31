@@ -6,6 +6,7 @@ import com.Game.gfx.Assets;
 public class WallTile extends Tile {
     public WallTile(int id) {
         super(Assets.getWall(), id);
+        tiles[id] = this;
     }
 
     @Override

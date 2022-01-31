@@ -6,5 +6,6 @@ import com.Game.gfx.Assets;
 public class Background extends Tile {
     public Background(int id) {
         super(Assets.getBackgroundSprite(), id);
+        tiles[id] = this;
     }
 }

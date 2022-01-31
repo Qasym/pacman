@@ -5,6 +5,21 @@ import java.awt.image.BufferedImage;
 
 //Tile class is responsible for tiles
 public class Tile {
+    /*
+    * The code structure below allows to store a single instance of a tile
+    * and reuse it in multiple places
+    * Access is also simplified through tiles array
+    *
+    * Each id of a tile is used to refer to that tile
+    * */
+    public static Tile[] tiles = new Tile[256]; // array to store all the tiles I initialize
+    public static Tile  wallTile = new WallTile(0),
+                        background = new Background(1),
+                        apple = new Apple(2),
+                        speedBuff = new SpeedBuff(3),
+                        angryBuff = new AngryBuff(4);
+
+    //Class stuff below
     protected BufferedImage texture;
     protected final int id;
 
@@ -21,6 +36,7 @@ public class Tile {
     }
 
     public void tick() {
+
 
     }
 

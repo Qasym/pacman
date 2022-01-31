@@ -8,5 +8,6 @@ import com.Game.gfx.Assets;
 public class Apple extends Tile {
     public Apple(int id) {
         super(Assets.getAppleSprite(), id);
+        tiles[id] = this;
     }
 }

@@ -9,5 +9,6 @@ import com.Game.gfx.Assets;
 public class SpeedBuff extends Tile {
     public SpeedBuff(int id) {
         super(Assets.getSpeedSprite(), id);
+        tiles[id] = this;
     }
 }
