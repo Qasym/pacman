@@ -1,5 +1,6 @@
 package com.Game.world;
 
+import com.Game.launcher.Game;
 import com.Game.tile.Tile;
 import com.Game.utils.Utils;
 import jdk.jshell.execution.Util;
@@ -23,26 +24,37 @@ public class World {
     private int rows, columns;
     private int[][] tilePositions;
     private int playerX, playerY;
+    private Game game;
 
-    public World(String path) {
+    public World(Game game, String path) {
         loadWorld(path);
+        this.game = game;
     }
 
     public void tick() {
 
     }
 
-    public void render(Graphics g) {
-        for (int j = 0; j < rows; j++) {
-            for (int i = 0; i < columns; i++) {
-                getTile(i, j).render(g, i * Tile.TILE_WIDTH, j * Tile.TILE_HEIGHT);
+    public void render(Graphics graphics) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                getTile(i, j).render(graphics,
+                                    (int)(i * Tile.TILE_WIDTH - game.getGameCamera().getxOffset()),
+                                    (int)(j * Tile.TILE_HEIGHT - game.getGameCamera().getyOffset()));
             }
         }
     }
 
     private Tile getTile(int x, int y) {
-        return Tile.tiles[tilePositions[x][y]] != null ? Tile.tiles[tilePositions[x][y]] : Tile.tiles[0];
-
+        try { // Try-catch statement just in case if I mess up with indices
+            return Tile.tiles[tilePositions[x][y]] != null ? Tile.tiles[tilePositions[x][y]] : Tile.tiles[0];
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.printf("%d rows, requested: %d\n", rows, x);
+            System.out.printf("%d columns, requested: %d\n", columns, y);
+            System.exit(-1);
+        }
+        return null;
     }
 
     private void loadWorld(String path) {
@@ -63,5 +75,13 @@ public class World {
                 // because I already assigned 4 tokens to other variables
             }
         }
+    }
+
+    public int getPlayerX() {
+        return playerX;
+    }
+
+    public int getPlayerY() {
+        return playerY;
     }
 }

@@ -2,6 +2,7 @@ package com.Game.launcher;
 
 import com.Game.display.Display;
 import com.Game.gfx.Assets;
+import com.Game.gfx.GameCamera;
 import com.Game.input.KeyManager;
 import com.Game.states.GameState;
 import com.Game.states.MenuState;
@@ -26,8 +27,14 @@ public class Game implements Runnable {
     private BufferStrategy bufferStrategy; //A way for computer to draw things into the screen; Refer to the class description for more information (done easily in IDE)
     private Graphics graphics; //Graphics class allows us to draw things into the Canvas
 
+    // States
     private State gameState, menuState, settingsState;
+
+    // Input
     private KeyManager keyManager;
+
+    // Camera
+    private GameCamera gameCamera;
 
     public Game(String title, int width, int height) {
         this.isRunning = false;
@@ -102,14 +109,16 @@ public class Game implements Runnable {
 
     private void init() {
         display = new Display(title, width, height);
+        display.getFrame().addKeyListener(keyManager); //this line "connects" the keyboard and the opened window
         Assets.init(); //initializing all the assets, we need this to avoid cropping all images over and over again in render method
+
+        gameCamera = new GameCamera(this,0, 0);
 
         //initializing the states
         gameState = new GameState(this);
         menuState = new MenuState(this);
         settingsState = new SettingsState(this);
 
-        display.getFrame().addKeyListener(keyManager); //this line "connects" the keyboard and the opened window
         State.setState(gameState); //temporary
     }
 
@@ -174,5 +183,15 @@ public class Game implements Runnable {
         return keyManager;
     }
 
+    public GameCamera getGameCamera() {
+        return gameCamera;
+    }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

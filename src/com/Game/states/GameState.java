@@ -1,5 +1,6 @@
 package com.Game.states;
 
+import com.Game.entity.Entity;
 import com.Game.entity.Pacman;
 import com.Game.launcher.Game;
 import com.Game.tile.Tile;
@@ -9,13 +10,14 @@ import java.awt.Graphics;
 
 public class GameState extends State {
     private final Pacman pacman;
-    private World world;
+    private final World world;
 
     public GameState(Game game) {
         super(game);
-        pacman = new Pacman(game,0, 0);
-
-        world = new World("res/worlds/base_world");
+        world = new World(game,"res/worlds/base_world"); // initializing the world
+        pacman = new Pacman(game,
+                        world.getPlayerX() * Entity.DEFAULT_ENTITY_HEIGHT,
+                        world.getPlayerY() * Entity.DEFAULT_ENTITY_WIDTH); // initializing pacman at his spawn-point
     }
 
     @Override
