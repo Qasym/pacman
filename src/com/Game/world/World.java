@@ -2,6 +2,7 @@ package com.Game.world;
 
 import com.Game.launcher.Game;
 import com.Game.tile.Tile;
+import com.Game.utils.Handler;
 import com.Game.utils.Utils;
 import jdk.jshell.execution.Util;
 
@@ -24,11 +25,11 @@ public class World {
     private int rows, columns;
     private int[][] tilePositions;
     private int playerX, playerY;
-    private Game game;
+    private Handler handler;
 
-    public World(Game game, String path) {
+    public World(Handler handler, String path) {
         loadWorld(path);
-        this.game = game;
+        this.handler = handler;
     }
 
     public void tick() {
@@ -36,16 +37,16 @@ public class World {
     }
 
     public void render(Graphics graphics) {
-        int xStart = (int) Math.max(0, game.getGameCamera().getxOffset() / Tile.TILE_WIDTH),
-            xEnd = (int) Math.min(rows, (game.getGameCamera().getxOffset() + game.getWidth()) / Tile.TILE_WIDTH + 1);
-        int yStart = (int) Math.max(0, game.getGameCamera().getyOffset() / Tile.TILE_HEIGHT),
-            yEnd = (int) Math.min(columns, (game.getGameCamera().getyOffset() + game.getHeight()) / Tile.TILE_HEIGHT + 1);
+        int xStart = (int) Math.max(0, handler.getGameCamera().getxOffset() / Tile.TILE_WIDTH),
+            xEnd = (int) Math.min(rows, (handler.getGameCamera().getxOffset() + handler.getWidth()) / Tile.TILE_WIDTH + 1);
+        int yStart = (int) Math.max(0, handler.getGameCamera().getyOffset() / Tile.TILE_HEIGHT),
+            yEnd = (int) Math.min(columns, (handler.getGameCamera().getyOffset() + handler.getHeight()) / Tile.TILE_HEIGHT + 1);
 
         for (int i = xStart; i < xEnd; i++) {
             for (int j = yStart; j < yEnd; j++) {
                 getTile(i, j).render(graphics,
-                                    (int)(i * Tile.TILE_WIDTH - game.getGameCamera().getxOffset()),
-                                    (int)(j * Tile.TILE_HEIGHT - game.getGameCamera().getyOffset()));
+                                    (int)(i * Tile.TILE_WIDTH - handler.getGameCamera().getxOffset()),
+                                    (int)(j * Tile.TILE_HEIGHT - handler.getGameCamera().getyOffset()));
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.Game.entity;
 
 import com.Game.launcher.Game;
+import com.Game.utils.Handler;
 
 import java.awt.Graphics;
 
@@ -12,15 +13,15 @@ import java.awt.Graphics;
  * */
 public abstract class Entity {
     protected float x, y; //position variables, they are floating point to achieve smoothness
-    protected Game game;
+    protected Handler handler;
 
     public float speed; //the "speed" at which our entities move
     public int width, height; //size of our entity
     public static final byte DEFAULT_ENTITY_WIDTH = 32;
     public static final byte DEFAULT_ENTITY_HEIGHT = 32;
 
-    public Entity(Game game, float x, float y, int width, int height) { //we need to give a position to an entity
-        this.game = game;
+    public Entity(Handler handler, float x, float y, int width, int height) { //we need to give a position to an entity
+        this.handler = handler;
         this.x = x; this.y = y;
         this.width = width; this.height = height;
         speed = 5; //default speed, this value is temporary

@@ -8,6 +8,7 @@ import com.Game.states.GameState;
 import com.Game.states.MenuState;
 import com.Game.states.SettingsState;
 import com.Game.states.State;
+import com.Game.utils.Handler;
 
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -35,6 +36,9 @@ public class Game implements Runnable {
 
     // Camera
     private GameCamera gameCamera;
+
+    //Handler
+    private Handler handler;
 
     public Game(String title, int width, int height) {
         this.isRunning = false;
@@ -112,12 +116,13 @@ public class Game implements Runnable {
         display.getFrame().addKeyListener(keyManager); //this line "connects" the keyboard and the opened window
         Assets.init(); //initializing all the assets, we need this to avoid cropping all images over and over again in render method
 
-        gameCamera = new GameCamera(this,0, 0);
+        gameCamera = new GameCamera(this,0, 0); //initializing the camera
+        handler = new Handler(this); //initializing the handler
 
         //initializing the states
-        gameState = new GameState(this);
-        menuState = new MenuState(this);
-        settingsState = new SettingsState(this);
+        gameState = new GameState(handler);
+        menuState = new MenuState(handler);
+        settingsState = new SettingsState(handler);
 
         State.setState(gameState); //temporary
     }
