@@ -51,16 +51,12 @@ public class World {
         }
     }
 
-    private Tile getTile(int x, int y) {
-        try { // Try-catch statement just in case if I mess up with indices
-            return Tile.tiles[tilePositions[x][y]] != null ? Tile.tiles[tilePositions[x][y]] : Tile.tiles[0];
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.printf("%d rows, requested: %d\n", rows, x);
-            System.out.printf("%d columns, requested: %d\n", columns, y);
-            System.exit(-1);
+    public Tile getTile(int x, int y) {
+        if (x < 0 || y < 0 || x >= rows || y >= columns) {
+            return Tile.tiles[1];
+        } else {
+            return Tile.tiles[tilePositions[x][y]];
         }
-        return null;
     }
 
     private void loadWorld(String path) {

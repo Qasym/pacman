@@ -1,9 +1,8 @@
 package com.Game.entity;
 
-import com.Game.launcher.Game;
 import com.Game.utils.Handler;
 
-import java.awt.Graphics;
+import java.awt.*;
 
 /*
  * Entity is anything that is not a tile
@@ -13,7 +12,8 @@ import java.awt.Graphics;
  * */
 public abstract class Entity {
     protected float x, y; //position variables, they are floating point to achieve smoothness
-    protected Handler handler;
+    protected Handler handler; //handler holds all the necessary objects such as world and game
+    protected Rectangle collisionBox;
 
     public float speed; //the "speed" at which our entities move
     public int width, height; //size of our entity
@@ -25,6 +25,8 @@ public abstract class Entity {
         this.x = x; this.y = y;
         this.width = width; this.height = height;
         speed = 5; //default speed, this value is temporary
+
+        collisionBox = new Rectangle(0, 0, width, height);
     }
 
     public void setX(float x) {

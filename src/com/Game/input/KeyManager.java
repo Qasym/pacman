@@ -7,7 +7,7 @@ import java.awt.event.KeyListener;
 * This class is needed for input handling
 * */
 public class KeyManager implements KeyListener {
-    private boolean[] keys; //variable to store which key on keyboard was pressed
+    private final boolean[] keys; //variable to store which key on keyboard was pressed
     public boolean up, down, left, right;
 
     public KeyManager() {
@@ -24,9 +24,7 @@ public class KeyManager implements KeyListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-        return;
-    }
+    public void keyTyped(KeyEvent e) {}
 
     /*
     * keyPressed() is called everytime when key on the keyboard is pressed.
@@ -52,7 +50,5 @@ public class KeyManager implements KeyListener {
     * keyReleased is called everytime the pressed key is released
     * */
     @Override
-    public void keyReleased(KeyEvent e) {
-        return;
-    }
+    public void keyReleased(KeyEvent e) {}
 }
