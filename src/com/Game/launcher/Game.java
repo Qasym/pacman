@@ -116,8 +116,8 @@ public class Game implements Runnable {
         display.getFrame().addKeyListener(keyManager); //this line "connects" the keyboard and the opened window
         Assets.init(); //initializing all the assets, we need this to avoid cropping all images over and over again in render method
 
-        gameCamera = new GameCamera(this,0, 0); //initializing the camera
         handler = new Handler(this); //initializing the handler
+        gameCamera = new GameCamera(handler,0, 0); //initializing the camera
 
         //initializing the states
         gameState = new GameState(handler);

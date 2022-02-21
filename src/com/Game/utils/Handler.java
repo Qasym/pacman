@@ -21,11 +21,11 @@ public class Handler {
         return game.getKeyManager();
     }
 
-    public int getHeight() {
+    public int getGameHeight() {
         return game.getHeight();
     }
 
-    public int getWidth() {
+    public int getGameWidth() {
         return game.getWidth();
     }
 

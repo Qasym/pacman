@@ -1,7 +1,9 @@
 package com.Game.gfx;
 
 import com.Game.entity.Entity;
-import com.Game.launcher.Game;
+import com.Game.tile.Tile;
+import com.Game.utils.Handler;
+
 /*
 * This class is the implementation of the game camera
 * It isn't the actual camera but rather a control
@@ -9,12 +11,47 @@ import com.Game.launcher.Game;
 * */
 public class GameCamera {
     private float xOffset, yOffset; // these variables tell how much "off" you want to draw tiles
-    private final Game game;
+    private final Handler handler;
 
-    public GameCamera(Game game, float xOffset, float yOffset) {
+    public GameCamera(Handler handler, float xOffset, float yOffset) {
         this.xOffset = xOffset;
         this.yOffset = yOffset;
-        this.game = game;
+        this.handler = handler;
+    }
+
+    /*
+    * When pacman moves out of the map, we see the blank(white) space
+    * This method is needed to check if there is a blank space in the
+    * game camera
+    *
+    * It operates this way:
+    * We know that our map starts at [0, 0] and ends at
+    * [Tile.TILE_WIDTH * World.getColumns(), Tile.TILE_HEIGHT * World.getRows()]
+    * (we take Columns for x coordinates because columns contribute to x-axis)
+    * We simply check if our offsets are out of those bounds, and if they are
+    * we adjust them accordingly
+    *
+    * Commented out code is for the case when our map is larger than the screen
+    * but in the current case our screen size and the world size are equal, so we always
+    * want our offsets to be 0
+    * */
+    public void checkBlankSpace() {
+        xOffset = 0;
+        yOffset = 0;
+        /*
+        if (xOffset < 0) {
+            xOffset = 0;
+        } else if (xOffset + handler.getGameWidth() > Tile.TILE_WIDTH * handler.getWorld().getColumns()) {
+            xOffset = handler.getWorld().getColumns() * Tile.TILE_WIDTH - handler.getGameWidth();
+        } else {
+            xOffset = 0;
+        }
+        if (yOffset < 0) {
+            yOffset = 0;
+        } else if (yOffset + handler.getGameHeight() > Tile.TILE_HEIGHT * handler.getWorld().getRows()) {
+            yOffset = handler.getWorld().getRows() * Tile.TILE_HEIGHT - handler.getGameHeight();
+        }
+         */
     }
 
     /*
@@ -29,8 +66,10 @@ public class GameCamera {
     * We add the half of the entity's width and height to center the camera at the center of the entity
     * (Otherwise it'd be centered at top-left corner of the entity sprite)*/
     public void centerOnEntity(Entity entity) {
-        setxOffset(entity.getX() - (float)(game.getWidth() / 2) + (float)(entity.getWidth() / 2));
-        setyOffset(entity.getY() - (float)(game.getHeight() / 2) + (float)(entity.getHeight() / 2));
+        setxOffset(entity.getX() - (float)(handler.getGameWidth() / 2) + (float)(entity.getWidth() / 2));
+        setyOffset(entity.getY() - (float)(handler.getGameHeight() / 2) + (float)(entity.getHeight() / 2));
+
+        checkBlankSpace();
     }
 
     public void setyOffset(float yOffset) {
