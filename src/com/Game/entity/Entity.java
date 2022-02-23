@@ -14,6 +14,7 @@ public abstract class Entity {
     protected float x, y; //position variables, they are floating point to achieve smoothness
     protected Handler handler; //handler holds all the necessary objects such as world and game
     protected Rectangle collisionBox;
+    protected static final int DEFAULT_SPEED = 7;
 
     public float speed; //the "speed" at which our entities move
     public int width, height; //size of our entity
@@ -24,7 +25,7 @@ public abstract class Entity {
         this.handler = handler;
         this.x = x; this.y = y;
         this.width = width; this.height = height;
-        speed = 5; //default speed, this value is temporary
+        speed = DEFAULT_SPEED;
 
         collisionBox = new Rectangle(0, 0, width, height);
     }

@@ -19,8 +19,8 @@ public class GameState extends State {
         handler.setWorld(world);
 
         pacman = new Pacman(handler,
-                        world.getPlayerX() * Entity.DEFAULT_ENTITY_HEIGHT,
-                        world.getPlayerY() * Entity.DEFAULT_ENTITY_WIDTH); // initializing pacman at his spawn-point
+                        world.getPlayerX() * Tile.TILE_WIDTH,
+                        world.getPlayerY() * Tile.TILE_HEIGHT); // initializing pacman at his spawn-point
     }
 
     @Override

@@ -31,27 +31,22 @@ public class GameCamera {
     * We simply check if our offsets are out of those bounds, and if they are
     * we adjust them accordingly
     *
-    * Commented out code is for the case when our map is larger than the screen
-    * but in the current case our screen size and the world size are equal, so we always
-    * want our offsets to be 0
+    * Commented out code is for the case when the screen size is equal to the
+    * world size in pixels
     * */
     public void checkBlankSpace() {
-        xOffset = 0;
-        yOffset = 0;
-        /*
+//        xOffset = 0;
+//        yOffset = 0;
         if (xOffset < 0) {
             xOffset = 0;
-        } else if (xOffset + handler.getGameWidth() > Tile.TILE_WIDTH * handler.getWorld().getColumns()) {
-            xOffset = handler.getWorld().getColumns() * Tile.TILE_WIDTH - handler.getGameWidth();
-        } else {
-            xOffset = 0;
+        } else if (xOffset + handler.getGameWidth() > Tile.TILE_WIDTH * handler.getWorld().getWidth()) {
+            xOffset = handler.getWorld().getWidth() * Tile.TILE_WIDTH - handler.getGameWidth();
         }
         if (yOffset < 0) {
             yOffset = 0;
-        } else if (yOffset + handler.getGameHeight() > Tile.TILE_HEIGHT * handler.getWorld().getRows()) {
-            yOffset = handler.getWorld().getRows() * Tile.TILE_HEIGHT - handler.getGameHeight();
+        } else if (yOffset + handler.getGameHeight() > Tile.TILE_HEIGHT * handler.getWorld().getHeight()) {
+            yOffset = handler.getWorld().getHeight() * Tile.TILE_HEIGHT - handler.getGameHeight();
         }
-         */
     }
 
     /*

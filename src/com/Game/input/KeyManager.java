@@ -36,11 +36,26 @@ public class KeyManager implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
-        if (code == KeyEvent.VK_W || code == KeyEvent.VK_S || code == KeyEvent.VK_A || code == KeyEvent.VK_D) {
-            for (int i = 0; i < 256; i++) {
-                keys[i] = false;
-            }
+        if (code == KeyEvent.VK_W) {
             keys[code] = true;
+            keys[KeyEvent.VK_S] = false;
+            keys[KeyEvent.VK_A] = false;
+            keys[KeyEvent.VK_D] = false;
+        } else if (code == KeyEvent.VK_S) {
+            keys[code] = true;
+            keys[KeyEvent.VK_W] = false;
+            keys[KeyEvent.VK_A] = false;
+            keys[KeyEvent.VK_D] = false;
+        } else if (code == KeyEvent.VK_A) {
+            keys[code] = true;
+            keys[KeyEvent.VK_W] = false;
+            keys[KeyEvent.VK_S] = false;
+            keys[KeyEvent.VK_D] = false;
+        } else if (code == KeyEvent.VK_D) {
+            keys[code] = true;
+            keys[KeyEvent.VK_W] = false;
+            keys[KeyEvent.VK_A] = false;
+            keys[KeyEvent.VK_S] = false;
         } else if (code == KeyEvent.VK_ESCAPE) { //close the game when 'Esc' is pressed
             System.exit(0);
         }
@@ -50,5 +65,9 @@ public class KeyManager implements KeyListener {
     * keyReleased is called everytime the pressed key is released
     * */
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+        for (int i = 0; i < 256; i++) {
+            keys[e.getKeyCode()] = false;
+        }
+    }
 }

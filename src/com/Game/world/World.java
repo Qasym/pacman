@@ -10,9 +10,13 @@ import java.awt.Graphics;
 * */
 public class World {
     /*
-    * rows*columns, 31x28, this is the height(31) and width(28) of my pacman map
-    * Values are given in terms of tiles, so 31 means that I have 31 tiles in height(rows)
-    * 28 means that I have 28 tiles in width(columns)
+    * My map is transposed (I don't know why I made it that way)
+    * Because of this given the size of the map 28x31 with width=28,
+    * it makes sense that 28 is actually the width of the map
+    *
+    * rows*columns, 28x31, this is the height(31) and width(28) of my pacman map
+    * Values are given in terms of tiles, so 31 means that I have 31 tiles in height
+    * 28 means that I have 28 tiles in width
     *
     * 'tiles' is a matrix that stores the positions of tiles my world has
     * For ex, tiles[0][0] = 0, means that at position [0][0] I have a tile
@@ -20,7 +24,7 @@ public class World {
     *
     * playerX & playerY variables store the spawn position for a player
     * */
-    private int rows, columns;
+    private int width, height;
     private int[][] tilePositions;
     private int playerX, playerY;
     private Handler handler;
@@ -36,9 +40,9 @@ public class World {
 
     public void render(Graphics graphics) {
         int xStart = (int) Math.max(0, handler.getGameCamera().getxOffset() / Tile.TILE_WIDTH),
-            xEnd = (int) Math.min(rows, (handler.getGameCamera().getxOffset() + handler.getGameWidth()) / Tile.TILE_WIDTH + 1);
+            xEnd = (int) Math.min(width, (handler.getGameCamera().getxOffset() + handler.getGameWidth()) / Tile.TILE_WIDTH + 1);
         int yStart = (int) Math.max(0, handler.getGameCamera().getyOffset() / Tile.TILE_HEIGHT),
-            yEnd = (int) Math.min(columns, (handler.getGameCamera().getyOffset() + handler.getGameHeight()) / Tile.TILE_HEIGHT + 1);
+            yEnd = (int) Math.min(height, (handler.getGameCamera().getyOffset() + handler.getGameHeight()) / Tile.TILE_HEIGHT + 1);
 
         for (int i = xStart; i < xEnd; i++) {
             for (int j = yStart; j < yEnd; j++) {
@@ -50,7 +54,7 @@ public class World {
     }
 
     public Tile getTile(int x, int y) {
-        if (x < 0 || y < 0 || x >= rows || y >= columns) {
+        if (x < 0 || y < 0 || x >= width || y >= height) {
             return Tile.tiles[1];
         } else {
             return Tile.tiles[tilePositions[x][y]];
@@ -62,27 +66,27 @@ public class World {
         String[] tokens = Utils.loadFileAsString(path).split("\\s+");
         // **** **** **** **** **** //
         // Now we retrieve the useful information
-        rows = Utils.parseInt(tokens[0]);
-        columns = Utils.parseInt(tokens[1]);
+        width = Utils.parseInt(tokens[0]);
+        height = Utils.parseInt(tokens[1]);
         playerX = Utils.parseInt(tokens[2]);
         playerY = Utils.parseInt(tokens[3]);
 
-        tilePositions = new int[rows][columns];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                tilePositions[i][j] = Utils.parseInt(tokens[4 + columns * i + j]);
+        tilePositions = new int[width][height];
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                tilePositions[i][j] = Utils.parseInt(tokens[4 + height * i + j]);
                 // I converted 2d array indexing into 1d array indexing and added 4
                 // because I already assigned 4 tokens to other variables
             }
         }
     }
 
-    public int getRows() {
-        return rows;
+    public int getWidth() {
+        return width;
     }
 
-    public int getColumns() {
-        return columns;
+    public int getHeight() {
+        return height;
     }
 
     public int getPlayerX() {

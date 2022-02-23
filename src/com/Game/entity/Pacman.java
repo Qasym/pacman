@@ -101,10 +101,11 @@ public class Pacman extends Entity {
     * */
     @Override
     public void render(Graphics g) {
-        g.drawImage(pacmanSprite,
-                    (int) (x - handler.getGameCamera().getxOffset()),
-                    (int) (y - handler.getGameCamera().getyOffset()),
-                    width, height, null);
+//        g.drawImage(pacmanSprite,
+//                    (int) (x - handler.getGameCamera().getxOffset()),
+//                    (int) (y - handler.getGameCamera().getyOffset()),
+//                    width, height, null);
+        g.drawRect((int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height);
 
         // Temporary code to display collision box
         g.setColor(Color.RED);
@@ -116,67 +117,144 @@ public class Pacman extends Entity {
     /*! CHANGEABLE COMMENTS !
     *
     * Initially we check for the state of our key manager (up/down/left/right)
-    * Without loss of generality, we assume state is up
+    * Without loss of generality, we assume state is UP
     * We enter the corresponding if statement, and the fun begins
     *
+    * -- if statement --
     * We first check the position of our collision box, specifically its top left and right corners
-    * because those are the corners that are going to collide with the wall pacman approaching.
+    * because those are the corners that are going to collide with the wall pacman approaches.
     * In order to avoid getting inside the wall we have to check for the collision one step ahead,
     * otherwise (if we check after making a step) we will make a step inside the wall and then understand
     * that we have collided, which is not the desired behavior since it blocks our movement
     * to the left and right (top left & right corners are inside the wall, so we can only move downwards)
-    * For that reason, we add the speed to the position of our points.
+    * For that reason, we add the 'speed' (or size of our step) to the position of our points
+    * to check for the collision.
     * When we move upwards, there is no change in x-axis, so we don't add speed to the x coordinate
     * We only add speed to the y coordinate and check for the collision ahead, if we collide (or join the wall, so to say)
     * in our next step we simply stop, that will allow our corners to be not inside the wall but rather
     * right before it, so we can move to the left and to the right freely
+    *
+    * -- else --
+    * If statement code is good, but what if our 'speed' (size of our step) is too big?
+    * Let's say speed is 30 pixels/keyEvent, and we happen to stop 29 pixels before the wall
+    * That means there is a 29 pixel long gap between the collision box and the wall
+    * To fix that I count how many pixels are there till the collision happens
+    * When I find the value, I subtract(when moving up, y-axis decreases) (tillCollision-1) number of pixels
+    * from the top-left corner, and now the collisionBox is right before the wall and not inside it
+    * To draw pacman properly I also have to add DEFAULT_COLLISION_BOUNDS to the obtained value
+    *
+    * note: this else statement code can be made faster by using binary search
+    *
     * */
     public void move() {
-        // todo: make it so pacman doesn't stop movement if a player moves towards side walls
-        // for ex. if pacman is in the corridor moving upwards, current implementation will stop
-        // pacman when the player tries to move right, towards the wall
-        // we need to make it that pacman continues to move upwards
+        /*
+        * todo: make it so pacman doesn't stop movement if a player moves towards side walls
+        * for ex. if pacman is in the corridor moving upwards, current implementation will stop
+        * pacman when the player tries to move right, towards the wall
+        * we need to make it that pacman continues to move upwards
+        * */
+
+        // if we move upwards, we have to check top left&right corners of collision box
         if (handler.getKeyManager().up) {
-            // if we move upwards, we have to check top left&right corners of collision box
             if (!collidesWithTile(collisionBox.x / Tile.TILE_WIDTH, // top left corner
                                     (int)(collisionBox.y - speed) / Tile.TILE_HEIGHT)
                 && // or
                 !collidesWithTile((collisionBox.x + collisionBox.width) / Tile.TILE_WIDTH, // top right corner
                                     (int)(collisionBox.y - speed) / Tile.TILE_HEIGHT)) {
                 y -= speed;
-                pacmanSprite = Assets.getPacmanUp();
+            } else {
+                // if we do have a collision
+                int tillCollision = 0;
+                for (; tillCollision < speed; tillCollision++) {
+                    if (collidesWithTile(collisionBox.x / Tile.TILE_WIDTH, // top left corner
+                                    (int)(collisionBox.y - tillCollision) / Tile.TILE_HEIGHT)
+                        || // or
+                        collidesWithTile((collisionBox.x + collisionBox.width) / Tile.TILE_WIDTH, // top right corner
+                                    (int)(collisionBox.y - tillCollision) / Tile.TILE_HEIGHT)) {
+                        break;
+                    }
+                }
+                y = collisionBox.y - --tillCollision + DEFAULT_COLLISION_BOUNDS_Y;
             }
+            pacmanSprite = Assets.getPacmanUp();
+
+            //////////////////////////////////////////////////////////////////////////////
+
+        // if we move rightwards, we have to check for top&bottom right corners
         } else if (handler.getKeyManager().right) {
-            // if we move rightwards, we have to check for top&bottom right corners
             if (!collidesWithTile((int)(speed + collisionBox.x + collisionBox.width) / Tile.TILE_WIDTH, // top right corner
                                     collisionBox.y / Tile.TILE_HEIGHT)
                 && //or
                 !collidesWithTile(  (int)(speed + collisionBox.x + collisionBox.width) / Tile.TILE_WIDTH, // bottom right corner
                                     (collisionBox.y + collisionBox.height) / Tile.TILE_HEIGHT)) {
                 x += speed;
-                pacmanSprite = Assets.getPacmanRight();
+            } else {
+                // if we do have a collision
+                int tillCollision = 0;
+                for (; tillCollision < speed; tillCollision++) {
+                    if (collidesWithTile((int)(tillCollision + collisionBox.x + collisionBox.width) / Tile.TILE_WIDTH, // top right corner
+                                    collisionBox.y / Tile.TILE_HEIGHT)
+                        || //or
+                        collidesWithTile(  (int)(tillCollision + collisionBox.x + collisionBox.width) / Tile.TILE_WIDTH, // bottom right corner
+                                    (collisionBox.y + collisionBox.height) / Tile.TILE_HEIGHT)) {
+                        break;
+                    }
+                }
+                x = collisionBox.x + --tillCollision - DEFAULT_COLLISION_BOUNDS_X;
             }
+            pacmanSprite = Assets.getPacmanRight();
+
+            //////////////////////////////////////////////////////////////////////////////
+
+        // if we move leftwards, we have to check for top&bottom left corners
         } else if (handler.getKeyManager().left) {
-            // if we move leftwards, we have to check for top&bottom left corners
             if (!collidesWithTile((int)(collisionBox.x - speed) / Tile.TILE_WIDTH, // top left corner
                                     collisionBox.y / Tile.TILE_HEIGHT)
                 && //or
                 !collidesWithTile(  (int)(collisionBox.x - speed) / Tile.TILE_WIDTH, // bottom left corner
                                     (collisionBox.y + collisionBox.height) / Tile.TILE_HEIGHT)) {
                 x -= speed;
-                pacmanSprite = Assets.getPacmanLeft();
+            } else {
+                // if we do have a collision
+                int tillCollision = 0;
+                for (; tillCollision < speed; tillCollision++) {
+                    if (collidesWithTile((int)(collisionBox.x - tillCollision) / Tile.TILE_WIDTH, // top left corner
+                                    collisionBox.y / Tile.TILE_HEIGHT)
+                        || //or
+                        collidesWithTile(  (int)(collisionBox.x - tillCollision) / Tile.TILE_WIDTH, // bottom left corner
+                                    (collisionBox.y + collisionBox.height) / Tile.TILE_HEIGHT)) {
+                        break;
+                    }
+                }
+                x = collisionBox.x - --tillCollision + DEFAULT_COLLISION_BOUNDS_X;
             }
+            pacmanSprite = Assets.getPacmanLeft();
+
+            //////////////////////////////////////////////////////////////////////////////
+
+        // if we move downwards, we have to check for bottom left&right corners
         } else if (handler.getKeyManager().down) {
-            // if we move downwards, we have to check for bottom left&right corners
-            /*speed +*/
             if (!collidesWithTile(collisionBox.x / Tile.TILE_WIDTH, // bottom left corner
                                     (int)(speed + collisionBox.y + collisionBox.height) / Tile.TILE_HEIGHT)
                 && //or
                 !collidesWithTile(  (collisionBox.x + collisionBox.width) / Tile.TILE_WIDTH, // bottom right corner
                                     (int)(speed + collisionBox.y + collisionBox.height) / Tile.TILE_HEIGHT)) {
                 y += speed;
-                pacmanSprite = Assets.getPacmanDown();
+            } else {
+                // if we do have a collision
+                int tillCollision = 0;
+                for (; tillCollision < speed; tillCollision++) {
+                    if (collidesWithTile(collisionBox.x / Tile.TILE_WIDTH, // bottom left corner
+                                            (collisionBox.y + tillCollision + collisionBox.height) / Tile.TILE_HEIGHT)
+                            ||
+                        collidesWithTile((collisionBox.x + collisionBox.width) / Tile.TILE_WIDTH, // bottom right corner
+                                            (collisionBox.y + tillCollision + collisionBox.height) / Tile.TILE_HEIGHT)) {
+                        break;
+                    }
+                }
+                y = collisionBox.y + --tillCollision - DEFAULT_COLLISION_BOUNDS_Y;
             }
+            pacmanSprite = Assets.getPacmanDown();
         }
     }
 

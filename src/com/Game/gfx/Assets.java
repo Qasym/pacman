@@ -98,7 +98,7 @@ public class Assets {
     }
 
     public static BufferedImage getBackgroundSprite() {
-        return (background == null) ? null : background.crop(0, 0, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
+        return (background == null) ? null : background.crop(0, 0, 32, 32);
     }
 
     /*
