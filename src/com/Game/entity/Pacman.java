@@ -1,5 +1,6 @@
 package com.Game.entity;
 
+import com.Game.gfx.Animation;
 import com.Game.gfx.Assets;
 import com.Game.tile.Tile;
 import com.Game.utils.Handler;
@@ -12,7 +13,6 @@ import java.awt.image.BufferedImage;
 * */
 public class Pacman extends Entity {
     private boolean powerBuff = false, speedBuff = false; //buffs I would like to add to my Pacman implementation
-    private BufferedImage pacmanSprite = Assets.getPacmanRight(); //pacman sprite that is going to change if we change direction
 
     /*
     * I have to explain about collision bounds
@@ -57,12 +57,36 @@ public class Pacman extends Entity {
         collisionBox.y = (int)(y + DEFAULT_COLLISION_BOUNDS_Y - handler.getGameCamera().getyOffset());
         collisionBox.width = DEFAULT_COLLISION_BOUNDS_WIDTH;
         collisionBox.height = DEFAULT_COLLISION_BOUNDS_HEIGHT;
+
+        animationDown = new Animation(50, Assets.getPacmanDownAnimation());
+        animationUp = new Animation(50, Assets.getPacmanUpAnimation());
+        animationLeft = new Animation(50, Assets.getPacmanLeftAnimation());
+        animationRight = new Animation(50, Assets.getPacmanRightAnimation());
     }
+
+    private BufferedImage pacmanSprite = null; //pacman sprite that is going to change if we change direction
+
+    // Animations
+    private final Animation animationUp, animationDown, animationLeft, animationRight;
 
     @Override
     public void tick() {
+        // Update animations
+        animationDown.tick();
+        animationLeft.tick();
+        animationRight.tick();
+        animationUp.tick();
+
+        // Move
         move();
+
+        // Camera
         handler.getGameCamera().centerOnEntity(this);
+
+        // In-game logic
+        if (speedBuff) { //todo: implement speedBuffs
+            setSpeed(11);
+        }
 
         // We have to update collision box each tick to keep up with the sprite (which is also updated each tick)
         /*
@@ -101,17 +125,21 @@ public class Pacman extends Entity {
     * */
     @Override
     public void render(Graphics g) {
-//        g.drawImage(pacmanSprite,
-//                    (int) (x - handler.getGameCamera().getxOffset()),
-//                    (int) (y - handler.getGameCamera().getyOffset()),
-//                    width, height, null);
-        g.drawRect((int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height);
+        if (pacmanSprite == null) {
+            pacmanSprite = animationRight.getCurrentFrame();
+        }
 
-        // Temporary code to display collision box
-        g.setColor(Color.RED);
-        g.fillRect( (int)(collisionBox.x - handler.getGameCamera().getxOffset()),
-                    (int)(collisionBox.y - handler.getGameCamera().getyOffset()),
-                    collisionBox.width, collisionBox.height);
+        g.drawImage(pacmanSprite,
+                    (int) (x - handler.getGameCamera().getxOffset()),
+                    (int) (y - handler.getGameCamera().getyOffset()),
+                    width, height, null);
+
+        // Temporary code to check collision related stuff;
+//        g.drawRect((int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height);
+//        g.setColor(Color.RED);
+//        g.fillRect( (int)(collisionBox.x - handler.getGameCamera().getxOffset()),
+//                    (int)(collisionBox.y - handler.getGameCamera().getyOffset()),
+//                    collisionBox.width, collisionBox.height);
     }
 
     /*! CHANGEABLE COMMENTS !
@@ -147,18 +175,11 @@ public class Pacman extends Entity {
     *
     * */
     public void move() {
-        /*
-        * todo: make it so pacman doesn't stop movement if a player moves towards side walls
-        * for ex. if pacman is in the corridor moving upwards, current implementation will stop
-        * pacman when the player tries to move right, towards the wall
-        * we need to make it that pacman continues to move upwards
-        * */
-
         // if we move upwards, we have to check top left&right corners of collision box
         if (handler.getKeyManager().up) {
             if (!collidesWithTile(collisionBox.x / Tile.TILE_WIDTH, // top left corner
                                     (int)(collisionBox.y - speed) / Tile.TILE_HEIGHT)
-                && // or
+                &&
                 !collidesWithTile((collisionBox.x + collisionBox.width) / Tile.TILE_WIDTH, // top right corner
                                     (int)(collisionBox.y - speed) / Tile.TILE_HEIGHT)) {
                 y -= speed;
@@ -176,15 +197,15 @@ public class Pacman extends Entity {
                 }
                 y = collisionBox.y - --tillCollision - DEFAULT_COLLISION_BOUNDS_Y;
             }
-            pacmanSprite = Assets.getPacmanUp();
+            pacmanSprite = animationUp.getCurrentFrame();
 
-            //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
 
         // if we move rightwards, we have to check for top&bottom right corners
         } else if (handler.getKeyManager().right) {
             if (!collidesWithTile((int)(speed + collisionBox.x + collisionBox.width) / Tile.TILE_WIDTH, // top right corner
                                     collisionBox.y / Tile.TILE_HEIGHT)
-                && //or
+                &&
                 !collidesWithTile(  (int)(speed + collisionBox.x + collisionBox.width) / Tile.TILE_WIDTH, // bottom right corner
                                     (collisionBox.y + collisionBox.height) / Tile.TILE_HEIGHT)) {
                 x += speed;
@@ -202,15 +223,15 @@ public class Pacman extends Entity {
                 }
                 x = collisionBox.x + --tillCollision - DEFAULT_COLLISION_BOUNDS_X;
             }
-            pacmanSprite = Assets.getPacmanRight();
+            pacmanSprite = animationRight.getCurrentFrame();
 
-            //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
 
         // if we move leftwards, we have to check for top&bottom left corners
         } else if (handler.getKeyManager().left) {
             if (!collidesWithTile((int)(collisionBox.x - speed) / Tile.TILE_WIDTH, // top left corner
                                     collisionBox.y / Tile.TILE_HEIGHT)
-                && //or
+                &&
                 !collidesWithTile(  (int)(collisionBox.x - speed) / Tile.TILE_WIDTH, // bottom left corner
                                     (collisionBox.y + collisionBox.height) / Tile.TILE_HEIGHT)) {
                 x -= speed;
@@ -228,15 +249,15 @@ public class Pacman extends Entity {
                 }
                 x = collisionBox.x - --tillCollision - DEFAULT_COLLISION_BOUNDS_X;
             }
-            pacmanSprite = Assets.getPacmanLeft();
+            pacmanSprite = animationLeft.getCurrentFrame();
 
-            //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
 
         // if we move downwards, we have to check for bottom left&right corners
         } else if (handler.getKeyManager().down) {
             if (!collidesWithTile(collisionBox.x / Tile.TILE_WIDTH, // bottom left corner
                                     (int)(speed + collisionBox.y + collisionBox.height) / Tile.TILE_HEIGHT)
-                && //or
+                &&
                 !collidesWithTile(  (collisionBox.x + collisionBox.width) / Tile.TILE_WIDTH, // bottom right corner
                                     (int)(speed + collisionBox.y + collisionBox.height) / Tile.TILE_HEIGHT)) {
                 y += speed;
@@ -254,7 +275,7 @@ public class Pacman extends Entity {
                 }
                 y = collisionBox.y + --tillCollision - DEFAULT_COLLISION_BOUNDS_Y;
             }
-            pacmanSprite = Assets.getPacmanDown();
+            pacmanSprite = animationDown.getCurrentFrame();
         }
     }
 

@@ -1,6 +1,5 @@
 package com.Game.gfx;
 
-import com.Game.tile.Tile;
 import com.Game.utils.Utils;
 
 import java.awt.image.BufferedImage;
@@ -16,15 +15,50 @@ public class Assets {
     static class PacmanAssets {
         private static boolean initialized = false; //this boolean is needed to check if sprites are initialized or not
 
-        public static final byte UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3; //constants for easy access
-        public static BufferedImage[] pacman = new BufferedImage[4]; //this array will store sprites for pacman
+        private static final int width = 17, height = 17;
 
+        public static BufferedImage[] pacman = new BufferedImage[4]; //this array will store sprites for pacman
+        
+        // Arrays to store the animation sprites
+        public static BufferedImage[] pacmanUp = new BufferedImage[6];
+        public static BufferedImage[] pacmanRight = new BufferedImage[6];
+        public static BufferedImage[] pacmanLeft = new BufferedImage[6];
+        public static BufferedImage[] pacmanDown = new BufferedImage[6];
+
+        /*
+        * In Pac-Man.png file, dimensions of 1 pacman image are */
         public static void loadPacman(SpriteSheet sheet) {
-            initialized = true;
-            pacman[PacmanAssets.RIGHT] = sheet.crop(0, 0, 16, 17); //picture of pacman going right
-            pacman[PacmanAssets.LEFT] = sheet.crop(19, 0, 16, 17); //picture of pacman going left
-            pacman[PacmanAssets.UP] = sheet.crop(0, 18, 17, 16); //picture of pacman going up
-            pacman[PacmanAssets.DOWN] = sheet.crop(18, 18, 17, 16); //picture of pacman going down
+            if (!initialized) {
+                initialized = true;
+                // Let's crop animations for pacman going right
+                pacmanRight[0] = sheet.crop(0, 0, width, height);
+                pacmanRight[1] = sheet.crop(0, 34, width, height);
+                pacmanRight[2] = sheet.crop(0, 68, width, height);
+                pacmanRight[3] = sheet.crop(0, 102, width, height);
+                pacmanRight[4] = sheet.crop(0, 68, width, height);
+                pacmanRight[5] = sheet.crop(0, 34, width, height);
+                // Let's crop animations for pacman going left
+                pacmanLeft[0] = sheet.crop(18, 0, width, height);
+                pacmanLeft[1] = sheet.crop(18, 34, width, height);
+                pacmanLeft[2] = sheet.crop(18, 68, width, height);
+                pacmanLeft[3] = sheet.crop(18, 102, width, height);
+                pacmanLeft[4] = sheet.crop(18, 68, width, height);
+                pacmanLeft[5] = sheet.crop(18, 34, width, height);
+                // Let's crop animations for pacman going up
+                pacmanUp[0] = sheet.crop(0, 17, width, height);
+                pacmanUp[1] = sheet.crop(0, 17 + 34, width, height);
+                pacmanUp[2] = sheet.crop(0, 17 + 68, width, height);
+                pacmanUp[3] = sheet.crop(0, 17 + 102, width, height);
+                pacmanUp[4] = sheet.crop(0, 17 + 68, width, height);
+                pacmanUp[5] = sheet.crop(0, 17 + 34, width, height);
+                // Let's crop animations for pacman going right
+                pacmanDown[0] = sheet.crop(18, 17, width, height);
+                pacmanDown[1] = sheet.crop(18, 17 + 34, width, height);
+                pacmanDown[2] = sheet.crop(18, 17 + 68, width, height);
+                pacmanDown[3] = sheet.crop(18, 17 + 102, width, height);
+                pacmanDown[4] = sheet.crop(18, 17 + 68, width, height);
+                pacmanDown[5] = sheet.crop(18, 17 + 34, width, height);
+            }
         }
     }
 
@@ -62,20 +96,24 @@ public class Assets {
         return MonsterAssets.initialized ? MonsterAssets.monster[MonsterAssets.DOWN] : null;
     }
 
-    public static BufferedImage getPacmanRight() {
-        return PacmanAssets.initialized ? PacmanAssets.pacman[PacmanAssets.RIGHT] : null;
+    public static BufferedImage[] getPacmanUpAnimation() {
+        if (!PacmanAssets.initialized) return null;
+        return PacmanAssets.pacmanUp;
     }
 
-    public static BufferedImage getPacmanLeft() {
-        return PacmanAssets.initialized ? PacmanAssets.pacman[PacmanAssets.LEFT] : null;
+    public static BufferedImage[] getPacmanDownAnimation() {
+        if (!PacmanAssets.initialized) return null;
+        return PacmanAssets.pacmanDown;
     }
 
-    public static BufferedImage getPacmanUp() {
-        return PacmanAssets.initialized ? PacmanAssets.pacman[PacmanAssets.UP] : null;
+    public static BufferedImage[] getPacmanLeftAnimation() {
+        if (!PacmanAssets.initialized) return null;
+        return PacmanAssets.pacmanLeft;
     }
 
-    public static BufferedImage getPacmanDown() {
-        return PacmanAssets.initialized ? PacmanAssets.pacman[PacmanAssets.DOWN] : null;
+    public static BufferedImage[] getPacmanRightAnimation() {
+        if (!PacmanAssets.initialized) return null;
+        return PacmanAssets.pacmanRight;
     }
 
     //holds the wall from wall.png; the background;the apple; for the angryBuff; for the speedBuff;
