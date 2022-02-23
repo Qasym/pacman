@@ -141,7 +141,7 @@ public class Pacman extends Entity {
     * To fix that I count how many pixels are there till the collision happens
     * When I find the value, I subtract(when moving up, y-axis decreases) (tillCollision-1) number of pixels
     * from the top-left corner, and now the collisionBox is right before the wall and not inside it
-    * To draw pacman properly I also have to add DEFAULT_COLLISION_BOUNDS to the obtained value
+    * To draw pacman properly I also have to subtract DEFAULT_COLLISION_BOUNDS from the obtained value
     *
     * note: this else statement code can be made faster by using binary search
     *
@@ -174,7 +174,7 @@ public class Pacman extends Entity {
                         break;
                     }
                 }
-                y = collisionBox.y - --tillCollision + DEFAULT_COLLISION_BOUNDS_Y;
+                y = collisionBox.y - --tillCollision - DEFAULT_COLLISION_BOUNDS_Y;
             }
             pacmanSprite = Assets.getPacmanUp();
 
@@ -226,7 +226,7 @@ public class Pacman extends Entity {
                         break;
                     }
                 }
-                x = collisionBox.x - --tillCollision + DEFAULT_COLLISION_BOUNDS_X;
+                x = collisionBox.x - --tillCollision - DEFAULT_COLLISION_BOUNDS_X;
             }
             pacmanSprite = Assets.getPacmanLeft();
 
