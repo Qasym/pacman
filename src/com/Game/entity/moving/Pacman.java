@@ -1,6 +1,8 @@
 package com.Game.entity.moving;
 
 import com.Game.entity.Entity;
+import com.Game.entity.EntityManager;
+import com.Game.entity.statics.apples.Apple;
 import com.Game.gfx.Animation;
 import com.Game.gfx.Assets;
 import com.Game.tile.Tile;
@@ -14,6 +16,7 @@ import java.awt.image.BufferedImage;
 * */
 public class Pacman extends Entity {
     private boolean powerBuff = false, speedBuff = false; //buffs I would like to add to my Pacman implementation
+    private int score;
 
     /*
     * I have to explain about collision bounds
@@ -54,8 +57,11 @@ public class Pacman extends Entity {
     public Pacman(Handler handler, float x, float y) {
         super(handler, x, y, Entity.DEFAULT_ENTITY_WIDTH, Entity.DEFAULT_ENTITY_HEIGHT);
 
-        collisionBox.x = (int)(x + DEFAULT_COLLISION_BOUNDS_X - handler.getGameCamera().getxOffset());
-        collisionBox.y = (int)(y + DEFAULT_COLLISION_BOUNDS_Y - handler.getGameCamera().getyOffset());
+        score = 0;
+
+        // collisionBox.x & collisionBox.y - are a position of top-left of our collisionBox
+        collisionBox.x = (int)(x + DEFAULT_COLLISION_BOUNDS_X);
+        collisionBox.y = (int)(y + DEFAULT_COLLISION_BOUNDS_Y);
         collisionBox.width = DEFAULT_COLLISION_BOUNDS_WIDTH;
         collisionBox.height = DEFAULT_COLLISION_BOUNDS_HEIGHT;
 
@@ -87,6 +93,14 @@ public class Pacman extends Entity {
         // In-game logic
         if (speedBuff) { //todo: implement speedBuffs
             setSpeed(11);
+        }
+        Entity collidesWithMe = checkEntityCollisions(); // any entity that is saying "pacman collidesWithMe"
+        if (collidesWithMe != null) {
+            // game over if monster else score
+            score++;
+            if (collidesWithMe instanceof Apple) {
+                ((Apple) collidesWithMe).pacmanAteMe();
+            }
         }
 
         // We have to update collision box each tick to keep up with the sprite (which is also updated each tick)
@@ -130,17 +144,21 @@ public class Pacman extends Entity {
             pacmanSprite = animationRight.getCurrentFrame();
         }
 
-        g.drawImage(pacmanSprite,
-                    (int) (x - handler.getGameCamera().getxOffset()),
-                    (int) (y - handler.getGameCamera().getyOffset()),
-                    width, height, null);
-
-        // Temporary code to check collision related stuff;
-//        g.drawRect((int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height);
-//        g.setColor(Color.RED);
-//        g.fillRect( (int)(collisionBox.x - handler.getGameCamera().getxOffset()),
-//                    (int)(collisionBox.y - handler.getGameCamera().getyOffset()),
-//                    collisionBox.width, collisionBox.height);
+        boolean checkingCollisions = Handler.DEBUG; // variable for testing purposes
+        if (checkingCollisions) {
+            // Temporary code to check collision related stuff;
+            g.setColor(Color.BLUE);
+            g.drawRect((int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height);
+            g.setColor(Color.YELLOW);
+            g.fillRect( (int)(collisionBox.x - handler.getGameCamera().getxOffset()),
+                    (int)(collisionBox.y - handler.getGameCamera().getyOffset()),
+                    collisionBox.width, collisionBox.height);
+        } else {
+            g.drawImage(pacmanSprite,
+                        (int) (x - handler.getGameCamera().getxOffset()),
+                        (int) (y - handler.getGameCamera().getyOffset()),
+                        width, height, null);
+        }
     }
 
     /*! CHANGEABLE COMMENTS !
@@ -283,6 +301,15 @@ public class Pacman extends Entity {
     // This method returns true if a tile at [x, y] is solid
     private boolean collidesWithTile(int x, int y) {
         return handler.getWorld().getTile(x, y).isSolid();
+    }
+
+    public Entity checkEntityCollisions() {
+        for (Entity e : handler.getWorld().getEntityManager().getEntities()) {
+            if (!e.equals(this) && e.getCollisionBox().intersects(this.collisionBox)) {
+                return e;
+            }
+        }
+        return null;
     }
 
 }

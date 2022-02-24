@@ -13,7 +13,7 @@ import java.awt.*;
 public abstract class Entity {
     protected float x, y; //position variables, they are floating point to achieve smoothness
     protected Handler handler; //handler holds all the necessary objects such as world and game
-    protected Rectangle collisionBox;
+    protected Rectangle collisionBox; // Rectangle object to hold the collision box
     protected static final int DEFAULT_SPEED = 7;
 
     public float speed; //the "speed" at which our entities move
@@ -72,4 +72,8 @@ public abstract class Entity {
 
     public abstract void tick();
     public abstract void render(Graphics g);
+
+    public Rectangle getCollisionBox() {
+        return collisionBox;
+    }
 }

@@ -2,6 +2,7 @@ package com.Game.world;
 
 import com.Game.entity.EntityManager;
 import com.Game.entity.moving.Pacman;
+import com.Game.entity.statics.apples.Apple;
 import com.Game.tile.Tile;
 import com.Game.utils.Handler;
 import com.Game.utils.Utils;
@@ -24,7 +25,9 @@ public class World {
     * For ex, tiles[0][0] = 0, means that at position [0][0] I have a tile
     * with id == 0, which will load the wallTile in my world (Refer to Tile.java)
     *
-    * playerX & playerY variables store the spawn position for a player
+    * pacmanSpawnX & pacmanSpawnY - variables store the spawn position for a player
+    * in terms of tiles, to get the actual position in pixels have to multiply
+    * by the tile width & height, respectively
     *
     * handler - read the description of Handler class
     *
@@ -32,7 +35,7 @@ public class World {
     * */
     private int width, height;
     private int[][] tilePositions;
-    private int playerX, playerY;
+    private int pacmanSpawnX, pacmanSpawnY;
     private Handler handler;
     private EntityManager entityManager;
 
@@ -41,8 +44,10 @@ public class World {
         this.entityManager = new EntityManager(handler,
                                                new Pacman(handler, 0, 0)); // we give [0,0] as a position
         loadWorld(path);
-        entityManager.getPacman().setX(playerX * Tile.TILE_WIDTH); // then we set the position of pacman properly
-        entityManager.getPacman().setY(playerY * Tile.TILE_HEIGHT);
+        entityManager.getPacman().setX(pacmanSpawnX * Tile.TILE_WIDTH); // then we set the position of pacman properly
+        entityManager.getPacman().setY(pacmanSpawnY * Tile.TILE_HEIGHT);
+
+        entityManager.addEntity(new Apple(handler, (pacmanSpawnX + 3) * Tile.TILE_WIDTH, pacmanSpawnY * Tile.TILE_HEIGHT));
     }
 
     public void tick() {
@@ -83,8 +88,8 @@ public class World {
         // Now we retrieve the useful information
         width = Utils.parseInt(tokens[0]);
         height = Utils.parseInt(tokens[1]);
-        playerX = Utils.parseInt(tokens[2]);
-        playerY = Utils.parseInt(tokens[3]);
+        pacmanSpawnX = Utils.parseInt(tokens[2]);
+        pacmanSpawnY = Utils.parseInt(tokens[3]);
 
         tilePositions = new int[width][height];
         for (int i = 0; i < width; i++) {
@@ -96,6 +101,10 @@ public class World {
         }
     }
 
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -104,11 +113,11 @@ public class World {
         return height;
     }
 
-    public int getPlayerX() {
-        return playerX;
+    public int getPacmanSpawnX() {
+        return pacmanSpawnX;
     }
 
-    public int getPlayerY() {
-        return playerY;
+    public int getPacmanSpawnY() {
+        return pacmanSpawnY;
     }
 }

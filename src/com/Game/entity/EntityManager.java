@@ -19,6 +19,7 @@ public class EntityManager {
         this.handler = handler;
         this.pacman = pacman;
         entities = new ArrayList<>(31 * 28); // 31 * 28 because of the world dimensions
+        entities.add(pacman);
     }
 
     public void tick() {
@@ -27,7 +28,6 @@ public class EntityManager {
             entity = entities.get(i);
             entity.tick();
         }
-        pacman.tick();
     }
 
     public void render(Graphics g) {
@@ -36,7 +36,6 @@ public class EntityManager {
             entity = entities.get(i);
             entity.render(g);
         }
-        pacman.render(g);
     }
 
     public void addEntity(Entity e) {
