@@ -1,6 +1,6 @@
-package com.Game.entity;
+package com.Game.entity.moving;
 
-import com.Game.launcher.Game;
+import com.Game.entity.Entity;
 import com.Game.utils.Handler;
 
 import java.awt.*;

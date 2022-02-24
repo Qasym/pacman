@@ -1,5 +1,6 @@
-package com.Game.entity;
+package com.Game.entity.moving;
 
+import com.Game.entity.Entity;
 import com.Game.gfx.Animation;
 import com.Game.gfx.Assets;
 import com.Game.tile.Tile;

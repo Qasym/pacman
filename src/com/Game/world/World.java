@@ -1,5 +1,7 @@
 package com.Game.world;
 
+import com.Game.entity.EntityManager;
+import com.Game.entity.moving.Pacman;
 import com.Game.tile.Tile;
 import com.Game.utils.Handler;
 import com.Game.utils.Utils;
@@ -23,19 +25,29 @@ public class World {
     * with id == 0, which will load the wallTile in my world (Refer to Tile.java)
     *
     * playerX & playerY variables store the spawn position for a player
+    *
+    * handler - read the description of Handler class
+    *
+    * entityManager - manages all the entities instead of hard-typing them
     * */
     private int width, height;
     private int[][] tilePositions;
     private int playerX, playerY;
     private Handler handler;
+    private EntityManager entityManager;
 
     public World(Handler handler, String path) {
-        loadWorld(path);
         this.handler = handler;
+        this.entityManager = new EntityManager(handler,
+                                               new Pacman(handler, 0, 0)); // we give [0,0] as a position
+        loadWorld(path);
+        entityManager.getPacman().setX(playerX * Tile.TILE_WIDTH); // then we set the position of pacman properly
+        entityManager.getPacman().setY(playerY * Tile.TILE_HEIGHT);
     }
 
     public void tick() {
-
+        // ticking all the entities
+        entityManager.tick();
     }
 
     public void render(Graphics graphics) {
@@ -51,6 +63,9 @@ public class World {
                                     (int)(j * Tile.TILE_HEIGHT - handler.getGameCamera().getyOffset()));
             }
         }
+
+        // Rendering all the entities
+        entityManager.render(graphics);
     }
 
     public Tile getTile(int x, int y) {

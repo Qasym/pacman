@@ -5,6 +5,10 @@ import com.Game.input.KeyManager;
 import com.Game.launcher.Game;
 import com.Game.world.World;
 
+/*
+* Handler class is a simple class that holds all the necessary
+* objects, and sole purpose of this class is to ease the access to those
+* */
 public class Handler {
     Game game;
     World world;

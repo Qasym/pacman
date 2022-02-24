@@ -14,10 +14,7 @@ public class Tile {
     * */
     public static Tile[] tiles = new Tile[256]; // array to store all the tiles I initialize
     public static Tile  wallTile = new WallTile(0), // These IDs are important to access the tiles
-                        background = new Background(1),
-                        apple = new Apple(2),
-                        speedBuff = new SpeedBuff(3),
-                        angryBuff = new AngryBuff(4);
+                        background = new Background(1);
 
     //Class stuff below
     protected BufferedImage texture;
