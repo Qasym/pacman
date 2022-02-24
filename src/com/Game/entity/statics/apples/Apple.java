@@ -14,10 +14,10 @@ import java.awt.*;
 * Those yellow balls in the original pacman game
 * */
 public class Apple extends StaticEntity {
-    private final int   DEFAULT_COLLISION_BOUNDS_X = 2, // these variables are relative to the apple sprite origin
-                        DEFAULT_COLLISION_BOUNDS_Y = 2, // meaning that the bounds are from top-left corner of apple sprite
-                        DEFAULT_COLLISION_BOUNDS_WIDTH = 4,
-                        DEFAULT_COLLISION_BOUNDS_HEIGHT = 4;
+    private final int   DEFAULT_COLLISION_BOUNDS_X = 1, // these variables are relative to the apple sprite origin
+                        DEFAULT_COLLISION_BOUNDS_Y = 1, // meaning that the bounds are from top-left corner of apple sprite
+                        DEFAULT_COLLISION_BOUNDS_WIDTH = 5,
+                        DEFAULT_COLLISION_BOUNDS_HEIGHT = 5;
     private boolean eaten = false; // this variable controls if this apple is interactable&visible or not
     private boolean isCentered = false; // flag to indicate if our apple is centered or not
 

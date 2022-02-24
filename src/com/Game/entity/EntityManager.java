@@ -5,6 +5,7 @@ import com.Game.utils.Handler;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /*
 * EntityManager is class that has a self-descriptive name
@@ -19,7 +20,7 @@ public class EntityManager {
         this.handler = handler;
         this.pacman = pacman;
         entities = new ArrayList<>(31 * 28); // 31 * 28 because of the world dimensions
-        entities.add(pacman);
+        addEntity(pacman);
     }
 
     public void tick() {
@@ -40,6 +41,12 @@ public class EntityManager {
 
     public void addEntity(Entity e) {
         entities.add(e);
+
+        // This way we sort all entities in ascending order by the bottom line of their sprites
+        // This is needed to draw entities that are below, after the entities that are above
+        // Reference for a better visualisation:
+        // https://www.youtube.com/watch?v=zWDCmH21G30&list=PLah6faXAgguMnTBs3JnEJY0shAc18XYQZ&index=28
+        entities.sort((o1, o2) -> (int)((o1.y + o1.height) - (o2.y + o2.height)));
     }
 
     public void setHandler(Handler handler) {

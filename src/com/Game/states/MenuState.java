@@ -12,7 +12,7 @@ public class MenuState extends State {
 
     @Override
     public void tick() {
-
+        System.out.println(handler.getMouseManager().getMouseX()); // delete this line soon, please
     }
 
     @Override

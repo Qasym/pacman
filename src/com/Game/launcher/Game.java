@@ -4,6 +4,7 @@ import com.Game.display.Display;
 import com.Game.gfx.Assets;
 import com.Game.gfx.GameCamera;
 import com.Game.input.KeyManager;
+import com.Game.input.MouseManager;
 import com.Game.states.GameState;
 import com.Game.states.MenuState;
 import com.Game.states.SettingsState;
@@ -33,6 +34,7 @@ public class Game implements Runnable {
 
     // Input
     private KeyManager keyManager;
+    private MouseManager mouseManager;
 
     // Camera
     private GameCamera gameCamera;
@@ -46,6 +48,7 @@ public class Game implements Runnable {
         this.height = height;
         this.title = title;
         keyManager = new KeyManager();
+        mouseManager = new MouseManager();
     }
 
     /*
@@ -114,6 +117,11 @@ public class Game implements Runnable {
     private void init() {
         display = new Display(title, width, height);
         display.getFrame().addKeyListener(keyManager); //this line "connects" the keyboard and the opened window
+        display.getFrame().addMouseListener(mouseManager); //this line "connects" the mouse buttons and the opened window
+        display.getFrame().addMouseMotionListener(mouseManager); //this line "connects" the mouse movement and opened window
+        display.getCanvas().addMouseListener(mouseManager);
+        display.getCanvas().addMouseMotionListener(mouseManager);
+
         Assets.init(); //initializing all the assets, we need this to avoid cropping all images over and over again in render method
 
         handler = new Handler(this); //initializing the handler
@@ -124,14 +132,14 @@ public class Game implements Runnable {
         menuState = new MenuState(handler);
         settingsState = new SettingsState(handler);
 
-        State.setState(gameState); //temporary
+        State.setState(menuState); //temporary
     }
 
     private void tick() { //update or "tick"
         keyManager.tick(); //we have to tick so that our keyboard works properly
 
         if (State.getState() != null) { //if our state is not null, we have to tick
-            gameState.tick();
+            State.getState().tick();
         }
     }
 
@@ -158,7 +166,7 @@ public class Game implements Runnable {
         // Drawing starts here  ////////
 
         if (State.getState() != null) { //if our state is not null, we have to render
-            gameState.render(graphics);
+            State.getState().render(graphics);
         }
 
         // Drawing ends here    ////////
@@ -186,6 +194,10 @@ public class Game implements Runnable {
 
     public KeyManager getKeyManager() {
         return keyManager;
+    }
+
+    public MouseManager getMouseManager() {
+        return mouseManager;
     }
 
     public GameCamera getGameCamera() {

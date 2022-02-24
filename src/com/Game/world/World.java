@@ -47,7 +47,15 @@ public class World {
         entityManager.getPacman().setX(pacmanSpawnX * Tile.TILE_WIDTH); // then we set the position of pacman properly
         entityManager.getPacman().setY(pacmanSpawnY * Tile.TILE_HEIGHT);
 
-        entityManager.addEntity(new Apple(handler, (pacmanSpawnX + 3) * Tile.TILE_WIDTH, pacmanSpawnY * Tile.TILE_HEIGHT));
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (i == pacmanSpawnX && j == pacmanSpawnY)
+                    continue;
+                else if (tilePositions != null && tilePositions[i][j] == 1) {
+                    entityManager.addEntity(new Apple(handler, i * Tile.TILE_WIDTH, j * Tile.TILE_HEIGHT));
+                }
+            }
+        }
     }
 
     public void tick() {

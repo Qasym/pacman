@@ -2,6 +2,7 @@ package com.Game.utils;
 
 import com.Game.gfx.GameCamera;
 import com.Game.input.KeyManager;
+import com.Game.input.MouseManager;
 import com.Game.launcher.Game;
 import com.Game.world.World;
 
@@ -13,10 +14,14 @@ public class Handler {
     Game game;
     World world;
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     public Handler(Game game) {
         this.game = game;
+    }
+
+    public MouseManager getMouseManager() {
+        return game.getMouseManager();
     }
 
     public GameCamera getGameCamera() {

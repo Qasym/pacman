@@ -15,21 +15,15 @@ public class GameState extends State {
         super(handler);
         world = new World(handler,"res/worlds/base_world"); // initializing the world
         handler.setWorld(world);
-
-//        pacman = new Pacman(handler,
-//                        world.getPlayerX() * Tile.TILE_WIDTH,
-//                        world.getPlayerY() * Tile.TILE_HEIGHT); // initializing pacman at his spawn-point
     }
 
     @Override
     public void tick() {
         world.tick();
-//        pacman.tick();
     }
 
     @Override
     public void render(Graphics g) {
         world.render(g);
-//        pacman.render(g);
     }
 }
