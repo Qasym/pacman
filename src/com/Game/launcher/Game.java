@@ -30,7 +30,7 @@ public class Game implements Runnable {
     private Graphics graphics; //Graphics class allows us to draw things into the Canvas
 
     // States
-    private State gameState, menuState, settingsState;
+    public State gameState, menuState, settingsState;
 
     // Input
     private KeyManager keyManager;

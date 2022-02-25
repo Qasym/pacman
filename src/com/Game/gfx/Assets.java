@@ -4,9 +4,7 @@ import com.Game.utils.Utils;
 
 import java.awt.image.BufferedImage;
 
-/*
-* An asset is any image, sound or piece of music in our game
-* */
+// An asset is any image, sound or piece of music in our game
 public class Assets {
 
     /*
@@ -118,6 +116,11 @@ public class Assets {
 
     //holds the wall from wall.png; the background;the apple; for the angryBuff; for the speedBuff;
     static SpriteSheet wallSprite, background, appleSprite, angrySprite, speedSprite; //the latter two are buffed apples
+    static BufferedImage[] playButton = null;
+
+    public static BufferedImage[] getPlayButton() {
+        return playButton;
+    }
 
     public static BufferedImage getWall() {
         return (wallSprite == null) ? null : wallSprite.crop(0, 0, 20, 16); //tile width=20, height=16
@@ -144,15 +147,23 @@ public class Assets {
     * This method is called only once
     * */
     public static void init() {
+        // Entities' sprites
         SpriteSheet pacmanSprites = new SpriteSheet(Utils.loadImage("/textures/entities/Pac-Man.png"));
         SpriteSheet monsterSprites = new SpriteSheet(Utils.loadImage("/textures/entities/Monster.png"));
-        wallSprite = new SpriteSheet(Utils.loadImage("/textures/tiles/wall.png"));
         appleSprite = new SpriteSheet(Utils.loadImage("/textures/entities/apple.png"));
         angrySprite = new SpriteSheet(Utils.loadImage("/textures/entities/angry.png"));
         speedSprite = new SpriteSheet(Utils.loadImage("/textures/entities/speed.png"));
-        background = new SpriteSheet(Utils.loadImage("/textures/tiles/background.png"));
         PacmanAssets.loadPacman(pacmanSprites);
         MonsterAssets.loadMonster(monsterSprites);
+
+        // Tiles' sprites
+        wallSprite = new SpriteSheet(Utils.loadImage("/textures/tiles/wall.png"));
+        background = new SpriteSheet(Utils.loadImage("/textures/tiles/background.png"));
+
+        // UI elements' sprites
+        playButton = new BufferedImage[2];
+        playButton[0] = Utils.loadImage("/textures/ui_elements/button_play_not_selected.png");
+        playButton[1] = Utils.loadImage("/textures/ui_elements/button_play_selected.png");
     }
 }
 

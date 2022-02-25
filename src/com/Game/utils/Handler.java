@@ -20,6 +20,14 @@ public class Handler {
         this.game = game;
     }
 
+    public int getMouseY() {
+        return game.getMouseManager().getMouseY();
+    }
+
+    public int getMouseX() {
+        return game.getMouseManager().getMouseX();
+    }
+
     public MouseManager getMouseManager() {
         return game.getMouseManager();
     }
