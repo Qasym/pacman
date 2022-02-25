@@ -114,32 +114,58 @@ public class Assets {
         return PacmanAssets.pacmanRight;
     }
 
-    //holds the wall from wall.png; the background;the apple; for the angryBuff; for the speedBuff;
-    static SpriteSheet wallSprite, background, appleSprite, angrySprite, speedSprite; //the latter two are buffed apples
-    static BufferedImage[] playButton = null;
+    private static SpriteSheet[] tileSprites;
+    private static SpriteSheet[] entitySprites;
+    private static BufferedImage[] playButton; // it is put into a separate array because it has multiple sprites
+    private static BufferedImage[] uiSprites;
 
     public static BufferedImage[] getPlayButton() {
+        // UI elements' sprites for menu state
+        if (playButton == null) {
+            System.exit(102);
+        }
         return playButton;
     }
 
+    public static BufferedImage getOptionsButton() {
+        if (uiSprites == null) {
+            System.exit(102);
+        }
+        return uiSprites[0];
+    }
+
+    public static BufferedImage getReplayButton() {
+        if (uiSprites == null) {
+            System.exit(102);
+        }
+        return uiSprites[1];
+    }
+
+    public static BufferedImage getExitButton() {
+        if (uiSprites == null) {
+            System.exit(102);
+        }
+        return uiSprites[2];
+    }
+
     public static BufferedImage getWall() {
-        return (wallSprite == null) ? null : wallSprite.crop(0, 0, 20, 16); //tile width=20, height=16
+        return (tileSprites[0] == null) ? null : tileSprites[0].crop(0, 0, 20, 16); //tile width=20, height=16
     }
 
     public static BufferedImage getAppleSprite() {
-        return (appleSprite == null) ? null : appleSprite.crop(0, 0, 13, 13);
+        return (entitySprites[2] == null) ? null : entitySprites[2].crop(0, 0, 13, 13);
     }
 
     public static BufferedImage getAngrySprite() {
-        return (angrySprite == null) ? null : angrySprite.crop(0, 0, 13, 13);
+        return (entitySprites[3] == null) ? null : entitySprites[3].crop(0, 0, 13, 13);
     }
 
     public static BufferedImage getSpeedSprite() {
-        return (speedSprite == null) ? null : speedSprite.crop(0, 0, 13, 13);
+        return (entitySprites[4] == null) ? null : entitySprites[4].crop(0, 0, 13, 13);
     }
 
     public static BufferedImage getBackgroundSprite() {
-        return (background == null) ? null : background.crop(0, 0, 32, 32);
+        return (tileSprites[1] == null) ? null : tileSprites[1].crop(0, 0, 32, 32);
     }
 
     /*
@@ -148,22 +174,35 @@ public class Assets {
     * */
     public static void init() {
         // Entities' sprites
-        SpriteSheet pacmanSprites = new SpriteSheet(Utils.loadImage("/textures/entities/Pac-Man.png"));
-        SpriteSheet monsterSprites = new SpriteSheet(Utils.loadImage("/textures/entities/Monster.png"));
-        appleSprite = new SpriteSheet(Utils.loadImage("/textures/entities/apple.png"));
-        angrySprite = new SpriteSheet(Utils.loadImage("/textures/entities/angry.png"));
-        speedSprite = new SpriteSheet(Utils.loadImage("/textures/entities/speed.png"));
-        PacmanAssets.loadPacman(pacmanSprites);
-        MonsterAssets.loadMonster(monsterSprites);
+        entitySprites = new SpriteSheet[5];
 
-        // Tiles' sprites
-        wallSprite = new SpriteSheet(Utils.loadImage("/textures/tiles/wall.png"));
-        background = new SpriteSheet(Utils.loadImage("/textures/tiles/background.png"));
+        // pacman sprite
+        entitySprites[0] = new SpriteSheet(Utils.loadImage("/textures/entities/Pac-Man.png"));
+        PacmanAssets.loadPacman(entitySprites[0]);
 
-        // UI elements' sprites
+        // monster sprite
+        entitySprites[1] = new SpriteSheet(Utils.loadImage("/textures/entities/Monster.png"));
+        MonsterAssets.loadMonster(entitySprites[1]);
+
+        // apple sprite, angry sprite, speed sprite in respective orders
+        entitySprites[2] = new SpriteSheet(Utils.loadImage("/textures/entities/apple.png"));
+        entitySprites[3] = new SpriteSheet(Utils.loadImage("/textures/entities/angry.png"));
+        entitySprites[4] = new SpriteSheet(Utils.loadImage("/textures/entities/speed.png"));
+
+        // Tile sprites
+        tileSprites = new SpriteSheet[2];
+        tileSprites[0] = new SpriteSheet(Utils.loadImage("/textures/tiles/wall.png"));
+        tileSprites[1] = new SpriteSheet(Utils.loadImage("/textures/tiles/background.png"));
+
+        // UI element sprites
         playButton = new BufferedImage[2];
         playButton[0] = Utils.loadImage("/textures/ui_elements/button_play_not_selected.png");
         playButton[1] = Utils.loadImage("/textures/ui_elements/button_play_selected.png");
+
+        uiSprites = new BufferedImage[3];
+        uiSprites[0] = Utils.loadImage("/textures/ui_elements/button_options.png");
+        uiSprites[1] = Utils.loadImage("/textures/ui_elements/button_replay.png");
+        uiSprites[2] = Utils.loadImage("/textures/ui_elements/button_exit.png");
     }
 }
 

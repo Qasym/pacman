@@ -64,7 +64,9 @@ public abstract class Entity {
         this.width = width; this.height = height;
         speed = DEFAULT_SPEED;
 
-        collisionBox = new Rectangle(0, 0, width, height);
+        collisionBox = new Rectangle((int) (x + DEFAULT_COLLISION_BOUNDS_X),
+                                     (int) (y + DEFAULT_COLLISION_BOUNDS_Y),
+                                     DEFAULT_COLLISION_BOUNDS_WIDTH, DEFAULT_COLLISION_BOUNDS_HEIGHT);
     }
 
     public void setX(float x) {

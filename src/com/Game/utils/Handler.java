@@ -1,5 +1,6 @@
 package com.Game.utils;
 
+import com.Game.entity.moving.Pacman;
 import com.Game.gfx.GameCamera;
 import com.Game.input.KeyManager;
 import com.Game.input.MouseManager;
@@ -62,5 +63,9 @@ public class Handler {
 
     public World getWorld() {
         return world;
+    }
+
+    public Pacman getPacman() {
+        return world.getEntityManager().getPacman();
     }
 }

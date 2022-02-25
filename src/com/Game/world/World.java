@@ -10,6 +10,7 @@ import com.Game.utils.Handler;
 import com.Game.utils.Utils;
 
 import java.awt.Graphics;
+import java.util.Arrays;
 
 /*
 * */
@@ -38,32 +39,31 @@ public class World {
     private int width, height;
     private int[][] tilePositions;
     private int[] spawnPoints;
-    private Handler handler;
-    private EntityManager entityManager;
+    private final Handler handler;
+    private final EntityManager entityManager;
 
     public World(Handler handler, String path) {
         this.handler = handler;
 
-        // Adding pacman
-        this.entityManager = new EntityManager(handler,
-                                               new Pacman(handler, 0, 0)); // we give [0,0] as a position
         loadWorld(path);
 
-        // Setting pacman spawn point
-        entityManager.getPacman().setX(spawnPoints[0] * Tile.TILE_WIDTH); // then we set the position of pacman properly
-        entityManager.getPacman().setY(spawnPoints[1] * Tile.TILE_HEIGHT);
+        // Adding pacman
+        this.entityManager = new EntityManager(handler,
+                                            new Pacman(handler,
+                                                    spawnPoints[0] * Tile.TILE_WIDTH,
+                                                    spawnPoints[1] * Tile.TILE_HEIGHT));
 
         // Adding monsters
         for (int i = 2; i < 9; i += 2) {
             entityManager.addEntity(new Monster(handler, spawnPoints[i] * Tile.TILE_WIDTH,
-                                                         spawnPoints[i + 1] * Tile.TILE_HEIGHT,
-                                                Entity.DEFAULT_ENTITY_WIDTH, Entity.DEFAULT_ENTITY_HEIGHT));
+                                                         spawnPoints[i + 1] * Tile.TILE_HEIGHT));
         }
 
         // Adding apples
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (i == spawnPoints[0] && j == spawnPoints[1]) {
+                    // except for the pacman spawn point put apple everywhere
                     continue;
                 }
                 else if (tilePositions != null && tilePositions[i][j] == 1) {

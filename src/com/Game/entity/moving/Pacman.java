@@ -17,11 +17,13 @@ import java.awt.image.BufferedImage;
 public class Pacman extends Entity {
     private boolean powerBuff = false, speedBuff = false; //buffs I would like to add to my Pacman implementation
     private int score;
+    private boolean dead; // to indicate if pacman is dead;
 
     public Pacman(Handler handler, float x, float y) {
-        super(handler, x, y, Entity.DEFAULT_ENTITY_WIDTH, Entity.DEFAULT_ENTITY_HEIGHT);
+        super(handler, x, y, DEFAULT_ENTITY_WIDTH, DEFAULT_ENTITY_HEIGHT);
 
         score = 0;
+        dead = false;
 
         // collisionBox.x & collisionBox.y - are a position of top-left of our collisionBox
         collisionBox.x = (int)(x + DEFAULT_COLLISION_BOUNDS_X);
@@ -42,6 +44,10 @@ public class Pacman extends Entity {
 
     @Override
     public void tick() {
+        if (dead) {
+            setSpeed(0);
+        }
+
         // Update animations
         animationDown.tick();
         animationLeft.tick();
@@ -53,19 +59,6 @@ public class Pacman extends Entity {
 
         // Camera
         handler.getGameCamera().centerOnEntity(this);
-
-        // In-game logic
-        if (speedBuff) { //todo: implement speedBuffs
-            setSpeed(11);
-        }
-        Entity collidesWithMe = checkEntityCollisions(); // any entity that is saying "pacman collidesWithMe"
-        if (collidesWithMe != null) {
-            // game over if monster else score
-            score++;
-            if (collidesWithMe instanceof Apple) {
-                ((Apple) collidesWithMe).pacmanAteMe();
-            }
-        }
 
         // We have to update collision box each tick to keep up with the sprite (which is also updated each tick)
         /*
@@ -267,13 +260,15 @@ public class Pacman extends Entity {
         return handler.getWorld().getTile(x, y).isSolid();
     }
 
-    public Entity checkEntityCollisions() {
-        for (Entity e : handler.getWorld().getEntityManager().getEntities()) {
-            if (!e.equals(this) && e.getCollisionBox().intersects(this.collisionBox)) {
-                return e;
-            }
-        }
-        return null;
+    public void eatenByMonster() {
+        dead = true;
     }
 
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void updateScore() {
+        score++;
+    }
 }

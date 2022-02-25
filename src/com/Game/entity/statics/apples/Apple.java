@@ -20,7 +20,6 @@ public class Apple extends StaticEntity {
                         DEFAULT_COLLISION_BOUNDS_HEIGHT = 5;
 
     private boolean eaten = false; // this variable controls if this apple is interactable&visible or not
-    private boolean isCentered = false; // flag to indicate if our apple is centered or not
 
     // apple respawn timer variables
     // operates in a very similar way as animations (in the same way)
@@ -31,10 +30,12 @@ public class Apple extends StaticEntity {
         // I want my apples to be 4 times smaller than the pacman
         super(handler, x, y, Entity.DEFAULT_ENTITY_WIDTH / 4, Entity.DEFAULT_ENTITY_HEIGHT / 4);
 
+        centerOnTile();
+
         // Setting up a collisionBox;
         // collisionBox.x & collisionBox.y - are a position of top-left of our collisionBox
-        collisionBox.x = (int)(x + DEFAULT_COLLISION_BOUNDS_X);
-        collisionBox.y = (int)(y + DEFAULT_COLLISION_BOUNDS_Y);
+        collisionBox.x = (int)(this.x + DEFAULT_COLLISION_BOUNDS_X);
+        collisionBox.y = (int)(this.y + DEFAULT_COLLISION_BOUNDS_Y);
         collisionBox.width = DEFAULT_COLLISION_BOUNDS_WIDTH;
         collisionBox.height = DEFAULT_COLLISION_BOUNDS_HEIGHT;
     }
@@ -49,13 +50,10 @@ public class Apple extends StaticEntity {
                 eaten = false;
                 tick();
             }
-        } else {
-            // centering apple in the tile it stands
-            centerOnTile();
-
-            // collisionBox update
-            collisionBox.x = (int)(x + DEFAULT_COLLISION_BOUNDS_X);
-            collisionBox.y = (int)(y + DEFAULT_COLLISION_BOUNDS_Y);
+        } else { // if we are not eaten
+            if (collisionBox.intersects(handler.getPacman().getCollisionBox())) {
+                pacmanAteMe();
+            }
         }
     }
 
@@ -85,16 +83,20 @@ public class Apple extends StaticEntity {
     * This method moves it to the center of the tile
     * */
     public void centerOnTile() {
-        if (!isCentered) {
-            isCentered = true;
-            x = x + (Tile.TILE_WIDTH / 2f) - (width / 2f);
-            y = y + (Tile.TILE_HEIGHT / 2f) - (height / 2f);
-        }
+        x = x + (Tile.TILE_WIDTH / 2f) - (width / 2f);
+        y = y + (Tile.TILE_HEIGHT / 2f) - (height / 2f);
     }
 
     public void pacmanAteMe() {
-        eaten = true;
-        lastTime = System.currentTimeMillis();
-        timer = 0;
+        if (!eaten) {
+            eaten = true;
+            lastTime = System.currentTimeMillis();
+            timer = 0;
+            handler.getPacman().updateScore();
+        }
+    }
+
+    public boolean isEaten() {
+        return eaten;
     }
 }

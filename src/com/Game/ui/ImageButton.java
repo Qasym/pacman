@@ -13,13 +13,24 @@ public class ImageButton extends UIObject {
         this.clickListener = clickListener;
     }
 
+    public ImageButton(float x, float y, int width, int height, BufferedImage image, ClickListener clickListener) {
+        super(x, y, width, height);
+        this.images = new BufferedImage[1];
+        this.images[0] = image;
+        this.clickListener = clickListener;
+    }
+
     @Override
     public void tick() {}
 
     @Override
     public void render(Graphics g) {
-        if (hovering) {
-            g.drawImage(images[1], (int) x ,(int) y, width, height, null);
+        if (images.length == 2) {
+            if (hovering) {
+                g.drawImage(images[1], (int) x ,(int) y, width, height, null);
+            } else {
+                g.drawImage(images[0], (int) x, (int) y, width, height, null);
+            }
         } else {
             g.drawImage(images[0], (int) x, (int) y, width, height, null);
         }

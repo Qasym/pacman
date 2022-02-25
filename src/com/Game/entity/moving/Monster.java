@@ -10,12 +10,8 @@ import java.awt.*;
 * This class is for the monster logic in Pacman game
 * */
 public class Monster extends Entity {
-    protected final Rectangle collisionBox;
-
-    public Monster(Handler handler, float x, float y, int width, int height) {
-        super(handler, x, y, Entity.DEFAULT_ENTITY_WIDTH, Entity.DEFAULT_ENTITY_HEIGHT);
-        collisionBox = new Rectangle((int) (x + DEFAULT_COLLISION_BOUNDS_X), (int) (y + DEFAULT_COLLISION_BOUNDS_Y),
-                                      DEFAULT_COLLISION_BOUNDS_WIDTH, DEFAULT_COLLISION_BOUNDS_HEIGHT);
+    public Monster(Handler handler, float x, float y) {
+        super(handler, x, y, DEFAULT_ENTITY_WIDTH, DEFAULT_ENTITY_HEIGHT);
     }
 
     @Override
@@ -23,6 +19,11 @@ public class Monster extends Entity {
         // Updating collisionBox position
         collisionBox.x = (int) (x + DEFAULT_COLLISION_BOUNDS_X);
         collisionBox.y = (int) (y + DEFAULT_COLLISION_BOUNDS_Y);
+
+        // check if monster collided (ate) pacman
+        if (collisionBox.intersects(handler.getPacman().getCollisionBox())) {
+            handler.getPacman().eatenByMonster();
+        }
     }
 
     @Override
