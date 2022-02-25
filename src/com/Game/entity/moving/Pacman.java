@@ -18,42 +18,6 @@ public class Pacman extends Entity {
     private boolean powerBuff = false, speedBuff = false; //buffs I would like to add to my Pacman implementation
     private int score;
 
-    /*
-    * I have to explain about collision bounds
-    * Zero is the top left corner of pacman sprite
-    * One is the top left corner of collision box
-    * Two is the top right corner of collision box
-    * Three is the bottom left corner of collision box
-    * Four is the bottom right corner of collision box
-    * Five is the bottom right corner of pacman sprite
-    *
-    * 0
-    * |
-    * | <- DEFAULT_COLLISION_BOUNDS_Y
-    * |
-    * |   DEFAULT_COLLISION_BOUNDS_X
-    * |    |
-    * |    \/
-    * -----------1 -DEFAULT_COLLISION_BOUNDS_WIDTH- 2
-    *            D
-    *            E
-    *            F
-    *            H
-    *            E
-    *            I
-    *            G
-    *            H
-    *            T
-    *            3 -DEFAULT_COLLISION_BOUNDS_WIDTH- 4
-    *
-    *                                                           5
-    *
-    * */
-    private final int   DEFAULT_COLLISION_BOUNDS_X = 7, // these variables are relative to the pacman sprite
-                        DEFAULT_COLLISION_BOUNDS_Y = 7, // meaning that the bounds are from top-left corner of pacman sprite
-                        DEFAULT_COLLISION_BOUNDS_WIDTH = 18,
-                        DEFAULT_COLLISION_BOUNDS_HEIGHT = 18;
-
     public Pacman(Handler handler, float x, float y) {
         super(handler, x, y, Entity.DEFAULT_ENTITY_WIDTH, Entity.DEFAULT_ENTITY_HEIGHT);
 

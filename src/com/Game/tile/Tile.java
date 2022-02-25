@@ -32,10 +32,7 @@ public class Tile {
         return id;
     }
 
-    public void tick() {
-
-
-    }
+    public void tick() {}
 
     // if tile is solid, it means player cannot pass through it
     public boolean isSolid() {

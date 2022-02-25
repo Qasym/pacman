@@ -71,10 +71,10 @@ public class Assets {
 
         public static void loadMonster(SpriteSheet sheet) {
             initialized = true;
-            monster[MonsterAssets.RIGHT] = sheet.crop(16, 0, 16, 25); //picture of pacman going right
-            monster[MonsterAssets.LEFT] = sheet.crop(0, 0, 16, 25); //picture of pacman going left
-            monster[MonsterAssets.UP] = sheet.crop(0, 25, 16, 25); //picture of pacman going up
-            monster[MonsterAssets.DOWN] = sheet.crop(16, 25, 16, 25); //picture of pacman going down
+            monster[MonsterAssets.RIGHT] = sheet.crop(32, 0, 32, 50); //picture of pacman going right
+            monster[MonsterAssets.LEFT] = sheet.crop(0, 0, 32, 50); //picture of pacman going left
+            monster[MonsterAssets.UP] = sheet.crop(0, 50, 32, 50); //picture of pacman going up
+            monster[MonsterAssets.DOWN] = sheet.crop(32, 50, 32, 50); //picture of pacman going down
         }
     }
 

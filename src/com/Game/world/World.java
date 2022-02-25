@@ -1,6 +1,8 @@
 package com.Game.world;
 
+import com.Game.entity.Entity;
 import com.Game.entity.EntityManager;
+import com.Game.entity.moving.Monster;
 import com.Game.entity.moving.Pacman;
 import com.Game.entity.statics.apples.Apple;
 import com.Game.tile.Tile;
@@ -25,7 +27,7 @@ public class World {
     * For ex, tiles[0][0] = 0, means that at position [0][0] I have a tile
     * with id == 0, which will load the wallTile in my world (Refer to Tile.java)
     *
-    * pacmanSpawnX & pacmanSpawnY - variables store the spawn position for a player
+    * spawnPoints[0] & spawnPoints[1] - variables store the spawn position for a player
     * in terms of tiles, to get the actual position in pixels have to multiply
     * by the tile width & height, respectively
     *
@@ -35,22 +37,35 @@ public class World {
     * */
     private int width, height;
     private int[][] tilePositions;
-    private int pacmanSpawnX, pacmanSpawnY;
+    private int[] spawnPoints;
     private Handler handler;
     private EntityManager entityManager;
 
     public World(Handler handler, String path) {
         this.handler = handler;
+
+        // Adding pacman
         this.entityManager = new EntityManager(handler,
                                                new Pacman(handler, 0, 0)); // we give [0,0] as a position
         loadWorld(path);
-        entityManager.getPacman().setX(pacmanSpawnX * Tile.TILE_WIDTH); // then we set the position of pacman properly
-        entityManager.getPacman().setY(pacmanSpawnY * Tile.TILE_HEIGHT);
 
+        // Setting pacman spawn point
+        entityManager.getPacman().setX(spawnPoints[0] * Tile.TILE_WIDTH); // then we set the position of pacman properly
+        entityManager.getPacman().setY(spawnPoints[1] * Tile.TILE_HEIGHT);
+
+        // Adding monsters
+        for (int i = 2; i < 9; i += 2) {
+            entityManager.addEntity(new Monster(handler, spawnPoints[i] * Tile.TILE_WIDTH,
+                                                         spawnPoints[i + 1] * Tile.TILE_HEIGHT,
+                                                Entity.DEFAULT_ENTITY_WIDTH, Entity.DEFAULT_ENTITY_HEIGHT));
+        }
+
+        // Adding apples
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (i == pacmanSpawnX && j == pacmanSpawnY)
+                if (i == spawnPoints[0] && j == spawnPoints[1]) {
                     continue;
+                }
                 else if (tilePositions != null && tilePositions[i][j] == 1) {
                     entityManager.addEntity(new Apple(handler, i * Tile.TILE_WIDTH, j * Tile.TILE_HEIGHT));
                 }
@@ -96,15 +111,20 @@ public class World {
         // Now we retrieve the useful information
         width = Utils.parseInt(tokens[0]);
         height = Utils.parseInt(tokens[1]);
-        pacmanSpawnX = Utils.parseInt(tokens[2]);
-        pacmanSpawnY = Utils.parseInt(tokens[3]);
+
+        spawnPoints = new int[10];
+
+        // Retrieving spawn points of pacman and monsters
+        for (int i = 0; i < 10; i++) {
+            spawnPoints[i] = Utils.parseInt(tokens[i + 2]);
+        }
 
         tilePositions = new int[width][height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                tilePositions[i][j] = Utils.parseInt(tokens[4 + height * i + j]);
+                tilePositions[i][j] = Utils.parseInt(tokens[12 + height * i + j]);
                 // I converted 2d array indexing into 1d array indexing and added 4
-                // because I already assigned 4 tokens to other variables
+                // because I already assigned 12 tokens to other variables
             }
         }
     }
@@ -122,10 +142,10 @@ public class World {
     }
 
     public int getPacmanSpawnX() {
-        return pacmanSpawnX;
+        return spawnPoints[0];
     }
 
     public int getPacmanSpawnY() {
-        return pacmanSpawnY;
+        return spawnPoints[1];
     }
 }

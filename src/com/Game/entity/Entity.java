@@ -16,6 +16,43 @@ public abstract class Entity {
     protected Rectangle collisionBox; // Rectangle object to hold the collision box
     protected static final int DEFAULT_SPEED = 7;
 
+    /*
+     * I have to explain about collision bounds
+     * Zero is the top left corner of entity sprite
+     * One is the top left corner of collision box
+     * Two is the top right corner of collision box
+     * Three is the bottom left corner of collision box
+     * Four is the bottom right corner of collision box
+     * Five is the bottom right corner of entity sprite
+     *
+     * 0
+     * |
+     * | <- DEFAULT_COLLISION_BOUNDS_Y
+     * |
+     * |   DEFAULT_COLLISION_BOUNDS_X
+     * |    |
+     * |    \/
+     * -----------1 -DEFAULT_COLLISION_BOUNDS_WIDTH- 2
+     *            D
+     *            E
+     *            F
+     *            H
+     *            E
+     *            I
+     *            G
+     *            H
+     *            T
+     *            3 -DEFAULT_COLLISION_BOUNDS_WIDTH- 4
+     *
+     *                                                           5
+     *
+     * */
+    protected final int   DEFAULT_COLLISION_BOUNDS_X = 7, // these variables are relative to the pacman sprite
+                        DEFAULT_COLLISION_BOUNDS_Y = 7, // meaning that the bounds are from top-left corner of pacman sprite
+                        DEFAULT_COLLISION_BOUNDS_WIDTH = 18,
+                        DEFAULT_COLLISION_BOUNDS_HEIGHT = 18;
+
+
     public float speed; //the "speed" at which our entities move
     public int width, height; //size of our entity
     public static final byte DEFAULT_ENTITY_WIDTH = 32;

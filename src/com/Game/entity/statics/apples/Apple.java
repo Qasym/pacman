@@ -18,6 +18,7 @@ public class Apple extends StaticEntity {
                         DEFAULT_COLLISION_BOUNDS_Y = 1, // meaning that the bounds are from top-left corner of apple sprite
                         DEFAULT_COLLISION_BOUNDS_WIDTH = 5,
                         DEFAULT_COLLISION_BOUNDS_HEIGHT = 5;
+
     private boolean eaten = false; // this variable controls if this apple is interactable&visible or not
     private boolean isCentered = false; // flag to indicate if our apple is centered or not
 
