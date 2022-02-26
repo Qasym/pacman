@@ -1,8 +1,11 @@
 package com.Game.gfx;
 
+import com.Game.audio.AudioManager;
 import com.Game.utils.Utils;
 
+import javax.sound.sampled.AudioSystem;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 // An asset is any image, sound or piece of music in our game
 public class Assets {
@@ -203,6 +206,14 @@ public class Assets {
         uiSprites[0] = Utils.loadImage("/textures/ui_elements/button_options.png");
         uiSprites[1] = Utils.loadImage("/textures/ui_elements/button_replay.png");
         uiSprites[2] = Utils.loadImage("/textures/ui_elements/button_exit.png");
+
+        // Initializing sounds
+        try {
+            AudioManager.sounds[0] = AudioSystem.getAudioInputStream(new File("res/sounds/Fireplace.wav").getAbsoluteFile());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(103);
+        }
     }
 }
 

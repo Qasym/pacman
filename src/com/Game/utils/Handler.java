@@ -15,7 +15,7 @@ public class Handler {
     Game game;
     World world;
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     public Handler(Game game) {
         this.game = game;
