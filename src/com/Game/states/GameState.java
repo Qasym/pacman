@@ -46,4 +46,8 @@ public class GameState extends State {
             uiManager.render(g);
         }
     }
+
+    public UIManager getUiManager() {
+        return uiManager;
+    }
 }

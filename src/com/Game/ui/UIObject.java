@@ -33,7 +33,7 @@ public abstract class UIObject {
 
     // Releasing the mouse button is equivalent of click, so if user clicks, we call onClick()
     public void onMouseRelease(MouseEvent e) {
-        if (hovering) {
+        if (hovering) { // if mouse was on the button
             onClick();
         }
     }

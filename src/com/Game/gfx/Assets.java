@@ -119,7 +119,7 @@ public class Assets {
 
     private static SpriteSheet[] tileSprites;
     private static SpriteSheet[] entitySprites;
-    private static BufferedImage[] playButton; // it is put into a separate array because it has multiple sprites
+    private static BufferedImage[] playButton, musicButton, entityCollisionsButton; // it is put into a separate array because it has multiple sprites
     private static BufferedImage[] uiSprites;
 
     public static BufferedImage[] getPlayButton() {
@@ -128,6 +128,27 @@ public class Assets {
             System.exit(102);
         }
         return playButton;
+    }
+
+    public static BufferedImage[] getMusicButton() {
+        if (musicButton == null) {
+            System.exit(102);
+        }
+        return musicButton;
+    }
+
+    public static BufferedImage[] getEntityCollisionsButton() {
+        if (entityCollisionsButton == null) {
+            System.exit(102);
+        }
+        return entityCollisionsButton;
+    }
+
+    public static BufferedImage getBackButton() {
+        if (uiSprites == null) {
+            System.exit(102);
+        }
+        return uiSprites[3];
     }
 
     public static BufferedImage getOptionsButton() {
@@ -143,6 +164,7 @@ public class Assets {
         }
         return uiSprites[1];
     }
+
 
     public static BufferedImage getExitButton() {
         if (uiSprites == null) {
@@ -202,14 +224,25 @@ public class Assets {
         playButton[0] = Utils.loadImage("/textures/ui_elements/button_play_not_selected.png");
         playButton[1] = Utils.loadImage("/textures/ui_elements/button_play_selected.png");
 
-        uiSprites = new BufferedImage[3];
+        uiSprites = new BufferedImage[4];
         uiSprites[0] = Utils.loadImage("/textures/ui_elements/button_options.png");
         uiSprites[1] = Utils.loadImage("/textures/ui_elements/button_replay.png");
         uiSprites[2] = Utils.loadImage("/textures/ui_elements/button_exit.png");
+        uiSprites[3] = Utils.loadImage("/textures/ui_elements/button_back.png");
+
+        musicButton = new BufferedImage[2];
+        SpriteSheet musicButtonSprites = new SpriteSheet(Utils.loadImage("/textures/ui_elements/button_music_on_off.png"));
+        musicButton[0] = musicButtonSprites.crop(0, 0, 200, 50); // music on
+        musicButton[1] = musicButtonSprites.crop(0, 50, 200, 50); // music off
+
+        entityCollisionsButton = new BufferedImage[2];
+        SpriteSheet collisionButtonSprites = new SpriteSheet(Utils.loadImage("/textures/ui_elements/button_hideShow_colBox.png"));
+        entityCollisionsButton[0] = collisionButtonSprites.crop(0, 0, 200, 50); // show
+        entityCollisionsButton[1] = collisionButtonSprites.crop(0, 50, 200, 50); // hide
 
         // Initializing sounds
         try {
-            AudioManager.sounds[0] = AudioSystem.getAudioInputStream(new File("res/sounds/Fireplace.wav").getAbsoluteFile());
+            AudioManager.addMusic(AudioSystem.getAudioInputStream(new File("res/sounds/Fireplace.wav").getAbsoluteFile()));
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(103);

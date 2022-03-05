@@ -7,8 +7,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class UIManager {
-    private Handler handler;
-    private ArrayList<UIObject> allObjects;
+    private final ArrayList<UIObject> allObjects;
+    Handler handler;
 
     public UIManager(Handler handler) {
         this.handler = handler;

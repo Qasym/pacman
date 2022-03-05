@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 public class ImageButton extends UIObject {
     protected BufferedImage[] images;
     protected ClickListener clickListener;
+    private boolean buttonPressed = false;
 
     public ImageButton(float x, float y, int width, int height, BufferedImage[] images, ClickListener clickListener) {
         super(x, y, width, height);
@@ -21,12 +22,13 @@ public class ImageButton extends UIObject {
     }
 
     @Override
-    public void tick() {}
+    public void tick() {
+    }
 
     @Override
     public void render(Graphics g) {
         if (images.length == 2) {
-            if (hovering) {
+            if (buttonPressed) {
                 g.drawImage(images[1], (int) x ,(int) y, width, height, null);
             } else {
                 g.drawImage(images[0], (int) x, (int) y, width, height, null);
@@ -38,6 +40,7 @@ public class ImageButton extends UIObject {
 
     @Override
     public void onClick() {
+        buttonPressed = !buttonPressed;
         clickListener.onClick();
     }
 }

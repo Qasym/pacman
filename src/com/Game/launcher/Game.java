@@ -132,6 +132,9 @@ public class Game implements Runnable {
         menuState = new MenuState(handler);
         settingsState = new SettingsState(handler);
 
+        // Starting state is a menuState, so we have to connect mouse to the menuState
+        getMouseManager().setUiManager(((MenuState)(menuState)).getUiManager());
+
         State.setState(menuState); //temporary
     }
 

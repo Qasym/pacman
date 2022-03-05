@@ -1,228 +1,77 @@
 package com.Game.audio;
 
 import javax.sound.sampled.*;
-import java.io.IOException;
 
 // A class for managing sound assets
 public class AudioManager {
-    public static final AudioInputStream[] sounds = new AudioInputStream[4];
+    private static final int numberOfMusic = 4;
+    private static int idx = 0;
+    private static final AudioInputStream[] sounds = new AudioInputStream[numberOfMusic];
 
     private static Clip clip;
+    private static boolean musicOn = true;
 
-    public static void playMenuMusic() {
+    /*
+    * For some unknown reason to me, this playMenuMusic() and
+    * stopMusic() methods work very strangely
+    *
+    * For some reason, they work differently each start of the game
+    * Sometimes they throw error "Runtime exception", sometimes they don't
+    * todo: find the cause
+    *
+    * Also, music is played with a little bit of delay
+    * todo: fix delay
+    *  */
+
+    /*
+    * We first check if the setting is on, if it's not, we don't play the music
+    * if it is on, we get a Clip object, and open an audio-file(if it's not already open)
+    * */
+    synchronized public static void playMenuMusic() {
+        if (musicOn) {
+            try {
+                clip = ((clip == null) ? AudioSystem.getClip() : clip);
+                if (!clip.isOpen()) clip.open(sounds[0]); // do not reopen the same file again, if it is open
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+
+                clip.setFramePosition(0);
+                clip.start();
+
+//                if (!clip.isActive()) throw new RuntimeException("Music clip isn't active");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.exit(103);
+            }
+        }
+    }
+
+    synchronized public static void stopMusic() {
         try {
-            clip = AudioSystem.getClip();
-            clip.open(sounds[0]);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-
-            clip.start();
+            if (clip.isActive()) {
+                clip.stop();
+//                 clip.close(); // I don't know why it doesn't work if I do this
+            } else {
+                throw new RuntimeException("Something wrong with the clip");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(103);
         }
     }
 
-    public static void stopMusic() {
-        clip.stop();
-        clip.close();
+    public static void setMusic(boolean musicOnOff) {
+        musicOn = musicOnOff;
+    }
+
+    public static boolean isMusicOn() {
+        return musicOn;
+    }
+
+    public static void addMusic(AudioInputStream music) {
+        if (idx < numberOfMusic) {
+            sounds[idx] = music;
+            idx++;
+        }
     }
 }
-/*
-// Java program to play an Audio
-// file using Clip Object
-import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
-public class SimpleAudioPlayer
-{
-
-	// to store current position
-	Long currentFrame;
-	Clip clip;
-
-	// current status of clip
-	String status;
-
-	AudioInputStream audioInputStream;
-	static String filePath;
-
-	// constructor to initialize streams and clip
-	public SimpleAudioPlayer()
-		throws UnsupportedAudioFileException,
-		IOException, LineUnavailableException
-	{
-		// create AudioInputStream object
-		audioInputStream =
-				AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
-
-		// create clip reference
-		clip = AudioSystem.getClip();
-
-		// open audioInputStream to the clip
-		clip.open(audioInputStream);
-
-		clip.loop(Clip.LOOP_CONTINUOUSLY);
-	}
-
-	public static void main(String[] args)
-	{
-		try
-		{
-			filePath = "Your path for the file";
-			SimpleAudioPlayer audioPlayer =
-							new SimpleAudioPlayer();
-
-			audioPlayer.play();
-			Scanner sc = new Scanner(System.in);
-
-			while (true)
-			{
-				System.out.println("1. pause");
-				System.out.println("2. resume");
-				System.out.println("3. restart");
-				System.out.println("4. stop");
-				System.out.println("5. Jump to specific time");
-				int c = sc.nextInt();
-				audioPlayer.gotoChoice(c);
-				if (c == 4)
-				break;
-			}
-			sc.close();
-		}
-
-		catch (Exception ex)
-		{
-			System.out.println("Error with playing sound.");
-			ex.printStackTrace();
-
-		}
-	}
-
-	// Work as the user enters his choice
-
-	private void gotoChoice(int c)
-			throws IOException, LineUnavailableException, UnsupportedAudioFileException
-	{
-		switch (c)
-		{
-			case 1:
-				pause();
-				break;
-			case 2:
-				resumeAudio();
-				break;
-			case 3:
-				restart();
-				break;
-			case 4:
-				stop();
-				break;
-			case 5:
-				System.out.println("Enter time (" + 0 +
-				", " + clip.getMicrosecondLength() + ")");
-				Scanner sc = new Scanner(System.in);
-				long c1 = sc.nextLong();
-				jump(c1);
-				break;
-
-		}
-
-	}
-
-	// Method to play the audio
-	public void play()
-	{
-		//start the clip
-		clip.start();
-
-		status = "play";
-	}
-
-	// Method to pause the audio
-	public void pause()
-	{
-		if (status.equals("paused"))
-		{
-			System.out.println("audio is already paused");
-			return;
-		}
-		this.currentFrame =
-		this.clip.getMicrosecondPosition();
-		clip.stop();
-		status = "paused";
-	}
-
-	// Method to resume the audio
-	public void resumeAudio() throws UnsupportedAudioFileException,
-								IOException, LineUnavailableException
-	{
-		if (status.equals("play"))
-		{
-			System.out.println("Audio is already "+
-			"being played");
-			return;
-		}
-		clip.close();
-		resetAudioStream();
-		clip.setMicrosecondPosition(currentFrame);
-		this.play();
-	}
-
-	// Method to restart the audio
-	public void restart() throws IOException, LineUnavailableException,
-											UnsupportedAudioFileException
-	{
-		clip.stop();
-		clip.close();
-		resetAudioStream();
-		currentFrame = 0L;
-		clip.setMicrosecondPosition(0);
-		this.play();
-	}
-
-	// Method to stop the audio
-	public void stop() throws UnsupportedAudioFileException,
-	IOException, LineUnavailableException
-	{
-		currentFrame = 0L;
-		clip.stop();
-		clip.close();
-	}
-
-	// Method to jump over a specific part
-	public void jump(long c) throws UnsupportedAudioFileException, IOException,
-														LineUnavailableException
-	{
-		if (c > 0 && c < clip.getMicrosecondLength())
-		{
-			clip.stop();
-			clip.close();
-			resetAudioStream();
-			currentFrame = c;
-			clip.setMicrosecondPosition(c);
-			this.play();
-		}
-	}
-
-	// Method to reset audio stream
-	public void resetAudioStream() throws UnsupportedAudioFileException, IOException,
-											LineUnavailableException
-	{
-		audioInputStream = AudioSystem.getAudioInputStream(
-		new File(filePath).getAbsoluteFile());
-		clip.open(audioInputStream);
-		clip.loop(Clip.LOOP_CONTINUOUSLY);
-	}
-
-}
-
-
-
- */
