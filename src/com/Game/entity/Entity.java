@@ -11,6 +11,7 @@ import java.awt.*;
  * Player himself is an entity
  * */
 public abstract class Entity {
+    protected float spawnPosX, spawnPosY;
     protected float x, y; //position variables, they are floating point to achieve smoothness
     protected Handler handler; //handler holds all the necessary objects such as world and game
     protected Rectangle collisionBox; // Rectangle object to hold the collision box
@@ -60,13 +61,22 @@ public abstract class Entity {
 
     public Entity(Handler handler, float x, float y, int width, int height) { //we need to give a position to an entity
         this.handler = handler;
-        this.x = x; this.y = y;
+        this.x = x; this.y = y; // initially position and spawn point has to be same
+        this.spawnPosX = x; this.spawnPosY = y;
         this.width = width; this.height = height;
         speed = DEFAULT_SPEED;
 
         collisionBox = new Rectangle((int) (x + DEFAULT_COLLISION_BOUNDS_X),
                                      (int) (y + DEFAULT_COLLISION_BOUNDS_Y),
                                      DEFAULT_COLLISION_BOUNDS_WIDTH, DEFAULT_COLLISION_BOUNDS_HEIGHT);
+    }
+
+    public float getSpawnPosX() {
+        return this.spawnPosX;
+    }
+
+    public float getSpawnPosY() {
+        return this.spawnPosY;
     }
 
     public void setX(float x) {
