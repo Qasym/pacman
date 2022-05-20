@@ -16,6 +16,9 @@ import org.jetbrains.annotations.NotNull;
 *
 * Time tracking is also implemented since we need to switch
 * states from time to time
+*
+* Monsters can't turn back, for that reason we also track monsters'
+* direction
 * */
 public abstract class MonsterBrain {
     /*
@@ -36,7 +39,16 @@ public abstract class MonsterBrain {
         EATEN
     }
     private State currentState; // a variable to track the monster state
+
     protected Handler handler;
+
+    protected enum Direction {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    }
+    public Direction currentDirection;
 
     // variables necessary for the monster intelligence
     protected final int scatterPosX, scatterPosY; // direct monster in SCATTER state
@@ -53,6 +65,7 @@ public abstract class MonsterBrain {
         this.scatterPosX = scatterPosX;
         setChaseCoordinates(handler.getPacman());
         lastTime = System.nanoTime();
+        currentDirection = Direction.DOWN;
     }
 
     /*
@@ -104,8 +117,23 @@ public abstract class MonsterBrain {
         }
     }
 
-    public boolean isAtSpawn(Monster monster) {
+    // checks if a given monster is at spawn
+    public boolean isAtSpawn(@NotNull Monster monster) {
         return monster.getX() == monster.getSpawnPosX() && monster.getY() == monster.getSpawnPosY();
+    }
+
+    // checks if a given monster is in tunnel or not
+    // if it is in tunnel it means we can't change direction
+    public boolean isInTunnel(@NotNull Monster monster) {
+        if (currentDirection == Direction.DOWN) {
+            
+        } else if (currentDirection == Direction.UP) {
+
+        } else if (currentDirection == Direction.LEFT) {
+
+        } else {
+
+        }
     }
 
     public void setChaseState() {
@@ -122,5 +150,18 @@ public abstract class MonsterBrain {
 
     public void setEatenState() {
         currentState = State.EATEN;
+    }
+
+    public void setDirectionUp() {
+        currentDirection = Direction.UP;
+    }
+    public void setDirectionDown() {
+        currentDirection = Direction.DOWN;
+    }
+    public void setDirectionLeft() {
+        currentDirection = Direction.LEFT;
+    }
+    public void setDirectionRight() {
+        currentDirection = Direction.RIGHT;
     }
 }
