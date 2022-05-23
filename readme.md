@@ -10,10 +10,12 @@
 
 ## Credits:
 - Sprites
-    - [Piskelapp](https://www.piskelapp.com/p/create/sprite)
+  - [Piskelapp](https://www.piskelapp.com/p/create/sprite)
     - [Clickminded](https://www.clickminded.com/button-generator/)
 - Music
-    - [Chillhop Music](https://chillhop.com/creators/)
-        - Sleepy Fish - Fireplace
+  - [Chillhop Music](https://chillhop.com/creators/)
+      - Sleepy Fish - Fireplace
+- Artificial Intelligence
+  - [Game Internals](https://gameinternals.com/understanding-pac-man-ghost-behavior)
 - Special thanks
-    - [NEW Java Beginner 2D Game Programming playlist](https://www.youtube.com/channel/UCaM7SQvF5q9sz4NgL16PNRA)
+  - [NEW Java Beginner 2D Game Programming playlist](https://www.youtube.com/channel/UCaM7SQvF5q9sz4NgL16PNRA)
