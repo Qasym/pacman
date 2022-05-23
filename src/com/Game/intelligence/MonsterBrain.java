@@ -125,10 +125,14 @@ public abstract class MonsterBrain {
     }
 
     public void setAvailableDirections() {
-        availableDirections[RIGHT] = !monster.collidesWithTile((int) monster.getCenterX() + Tile.TILE_WIDTH, (int) monster.getCenterY());
-        availableDirections[UP] = !monster.collidesWithTile((int) monster.getCenterX(), (int) monster.getCenterY() - Tile.TILE_HEIGHT);
-        availableDirections[LEFT] = !monster.collidesWithTile((int) monster.getCenterX() - Tile.TILE_WIDTH, (int) monster.getCenterY());
-        availableDirections[DOWN] = !monster.collidesWithTile((int) monster.getCenterX(), (int) monster.getCenterY() + Tile.TILE_HEIGHT);
+        availableDirections[RIGHT] = !monster.collidesWithTile((int) (monster.getCenterX() + Tile.TILE_WIDTH) / Tile.TILE_WIDTH,
+                                                               (int) monster.getCenterY() / Tile.TILE_HEIGHT);
+        availableDirections[UP] = !monster.collidesWithTile((int) monster.getCenterX() / Tile.TILE_WIDTH,
+                                                            (int) (monster.getCenterY() - Tile.TILE_HEIGHT) / Tile.TILE_HEIGHT);
+        availableDirections[LEFT] = !monster.collidesWithTile((int) (monster.getCenterX() - Tile.TILE_WIDTH) / Tile.TILE_WIDTH,
+                                                              (int) monster.getCenterY() / Tile.TILE_HEIGHT);
+        availableDirections[DOWN] = !monster.collidesWithTile((int) monster.getCenterX() / Tile.TILE_WIDTH,
+                                                              (int) (monster.getCenterY() + Tile.TILE_HEIGHT) / Tile.TILE_HEIGHT);
     }
     /*
     * returns the manhattan distance from the current position of a monster
@@ -151,13 +155,13 @@ public abstract class MonsterBrain {
                 values[UP] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() - monster.speed), chasePosX, chasePosY);
             }
             if (availableDirections[DOWN]) {
-                values[UP] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() + monster.speed), chasePosX, chasePosY);
+                values[DOWN] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() + monster.speed), chasePosX, chasePosY);
             }
             if (availableDirections[LEFT]) {
-                values[UP] = getDistance((int) (monster.getCenterX() - monster.speed), (int) monster.getCenterY(), chasePosX, chasePosY);
+                values[LEFT] = getDistance((int) (monster.getCenterX() - monster.speed), (int) monster.getCenterY(), chasePosX, chasePosY);
             }
             if (availableDirections[RIGHT]) {
-                values[UP] = getDistance((int) (monster.getCenterX() + monster.speed), (int) monster.getCenterY(), chasePosX, chasePosY);
+                values[RIGHT] = getDistance((int) (monster.getCenterX() + monster.speed), (int) monster.getCenterY(), chasePosX, chasePosY);
             }
         } else if (currentState == State.SCATTER) {
             if (availableDirections[UP]) {
@@ -192,7 +196,7 @@ public abstract class MonsterBrain {
         // regardless of state, the best direction is the one with the shortest value
         int i = 0, minIdx = 0, minValue = values[0];
         while (i < 4) {
-            if (values[i] < minValue) {
+            if (availableDirections[i] && values[i] < minValue) {
                 minValue = values[i];
                 minIdx = i;
             }

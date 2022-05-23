@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 * just like a shadow that is always with us in a sunny day
 * */
 public class Billy extends MonsterBrain {
-
     public Billy(Handler handler, int scatterPosX, int scatterPosY) {
         super(handler, scatterPosX, scatterPosY);
     }
@@ -21,7 +20,7 @@ public class Billy extends MonsterBrain {
         trackState(monster);
         setAvailableDirections();
         setChaseCoordinates();
-        currentDirection = calculateBestDirection();
+        this.currentDirection = calculateBestDirection();
     }
 
     @Override
