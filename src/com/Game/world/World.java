@@ -5,6 +5,10 @@ import com.Game.entity.EntityManager;
 import com.Game.entity.moving.Monster;
 import com.Game.entity.moving.Pacman;
 import com.Game.entity.statics.apples.Apple;
+import com.Game.intelligence.characters.Billy;
+import com.Game.intelligence.characters.Lilly;
+import com.Game.intelligence.characters.Silly;
+import com.Game.intelligence.characters.Tilly;
 import com.Game.tile.Tile;
 import com.Game.utils.Handler;
 import com.Game.utils.Utils;
@@ -54,10 +58,23 @@ public class World {
                                                     spawnPoints[1] * Tile.TILE_HEIGHT));
 
         // Adding monsters
-        for (int i = 2; i < 9; i += 2) {
-            entityManager.addEntity(new Monster(handler, spawnPoints[i] * Tile.TILE_WIDTH,
-                                                         spawnPoints[i + 1] * Tile.TILE_HEIGHT));
-        }
+        entityManager.addEntity(new Monster(handler, spawnPoints[2] * Tile.TILE_WIDTH,
+                                                     spawnPoints[3] * Tile.TILE_HEIGHT,
+                                                     new Billy(handler, spawnPoints[0] * Tile.TILE_WIDTH,
+                                                                        -1 * Tile.TILE_HEIGHT)));
+        // Temporarily disabling all monsters except Billy
+//        entityManager.addEntity(new Monster(handler, spawnPoints[4] * Tile.TILE_WIDTH,
+//                                                     spawnPoints[5] * Tile.TILE_HEIGHT,
+//                                                     new Lilly(handler, 0,
+//                                                                        spawnPoints[1] * Tile.TILE_HEIGHT)));
+//        entityManager.addEntity(new Monster(handler, spawnPoints[6] * Tile.TILE_WIDTH,
+//                                                     spawnPoints[7] * Tile.TILE_HEIGHT,
+//                                                     new Silly(handler, 0,
+//                                                                        -1 * Tile.TILE_HEIGHT)));
+//        entityManager.addEntity(new Monster(handler, spawnPoints[8] * Tile.TILE_WIDTH,
+//                                                     spawnPoints[9] * Tile.TILE_HEIGHT,
+//                                                     new Tilly(handler, spawnPoints[0] * Tile.TILE_WIDTH,
+//                                                                        spawnPoints[1] * Tile.TILE_HEIGHT)));
 
         // Adding apples
         for (int i = 0; i < width; i++) {
@@ -66,7 +83,7 @@ public class World {
                     // except for the pacman spawn point put apple everywhere
                     continue;
                 }
-                else if (tilePositions != null && tilePositions[i][j] == 1) {
+                if (tilePositions != null && tilePositions[i][j] == 1) {
                     entityManager.addEntity(new Apple(handler, i * Tile.TILE_WIDTH, j * Tile.TILE_HEIGHT));
                 }
             }
