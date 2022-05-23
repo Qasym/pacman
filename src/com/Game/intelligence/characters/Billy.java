@@ -6,6 +6,10 @@ import com.Game.intelligence.MonsterBrain;
 import com.Game.utils.Handler;
 import org.jetbrains.annotations.NotNull;
 
+/*
+* Billy chases Pacman at exactly his location
+* just like a shadow that is always with us in a sunny day
+* */
 public class Billy extends MonsterBrain {
 
     public Billy(Handler handler, int scatterPosX, int scatterPosY) {
@@ -13,12 +17,16 @@ public class Billy extends MonsterBrain {
     }
 
     @Override
-    public void decision(Monster monster) {
-
+    public void decision() {
+        trackState(monster);
+        setAvailableDirections();
+        setChaseCoordinates();
+        currentDirection = calculateBestDirection();
     }
 
     @Override
-    public void setChaseCoordinates(@NotNull Entity pacman) {
-
+    public void setChaseCoordinates() {
+        chasePosX = (int) handler.getPacman().getX();
+        chasePosY = (int) handler.getPacman().getY();
     }
 }
