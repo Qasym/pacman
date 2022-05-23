@@ -1,9 +1,11 @@
 package com.Game.intelligence;
 
-import com.Game.entity.Entity;
 import com.Game.entity.moving.Monster;
+import com.Game.tile.Tile;
 import com.Game.utils.Handler;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Random;
 
 /*
 * This is the main class for the intelligence of the Monsters
@@ -32,40 +34,40 @@ public abstract class MonsterBrain {
     * head when they are in SCATTER state, this is needed to
     * simulate wave attacks (not constant chasing of pacman)
     * */
-    private enum State {
+    protected enum State {
         CHASE,
         SCATTER,
         FRIGHTENED,
         EATEN
     }
-    private State currentState; // a variable to track the monster state
+    protected State currentState; // a variable to track the monster state
 
     protected Handler handler;
 
-    protected enum Direction {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT
-    }
-    public Direction currentDirection;
+    protected int currentDirection;
+
+    public final int UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3;
+    protected boolean[] availableDirections = new boolean[4];
 
     // variables necessary for the monster intelligence
     protected final int scatterPosX, scatterPosY; // direct monster in SCATTER state
-    private int chasePosX, chasePosY; // direct monster in CHASE state
+    protected int chasePosX, chasePosY; // direct monster in CHASE state
 
     // time tracking for switching the phases
     public final int SCATTER_TIME = 7, CHASE_TIME = 20, FRIGHTENED_TIME = 5;
     private long lastTime;
     private double delta;
 
+    // Monster reference
+    protected Monster monster = null;
+
     public MonsterBrain(Handler handler, int scatterPosX, int scatterPosY) {
         currentState = State.CHASE;
         this.scatterPosY = scatterPosY;
         this.scatterPosX = scatterPosX;
-        setChaseCoordinates(handler.getPacman());
         lastTime = System.nanoTime();
-        currentDirection = Direction.DOWN;
+        currentDirection = DOWN;
+        this.handler = handler;
     }
 
     /*
@@ -75,14 +77,14 @@ public abstract class MonsterBrain {
     * This method is abstract since each monster has unique
     * decisions to make
     * */
-    public abstract void decision(Monster monster);
+    public abstract void decision();
 
     /*
     * In CHASE state, we assign chasePosX and chasePosY every tick
     * since pacman constantly moves, but since each monster
     * has unique target positions, we leave this method abstract
     * */
-    public abstract void setChaseCoordinates(@NotNull Entity pacman);
+    public abstract void setChaseCoordinates();
 
     /*
     * This method has to be called every tick so that we can
@@ -122,17 +124,86 @@ public abstract class MonsterBrain {
         return monster.getX() == monster.getSpawnPosX() && monster.getY() == monster.getSpawnPosY();
     }
 
-    // checks if a given monster is in tunnel or not
-    // if it is in tunnel it means we can't change direction
-    public boolean isInTunnel(@NotNull Monster monster) {
-        if (currentDirection == Direction.DOWN) {
-            
-        } else if (currentDirection == Direction.UP) {
+    public void setAvailableDirections() {
+        availableDirections[RIGHT] = !monster.collidesWithTile((int) monster.getCenterX() + Tile.TILE_WIDTH, (int) monster.getCenterY());
+        availableDirections[UP] = !monster.collidesWithTile((int) monster.getCenterX(), (int) monster.getCenterY() - Tile.TILE_HEIGHT);
+        availableDirections[LEFT] = !monster.collidesWithTile((int) monster.getCenterX() - Tile.TILE_WIDTH, (int) monster.getCenterY());
+        availableDirections[DOWN] = !monster.collidesWithTile((int) monster.getCenterX(), (int) monster.getCenterY() + Tile.TILE_HEIGHT);
+    }
+    /*
+    * returns the manhattan distance from the current position of a monster
+    * to a given posit
+}ion
+    * */
+    public int getDistance(int x1, int y1, int x2, int y2) {
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
 
-        } else if (currentDirection == Direction.LEFT) {
-
+    /*
+    * When there are several directions available, this method will calculate
+    * the best direction by moving to which monsters will get the shortest
+    * manhattan distance to the target
+    * */
+    public int calculateBestDirection() {
+        int[] values = {Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE}; // since we have 4 directions
+        if (currentState == State.CHASE) {
+            if (availableDirections[UP]) {
+                values[UP] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() - monster.speed), chasePosX, chasePosY);
+            }
+            if (availableDirections[DOWN]) {
+                values[UP] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() + monster.speed), chasePosX, chasePosY);
+            }
+            if (availableDirections[LEFT]) {
+                values[UP] = getDistance((int) (monster.getCenterX() - monster.speed), (int) monster.getCenterY(), chasePosX, chasePosY);
+            }
+            if (availableDirections[RIGHT]) {
+                values[UP] = getDistance((int) (monster.getCenterX() + monster.speed), (int) monster.getCenterY(), chasePosX, chasePosY);
+            }
+        } else if (currentState == State.SCATTER) {
+            if (availableDirections[UP]) {
+                values[UP] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() - monster.speed), scatterPosX, scatterPosY);
+            }
+            if (availableDirections[DOWN]) {
+                values[UP] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() + monster.speed), scatterPosX, scatterPosY);
+            }
+            if (availableDirections[LEFT]) {
+                values[UP] = getDistance((int) (monster.getCenterX() - monster.speed), (int) monster.getCenterY(), scatterPosX, scatterPosY);
+            }
+            if (availableDirections[RIGHT]) {
+                values[UP] = getDistance((int) (monster.getCenterX() + monster.speed), (int) monster.getCenterY(), scatterPosX, scatterPosY);
+            }
+        } else if (currentState == State.FRIGHTENED) { // monster moves randomly in frightened state
+            return new Random().nextInt(4);
         } else {
+            if (availableDirections[UP]) {
+                values[UP] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() - monster.speed), (int) monster.getSpawnPosX(), (int) monster.getSpawnPosY());
+            }
+            if (availableDirections[DOWN]) {
+                values[UP] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() + monster.speed), (int) monster.getSpawnPosX(), (int) monster.getSpawnPosY());
+            }
+            if (availableDirections[LEFT]) {
+                values[UP] = getDistance((int) (monster.getCenterX() - monster.speed), (int) monster.getCenterY(), (int) monster.getSpawnPosX(), (int) monster.getSpawnPosY());
+            }
+            if (availableDirections[RIGHT]) {
+                values[UP] = getDistance((int) (monster.getCenterX() + monster.speed), (int) monster.getCenterY(), (int) monster.getSpawnPosX(), (int) monster.getSpawnPosY());
+            }
+        }
 
+        // regardless of state, the best direction is the one with the shortest value
+        int i = 0, minIdx = 0, minValue = values[0];
+        while (i < 4) {
+            if (values[i] < minValue) {
+                minValue = values[i];
+                minIdx = i;
+            }
+            i++;
+        }
+        return minIdx;
+    }
+
+    public void setMonster(Monster monster_) {
+        if (monster == null) {
+            monster = monster_;
         }
     }
 
@@ -153,15 +224,18 @@ public abstract class MonsterBrain {
     }
 
     public void setDirectionUp() {
-        currentDirection = Direction.UP;
+        currentDirection = UP;
     }
     public void setDirectionDown() {
-        currentDirection = Direction.DOWN;
+        currentDirection = DOWN;
     }
     public void setDirectionLeft() {
-        currentDirection = Direction.LEFT;
+        currentDirection = LEFT;
     }
     public void setDirectionRight() {
-        currentDirection = Direction.RIGHT;
+        currentDirection = RIGHT;
+    }
+    public int getCurrentDirection() {
+        return currentDirection;
     }
 }
