@@ -255,11 +255,6 @@ public class Pacman extends Entity {
         }
     }
 
-    // This method returns true if a tile at [x, y] is solid
-    private boolean collidesWithTile(int x, int y) {
-        return handler.getWorld().getTile(x, y).isSolid();
-    }
-
     public void eatenByMonster() {
         dead = true;
     }
