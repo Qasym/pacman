@@ -12,12 +12,12 @@ public class Tilly extends MonsterBrain {
     }
 
     @Override
-    public void decision(Monster monster) {
+    public void decision() {
 
     }
 
     @Override
-    public void setChaseCoordinates(@NotNull Entity pacman) {
+    public void setChaseCoordinates() {
 
     }
 }
