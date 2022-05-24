@@ -16,7 +16,7 @@ public class Billy extends MonsterBrain {
     }
 
     @Override
-    public void decision() {
+    public void decide() {
         trackState(monster);
         setAvailableDirections();
         setChaseCoordinates();

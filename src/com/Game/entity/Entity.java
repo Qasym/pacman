@@ -48,14 +48,14 @@ public abstract class Entity {
      *                                                           5
      *
      * */
-    protected final int   DEFAULT_COLLISION_BOUNDS_X = 7, // these variables are relative to the pacman sprite
+    public static final int   DEFAULT_COLLISION_BOUNDS_X = 7, // these variables are relative to the pacman sprite
                         DEFAULT_COLLISION_BOUNDS_Y = 7, // meaning that the bounds are from top-left corner of pacman sprite
                         DEFAULT_COLLISION_BOUNDS_WIDTH = 18,
                         DEFAULT_COLLISION_BOUNDS_HEIGHT = 18;
 
 
-    public float speed; //the "speed" at which our entities move
-    public int width, height; //size of our entity
+    protected int speed; //the "speed" at which our entities move
+    protected int width, height; //size of our entity
     public static final byte DEFAULT_ENTITY_WIDTH = 32;
     public static final byte DEFAULT_ENTITY_HEIGHT = 32;
 
@@ -113,7 +113,7 @@ public abstract class Entity {
         return y;
     }
 
-    public float getSpeed() {
+    public int getSpeed() {
         return speed;
     }
 

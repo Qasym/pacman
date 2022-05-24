@@ -1,5 +1,6 @@
 package com.Game.intelligence;
 
+import com.Game.entity.Entity;
 import com.Game.entity.moving.Monster;
 import com.Game.tile.Tile;
 import com.Game.utils.Handler;
@@ -77,7 +78,7 @@ public abstract class MonsterBrain {
     * This method is abstract since each monster has unique
     * decisions to make
     * */
-    public abstract void decision();
+    public abstract void decide();
 
     /*
     * In CHASE state, we assign chasePosX and chasePosY every tick
@@ -92,7 +93,7 @@ public abstract class MonsterBrain {
     * */
     public void trackState(Monster monster) {
         long now = System.nanoTime();
-        delta += (lastTime - now) / 1e9; // count how many seconds passed
+        delta += (now - lastTime) / 1e9; // count how many seconds passed
         lastTime = now;
 
         if (currentState == State.CHASE) {
@@ -124,23 +125,57 @@ public abstract class MonsterBrain {
         return monster.getX() == monster.getSpawnPosX() && monster.getY() == monster.getSpawnPosY();
     }
 
+    /*
+    * The algorithm here is simple
+    * In order to check if monster can go to a certain direction,
+    * without loss of generality let's say it's right,
+    * we need to take top-right and bottom-right corners to see
+    * if they are able to move rightwards, if either of the corners
+    * collide with the tile to the right, it means monster can't go right
+    *
+    * x1, y1 - are the coordinates of the first corner
+    * x2, y2 - are the coordinates of the second corner
+    *
+    * We also have to take into account that monsters can't reverse their direction
+    * For that reason some directions despite them being collision free
+    * have to be ignored
+    * */
     public void setAvailableDirections() {
-        availableDirections[RIGHT] = !monster.collidesWithTile((int) (monster.getCenterX() + Tile.TILE_WIDTH) / Tile.TILE_WIDTH,
-                                                               (int) monster.getCenterY() / Tile.TILE_HEIGHT);
-        availableDirections[UP] = !monster.collidesWithTile((int) monster.getCenterX() / Tile.TILE_WIDTH,
-                                                            (int) (monster.getCenterY() - Tile.TILE_HEIGHT) / Tile.TILE_HEIGHT);
-        availableDirections[LEFT] = !monster.collidesWithTile((int) (monster.getCenterX() - Tile.TILE_WIDTH) / Tile.TILE_WIDTH,
-                                                              (int) monster.getCenterY() / Tile.TILE_HEIGHT);
-        availableDirections[DOWN] = !monster.collidesWithTile((int) monster.getCenterX() / Tile.TILE_WIDTH,
-                                                              (int) (monster.getCenterY() + Tile.TILE_HEIGHT) / Tile.TILE_HEIGHT);
+        int x1, y1, x2, y2;
+        x1 = (monster.getCollisionBox().x + Entity.DEFAULT_COLLISION_BOUNDS_WIDTH + monster.getSpeed()) / Tile.TILE_WIDTH; // top-right x
+        y1 = monster.getCollisionBox().y / Tile.TILE_WIDTH; // top-right y
+        x2 = (monster.getCollisionBox().x + Entity.DEFAULT_COLLISION_BOUNDS_WIDTH + monster.getSpeed()) / Tile.TILE_WIDTH; // bottom-right x
+        y2 = (monster.getCollisionBox().y + Entity.DEFAULT_COLLISION_BOUNDS_HEIGHT) / Tile.TILE_WIDTH; // bottom-right y
+        availableDirections[RIGHT] = !monster.collidesWithTile(x1, y1) && !monster.collidesWithTile(x2, y2) && currentDirection != LEFT;
+
+        x1 = (monster.getCollisionBox().x - monster.getSpeed()) / Tile.TILE_WIDTH; // top-left x
+        y1 = monster.getCollisionBox().y / Tile.TILE_WIDTH; // top-left y
+        x2 = (monster.getCollisionBox().x - monster.getSpeed()) / Tile.TILE_WIDTH; // bottom-left x
+        y2 = (monster.getCollisionBox().y + Entity.DEFAULT_COLLISION_BOUNDS_HEIGHT) / Tile.TILE_WIDTH; // bottom-left y
+        availableDirections[LEFT] = !monster.collidesWithTile(x1, y1) && !monster.collidesWithTile(x2, y2) && currentDirection != RIGHT;
+
+        x1 = monster.getCollisionBox().x / Tile.TILE_HEIGHT; // top-left x
+        y1 = (monster.getCollisionBox().y - monster.getSpeed()) / Tile.TILE_HEIGHT; // top-left y
+        x2 = (monster.getCollisionBox().x + Entity.DEFAULT_COLLISION_BOUNDS_WIDTH) / Tile.TILE_HEIGHT; // top-right x
+        y2 = (monster.getCollisionBox().y - monster.getSpeed()) / Tile.TILE_HEIGHT; // top-right y
+        availableDirections[UP] = !monster.collidesWithTile(x1, y1) && !monster.collidesWithTile(x2, y2) && currentDirection != DOWN;
+
+        x1 = monster.getCollisionBox().x / Tile.TILE_HEIGHT; // bottom-left x
+        y1 = (monster.getCollisionBox().y + Entity.DEFAULT_COLLISION_BOUNDS_HEIGHT + monster.getSpeed()) / Tile.TILE_HEIGHT; // bottom-left y
+        x2 = (monster.getCollisionBox().x + Entity.DEFAULT_COLLISION_BOUNDS_WIDTH) / Tile.TILE_HEIGHT; // bottom-right x
+        y2 = (monster.getCollisionBox().y + Entity.DEFAULT_COLLISION_BOUNDS_HEIGHT + monster.getSpeed()) / Tile.TILE_HEIGHT; // bottom-right y
+        availableDirections[DOWN] = !monster.collidesWithTile(x1, y1) && !monster.collidesWithTile(x2, y2) && currentDirection != UP;
     }
     /*
     * returns the manhattan distance from the current position of a monster
     * to a given posit
 }ion
     * */
-    public int getDistance(int x1, int y1, int x2, int y2) {
-        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    public double getDistance(int x1, int y1, int x2, int y2) {
+        int x, y;
+        x = Math.abs(x1 - x2);
+        y = Math.abs(y1 - y2);
+        return Math.sqrt(x * x + y * y);
     }
 
     /*
@@ -149,52 +184,53 @@ public abstract class MonsterBrain {
     * manhattan distance to the target
     * */
     public int calculateBestDirection() {
-        int[] values = {Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE}; // since we have 4 directions
+        double[] values = {Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE}; // since we have 4 directions
         if (currentState == State.CHASE) {
             if (availableDirections[UP]) {
-                values[UP] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() - monster.speed), chasePosX, chasePosY);
+                values[UP] = getDistance(monster.getCollisionBox().x, monster.getCollisionBox().y - monster.getSpeed(), chasePosX, chasePosY);
             }
             if (availableDirections[DOWN]) {
-                values[DOWN] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() + monster.speed), chasePosX, chasePosY);
+                values[DOWN] = getDistance(monster.getCollisionBox().x, monster.getCollisionBox().y + monster.getSpeed(), chasePosX, chasePosY);
             }
             if (availableDirections[LEFT]) {
-                values[LEFT] = getDistance((int) (monster.getCenterX() - monster.speed), (int) monster.getCenterY(), chasePosX, chasePosY);
+                values[LEFT] = getDistance(monster.getCollisionBox().x - monster.getSpeed(), monster.getCollisionBox().y, chasePosX, chasePosY);
             }
             if (availableDirections[RIGHT]) {
-                values[RIGHT] = getDistance((int) (monster.getCenterX() + monster.speed), (int) monster.getCenterY(), chasePosX, chasePosY);
+                values[RIGHT] = getDistance(monster.getCollisionBox().x + monster.getSpeed(), monster.getCollisionBox().y, chasePosX, chasePosY);
             }
         } else if (currentState == State.SCATTER) {
             if (availableDirections[UP]) {
-                values[UP] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() - monster.speed), scatterPosX, scatterPosY);
+                values[UP] = getDistance(monster.getCollisionBox().x, monster.getCollisionBox().y - monster.getSpeed(), scatterPosX, scatterPosY);
             }
             if (availableDirections[DOWN]) {
-                values[UP] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() + monster.speed), scatterPosX, scatterPosY);
+                values[DOWN] = getDistance(monster.getCollisionBox().x, monster.getCollisionBox().y + monster.getSpeed(), scatterPosX, scatterPosY);
             }
             if (availableDirections[LEFT]) {
-                values[UP] = getDistance((int) (monster.getCenterX() - monster.speed), (int) monster.getCenterY(), scatterPosX, scatterPosY);
+                values[LEFT] = getDistance(monster.getCollisionBox().x - monster.getSpeed(), monster.getCollisionBox().y, scatterPosX, scatterPosY);
             }
             if (availableDirections[RIGHT]) {
-                values[UP] = getDistance((int) (monster.getCenterX() + monster.speed), (int) monster.getCenterY(), scatterPosX, scatterPosY);
+                values[RIGHT] = getDistance(monster.getCollisionBox().x + monster.getSpeed(), monster.getCollisionBox().y, scatterPosX, scatterPosY);
             }
-        } else if (currentState == State.FRIGHTENED) { // monster moves randomly in frightened state
+        } else if (currentState == State.FRIGHTENED) { // monster moves randomly in the frightened state
             return new Random().nextInt(4);
         } else {
             if (availableDirections[UP]) {
-                values[UP] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() - monster.speed), (int) monster.getSpawnPosX(), (int) monster.getSpawnPosY());
+                values[UP] = getDistance(monster.getCollisionBox().x, monster.getCollisionBox().y - monster.getSpeed(), (int) monster.getSpawnPosX(), (int) monster.getSpawnPosY());
             }
             if (availableDirections[DOWN]) {
-                values[UP] = getDistance((int) monster.getCenterX(), (int) (monster.getCenterY() + monster.speed), (int) monster.getSpawnPosX(), (int) monster.getSpawnPosY());
+                values[DOWN] = getDistance(monster.getCollisionBox().x, monster.getCollisionBox().y + monster.getSpeed(), (int) monster.getSpawnPosX(), (int) monster.getSpawnPosY());
             }
             if (availableDirections[LEFT]) {
-                values[UP] = getDistance((int) (monster.getCenterX() - monster.speed), (int) monster.getCenterY(), (int) monster.getSpawnPosX(), (int) monster.getSpawnPosY());
+                values[LEFT] = getDistance(monster.getCollisionBox().x - monster.getSpeed(), monster.getCollisionBox().y, (int) monster.getSpawnPosX(), (int) monster.getSpawnPosY());
             }
             if (availableDirections[RIGHT]) {
-                values[UP] = getDistance((int) (monster.getCenterX() + monster.speed), (int) monster.getCenterY(), (int) monster.getSpawnPosX(), (int) monster.getSpawnPosY());
+                values[RIGHT] = getDistance(monster.getCollisionBox().x + monster.getSpeed(), monster.getCollisionBox().y, (int) monster.getSpawnPosX(), (int) monster.getSpawnPosY());
             }
         }
 
         // regardless of state, the best direction is the one with the shortest value
-        int i = 0, minIdx = 0, minValue = values[0];
+        int i = 0, minIdx = -1;
+        double minValue = Double.MAX_VALUE;
         while (i < 4) {
             if (availableDirections[i] && values[i] < minValue) {
                 minValue = values[i];

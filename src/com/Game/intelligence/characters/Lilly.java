@@ -12,7 +12,7 @@ public class Lilly extends MonsterBrain {
     }
 
     @Override
-    public void decision() {
+    public void decide() {
 
     }
 
