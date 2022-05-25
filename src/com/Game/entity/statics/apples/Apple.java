@@ -83,8 +83,8 @@ public class Apple extends StaticEntity {
     * This method moves it to the center of the tile
     * */
     public void centerOnTile() {
-        x = x + (Tile.TILE_WIDTH / 2f) - (width / 2f);
-        y = y + (Tile.TILE_HEIGHT / 2f) - (height / 2f);
+        x = x + (Tile.WIDTH / 2f) - (width / 2f);
+        y = y + (Tile.HEIGHT / 2f) - (height / 2f);
     }
 
     public void pacmanAteMe() {
