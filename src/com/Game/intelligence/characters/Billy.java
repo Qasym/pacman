@@ -20,4 +20,12 @@ public class Billy extends MonsterBrain {
         chasePosX = (int) handler.getPacman().getX();
         chasePosY = (int) handler.getPacman().getY();
     }
+
+    public int getBillyPositionX() {
+        return monster.getCollisionBox().x;
+    }
+
+    public int getBillyPositionY() {
+        return monster.getCollisionBox().y;
+    }
 }

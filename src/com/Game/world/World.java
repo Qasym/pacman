@@ -54,25 +54,8 @@ public class World {
                                             new Pacman(handler,
                                                     spawnPoints[0] * Tile.WIDTH,
                                                     spawnPoints[1] * Tile.HEIGHT));
-
         // Adding monsters
-        entityManager.addEntity(new Monster(handler, spawnPoints[2] * Tile.WIDTH,
-                                                     spawnPoints[3] * Tile.HEIGHT,
-                                                     new Billy(handler, spawnPoints[0] * Tile.WIDTH,
-                                                                        -1 * Tile.HEIGHT)));
-        // Temporarily disabling all monsters except Lilly
-        entityManager.addEntity(new Monster(handler, spawnPoints[4] * Tile.WIDTH,
-                                                     spawnPoints[5] * Tile.HEIGHT,
-                                                     new Lilly(handler, 0,
-                                                                        spawnPoints[1] * Tile.HEIGHT)));
-//        entityManager.addEntity(new Monster(handler, spawnPoints[6] * Tile.WIDTH,
-//                                                     spawnPoints[7] * Tile.HEIGHT,
-//                                                     new Silly(handler, 0,
-//                                                                        -1 * Tile.HEIGHT)));
-//        entityManager.addEntity(new Monster(handler, spawnPoints[8] * Tile.WIDTH,
-//                                                     spawnPoints[9] * Tile.HEIGHT,
-//                                                     new Tilly(handler, spawnPoints[0] * Tile.WIDTH,
-//                                                                        spawnPoints[1] * Tile.HEIGHT)));
+        initializeMonsters();
 
         // Adding apples
         for (int i = 0; i < width; i++) {
@@ -142,6 +125,42 @@ public class World {
                 // because I already assigned 12 tokens to other variables
             }
         }
+    }
+
+    private void initializeMonsters() {
+        // Billy spawn begins
+        Monster billy = new Monster(handler, spawnPoints[2] * Tile.WIDTH,
+                                             spawnPoints[3] * Tile.HEIGHT,
+                                    new Billy(handler, spawnPoints[0] * Tile.WIDTH,
+                                                       -1 * Tile.HEIGHT));
+        entityManager.addEntity(billy);
+        handler.setBilly(billy);
+        // Billy spawn ends
+
+        // Lilly spawn begins
+        Monster lilly = new Monster(handler, spawnPoints[4] * Tile.WIDTH,
+                                             spawnPoints[5] * Tile.HEIGHT,
+                                    new Lilly(handler, 0,
+                                            spawnPoints[1] * Tile.HEIGHT));
+        entityManager.addEntity(lilly);
+        handler.setLilly(lilly);
+        // Lilly spawn ends
+
+        // Tilly spawn begins
+        Monster tilly = new Monster(handler, spawnPoints[6] * Tile.WIDTH,
+                                             spawnPoints[7] * Tile.HEIGHT,
+                                    new Silly(handler, 0,
+                                            -1 * Tile.HEIGHT));
+        entityManager.addEntity(tilly);
+        handler.setTilly(tilly);
+        // Tilly spawn ends
+
+        // Silly spawn begins
+//        entityManager.addEntity(new Monster(handler, spawnPoints[8] * Tile.WIDTH,
+//                                                     spawnPoints[9] * Tile.HEIGHT,
+//                                                     new Tilly(handler, spawnPoints[0] * Tile.WIDTH,
+//                                                                        spawnPoints[1] * Tile.HEIGHT)));
+        // Silly spawn ends
     }
 
     public EntityManager getEntityManager() {

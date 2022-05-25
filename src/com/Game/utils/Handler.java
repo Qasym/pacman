@@ -1,5 +1,6 @@
 package com.Game.utils;
 
+import com.Game.entity.moving.Monster;
 import com.Game.entity.moving.Pacman;
 import com.Game.gfx.GameCamera;
 import com.Game.input.KeyManager;
@@ -12,8 +13,41 @@ import com.Game.world.World;
 * objects, and sole purpose of this class is to ease the access to those
 * */
 public class Handler {
-    Game game;
-    World world;
+    protected Game game;
+    protected World world;
+    protected Monster billy, lilly, tilly, silly;
+
+    public Monster getBilly() {
+        return billy;
+    }
+
+    public Monster getLilly() {
+        return lilly;
+    }
+
+    public Monster getTilly() {
+        return tilly;
+    }
+
+    public Monster getSilly() {
+        return silly;
+    }
+
+    public void setBilly(Monster billy) {
+        this.billy = billy;
+    }
+
+    public void setLilly(Monster lilly) {
+        this.lilly = lilly;
+    }
+
+    public void setTilly(Monster tilly) {
+        this.tilly = tilly;
+    }
+
+    public void setSilly(Monster silly) {
+        this.silly = silly;
+    }
 
     public static boolean DEBUG = false;
 

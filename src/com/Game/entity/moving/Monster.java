@@ -58,7 +58,7 @@ public class Monster extends Entity {
         }
     }
 
-    public void move() {
+    private void move() {
         if (brain.getCurrentDirection() == MonsterBrain.UP) {
             y -= speed;
         } else if (brain.getCurrentDirection() == MonsterBrain.DOWN) {
@@ -72,4 +72,7 @@ public class Monster extends Entity {
         }
     }
 
+    public MonsterBrain getBrain() {
+        return brain;
+    }
 }

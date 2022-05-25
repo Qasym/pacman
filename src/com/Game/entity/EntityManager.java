@@ -1,11 +1,11 @@
 package com.Game.entity;
 
+import com.Game.entity.moving.Monster;
 import com.Game.entity.moving.Pacman;
 import com.Game.utils.Handler;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /*
 * EntityManager is class that has a self-descriptive name
