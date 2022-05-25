@@ -1,20 +1,15 @@
 package com.Game.world;
 
-import com.Game.entity.Entity;
 import com.Game.entity.EntityManager;
 import com.Game.entity.moving.Monster;
 import com.Game.entity.moving.Pacman;
 import com.Game.entity.statics.apples.Apple;
 import com.Game.intelligence.characters.Billy;
-import com.Game.intelligence.characters.Lilly;
-import com.Game.intelligence.characters.Silly;
-import com.Game.intelligence.characters.Tilly;
 import com.Game.tile.Tile;
 import com.Game.utils.Handler;
 import com.Game.utils.Utils;
 
 import java.awt.Graphics;
-import java.util.Arrays;
 
 /*
 * */
@@ -54,14 +49,14 @@ public class World {
         // Adding pacman
         this.entityManager = new EntityManager(handler,
                                             new Pacman(handler,
-                                                    spawnPoints[0] * Tile.TILE_WIDTH,
-                                                    spawnPoints[1] * Tile.TILE_HEIGHT));
+                                                    spawnPoints[0] * Tile.WIDTH,
+                                                    spawnPoints[1] * Tile.HEIGHT));
 
         // Adding monsters
-        entityManager.addEntity(new Monster(handler, spawnPoints[2] * Tile.TILE_WIDTH,
-                                                     spawnPoints[3] * Tile.TILE_HEIGHT,
-                                                     new Billy(handler, spawnPoints[0] * Tile.TILE_WIDTH,
-                                                                        -1 * Tile.TILE_HEIGHT)));
+        entityManager.addEntity(new Monster(handler, spawnPoints[2] * Tile.WIDTH,
+                                                     spawnPoints[3] * Tile.HEIGHT,
+                                                     new Billy(handler, spawnPoints[0] * Tile.WIDTH,
+                                                                        -1 * Tile.HEIGHT)));
         // Temporarily disabling all monsters except Billy
 //        entityManager.addEntity(new Monster(handler, spawnPoints[4] * Tile.TILE_WIDTH,
 //                                                     spawnPoints[5] * Tile.TILE_HEIGHT,
@@ -84,7 +79,7 @@ public class World {
                     continue;
                 }
                 if (tilePositions != null && tilePositions[i][j] == 1) {
-                    entityManager.addEntity(new Apple(handler, i * Tile.TILE_WIDTH, j * Tile.TILE_HEIGHT));
+                    entityManager.addEntity(new Apple(handler, i * Tile.WIDTH, j * Tile.HEIGHT));
                 }
             }
         }
@@ -96,16 +91,16 @@ public class World {
     }
 
     public void render(Graphics graphics) {
-        int xStart = (int) Math.max(0, handler.getGameCamera().getxOffset() / Tile.TILE_WIDTH),
-            xEnd = (int) Math.min(width, (handler.getGameCamera().getxOffset() + handler.getGameWidth()) / Tile.TILE_WIDTH + 1);
-        int yStart = (int) Math.max(0, handler.getGameCamera().getyOffset() / Tile.TILE_HEIGHT),
-            yEnd = (int) Math.min(height, (handler.getGameCamera().getyOffset() + handler.getGameHeight()) / Tile.TILE_HEIGHT + 1);
+        int xStart = (int) Math.max(0, handler.getGameCamera().getxOffset() / Tile.WIDTH),
+            xEnd = (int) Math.min(width, (handler.getGameCamera().getxOffset() + handler.getGameWidth()) / Tile.WIDTH + 1);
+        int yStart = (int) Math.max(0, handler.getGameCamera().getyOffset() / Tile.HEIGHT),
+            yEnd = (int) Math.min(height, (handler.getGameCamera().getyOffset() + handler.getGameHeight()) / Tile.HEIGHT + 1);
 
         for (int i = xStart; i < xEnd; i++) {
             for (int j = yStart; j < yEnd; j++) {
                 getTile(i, j).render(graphics,
-                                    (int)(i * Tile.TILE_WIDTH - handler.getGameCamera().getxOffset()),
-                                    (int)(j * Tile.TILE_HEIGHT - handler.getGameCamera().getyOffset()));
+                                    (int)(i * Tile.WIDTH - handler.getGameCamera().getxOffset()),
+                                    (int)(j * Tile.HEIGHT - handler.getGameCamera().getyOffset()));
             }
         }
 
