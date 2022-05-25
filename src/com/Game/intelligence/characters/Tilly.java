@@ -12,11 +12,6 @@ public class Tilly extends MonsterBrain {
     }
 
     @Override
-    public void decide() {
-
-    }
-
-    @Override
     public void setChaseCoordinates() {
 
     }

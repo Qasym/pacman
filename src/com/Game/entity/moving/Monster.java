@@ -59,13 +59,13 @@ public class Monster extends Entity {
     }
 
     public void move() {
-        if (brain.getCurrentDirection() == brain.UP) {
+        if (brain.getCurrentDirection() == MonsterBrain.UP) {
             y -= speed;
-        } else if (brain.getCurrentDirection() == brain.DOWN) {
+        } else if (brain.getCurrentDirection() == MonsterBrain.DOWN) {
             y += speed;
-        } else if (brain.getCurrentDirection() == brain.LEFT) {
+        } else if (brain.getCurrentDirection() == MonsterBrain.LEFT) {
             x -= speed;
-        } else if (brain.getCurrentDirection() == brain.RIGHT) {
+        } else if (brain.getCurrentDirection() == MonsterBrain.RIGHT) {
             x += speed;
         } else {
             System.out.println("Unknown direction of a monster");

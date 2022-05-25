@@ -17,6 +17,9 @@ public class Pacman extends Entity {
     private int score;
     private boolean dead; // to indicate if pacman is dead;
 
+    public static final int UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3; // same values as in MonsterBrain class
+    private int currentDirection = RIGHT;
+
     public Pacman(Handler handler, float x, float y) {
         super(handler, x, y, DEFAULT_ENTITY_WIDTH, DEFAULT_ENTITY_HEIGHT);
 
@@ -172,6 +175,7 @@ public class Pacman extends Entity {
                 y = collisionBox.y - --tillCollision - DEFAULT_COLLISION_BOUNDS_Y;
             }
             pacmanSprite = animationUp.getCurrentFrame();
+            currentDirection = UP;
 
         //////////////////////////////////////////////////////////////////////////////
 
@@ -198,6 +202,7 @@ public class Pacman extends Entity {
                 x = collisionBox.x + --tillCollision - DEFAULT_COLLISION_BOUNDS_X;
             }
             pacmanSprite = animationRight.getCurrentFrame();
+            currentDirection = RIGHT;
 
         //////////////////////////////////////////////////////////////////////////////
 
@@ -224,6 +229,7 @@ public class Pacman extends Entity {
                 x = collisionBox.x - --tillCollision - DEFAULT_COLLISION_BOUNDS_X;
             }
             pacmanSprite = animationLeft.getCurrentFrame();
+            currentDirection = LEFT;
 
         //////////////////////////////////////////////////////////////////////////////
 
@@ -250,6 +256,7 @@ public class Pacman extends Entity {
                 y = collisionBox.y + --tillCollision - DEFAULT_COLLISION_BOUNDS_Y;
             }
             pacmanSprite = animationDown.getCurrentFrame();
+            currentDirection = DOWN;
         }
     }
 
@@ -263,5 +270,9 @@ public class Pacman extends Entity {
 
     public void updateScore() {
         score++;
+    }
+
+    public int getCurrentDirection() {
+        return currentDirection;
     }
 }

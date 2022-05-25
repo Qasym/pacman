@@ -49,7 +49,7 @@ public abstract class MonsterBrain {
 
     protected int currentDirection;
 
-    public final int UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3;
+    public static final int UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3;
     protected boolean[] availableDirections = new boolean[4]; // default value of elements in the array is false
 
     // variables necessary for the monster intelligence
@@ -85,7 +85,12 @@ public abstract class MonsterBrain {
     * This method is abstract since each monster has unique
     * decisions to make
     * */
-    public abstract void decide();
+    public void decide() {
+        trackState(monster);
+        setAvailableDirections();
+        setChaseCoordinates();
+        this.currentDirection = calculateBestDirection();
+    }
 
     /*
     * In CHASE state, we assign chasePosX and chasePosY every tick

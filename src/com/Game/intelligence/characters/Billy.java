@@ -16,14 +16,6 @@ public class Billy extends MonsterBrain {
     }
 
     @Override
-    public void decide() {
-        trackState(monster);
-        setAvailableDirections();
-        setChaseCoordinates();
-        this.currentDirection = calculateBestDirection();
-    }
-
-    @Override
     public void setChaseCoordinates() {
         chasePosX = (int) handler.getPacman().getX();
         chasePosY = (int) handler.getPacman().getY();
