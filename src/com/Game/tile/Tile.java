@@ -20,8 +20,8 @@ public class Tile {
     protected BufferedImage texture;
     protected final int id;
 
-    public static final int TILE_WIDTH = 40,
-                            TILE_HEIGHT = 40;
+    public static final int WIDTH = 40,
+                            HEIGHT = 40;
 
     public Tile(BufferedImage image, int id) {
         texture = image;
@@ -40,6 +40,6 @@ public class Tile {
     }
 
     public void render(Graphics g, int x, int y) {
-        g.drawImage(texture, x, y, TILE_WIDTH, TILE_HEIGHT, null);
+        g.drawImage(texture, x, y, WIDTH, HEIGHT, null);
     }
 }
