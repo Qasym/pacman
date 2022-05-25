@@ -72,7 +72,7 @@ public abstract class Entity {
     }
 
     // This method returns true if a tile at [x, y] is solid
-    // This method is to check if *this* entity collieds with a tile at x, y
+    // This method is to check if *this* entity collides with a tile at x, y
     public boolean collidesWithTile(int x, int y) {
         return handler.getWorld().getTile(x, y).isSolid();
     }
