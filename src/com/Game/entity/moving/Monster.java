@@ -15,7 +15,7 @@ public class Monster extends Entity {
 
     public Monster(Handler handler, float x, float y, MonsterBrain brain) {
         super(handler, x, y, DEFAULT_ENTITY_WIDTH, DEFAULT_ENTITY_HEIGHT);
-        speed = DEFAULT_SPEED + 2;
+        speed = DEFAULT_SPEED;
         this.brain = brain;
         brain.setMonster(this);
     }
