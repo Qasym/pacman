@@ -29,6 +29,9 @@ public class Monster extends Entity {
         brain.decide(); // before moving we have to decide where to move
         move();
 
+        // Teleport if we reach portal
+        teleportAtPortal(); // automatically teleports
+
         // Updating collisionBox position
         collisionBox.x = (int) (x + DEFAULT_COLLISION_BOUNDS_X);
         collisionBox.y = (int) (y + DEFAULT_COLLISION_BOUNDS_Y);

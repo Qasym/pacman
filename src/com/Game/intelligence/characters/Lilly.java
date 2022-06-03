@@ -17,13 +17,24 @@ import org.jetbrains.annotations.NotNull;
 * 4 tiles in front of pacman
 * */
 public class Lilly extends MonsterBrain {
+    private long lastTime;
+    private double delta;
     public Lilly(Handler handler, int scatterPosX, int scatterPosY) {
         super(handler, scatterPosX, scatterPosY);
+        lastTime = System.currentTimeMillis();
     }
 
     // Lilly starts immediately, so we don't need to implement this method
     @Override
-    public void monsterStarter() {}
+    public void monsterStarter() {
+        this.monster.setSpeed(0);
+        delta += (System.currentTimeMillis() - lastTime) / 1000.0;
+        lastTime = System.currentTimeMillis();
+        if (delta > 2) {
+            this.monster.setSpeed(Monster.DEFAULT_SPEED);
+            setChaseState();
+        }
+    }
 
     @Override
     public void setChaseCoordinates() {

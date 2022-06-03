@@ -44,6 +44,16 @@ public class World {
     private final Handler handler;
     private final EntityManager entityManager;
 
+    /*
+    * There are two tiles that teleport Entity that came to it
+    * to a specific place in the map
+    *
+    * When pacman or monsters reach the exit from the map
+    * they are going to be teleported to the other end of the corridor
+    * that forms those exits
+    * */
+    private int portal1X, portal1Y, portal2X, portal2Y;
+
     public World(Handler handler, String path) {
         this.handler = handler;
 
@@ -117,12 +127,18 @@ public class World {
             spawnPoints[i] = Utils.parseInt(tokens[i + 2]);
         }
 
+        // Retrieving the positions of the portals
+        portal1X = Utils.parseInt(tokens[12]);
+        portal1Y = Utils.parseInt(tokens[13]);
+        portal2X = Utils.parseInt(tokens[14]);
+        portal2Y = Utils.parseInt(tokens[15]);
+
         tilePositions = new int[width][height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                tilePositions[i][j] = Utils.parseInt(tokens[12 + height * i + j]);
-                // I converted 2d array indexing into 1d array indexing and added 4
-                // because I already assigned 12 tokens to other variables
+                tilePositions[i][j] = Utils.parseInt(tokens[16 + height * i + j]);
+                // I converted 2d array indexing into 1d array indexing and added 16
+                // because I already assigned 16 tokens to other variables
             }
         }
     }
@@ -179,5 +195,21 @@ public class World {
 
     public int getPacmanSpawnY() {
         return spawnPoints[1];
+    }
+
+    public int getPortal1X() {
+        return portal1X;
+    }
+
+    public int getPortal1Y() {
+        return portal1Y;
+    }
+
+    public int getPortal2X() {
+        return portal2X;
+    }
+
+    public int getPortal2Y() {
+        return portal2Y;
     }
 }

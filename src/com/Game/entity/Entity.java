@@ -1,5 +1,6 @@
 package com.Game.entity;
 
+import com.Game.tile.Tile;
 import com.Game.utils.Handler;
 
 import java.awt.*;
@@ -123,6 +124,22 @@ public abstract class Entity {
 
     public int getHeight() {
         return height;
+    }
+
+    public void teleportAtPortal() {
+        if (isAtTile(handler.getWorld().getPortal1X(), handler.getWorld().getPortal1Y())) {
+            x = (handler.getWorld().getPortal2X() - 1) * Tile.WIDTH;
+            y = handler.getWorld().getPortal2Y() * Tile.HEIGHT;
+        } else if (isAtTile(handler.getWorld().getPortal2X(), handler.getWorld().getPortal2Y())) {
+            x = (handler.getWorld().getPortal1X() + 1) * Tile.WIDTH;
+            y = handler.getWorld().getPortal1Y() * Tile.HEIGHT;
+        }
+    }
+
+    private boolean isAtTile(int x, int y) {
+        return collisionBox.x / Tile.WIDTH == x && collisionBox.y / Tile.HEIGHT == y
+                &&
+               (collisionBox.x + collisionBox.width) / Tile.WIDTH == x && (collisionBox.y + collisionBox.height) / Tile.HEIGHT == y;
     }
 
     public abstract void tick();

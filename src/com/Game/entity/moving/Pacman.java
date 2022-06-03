@@ -58,6 +58,9 @@ public class Pacman extends Entity {
         // Move
         move();
 
+        // Teleport if we reach portal
+        teleportAtPortal(); // automatically teleports
+
         // Camera
         handler.getGameCamera().centerOnEntity(this);
 
