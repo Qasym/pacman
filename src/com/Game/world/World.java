@@ -129,12 +129,12 @@ public class World {
 
     private void initializeMonsters() {
         // Billy spawn begins
+        Billy billyBrain = new Billy(handler, spawnPoints[0] * Tile.WIDTH,
+                -1 * Tile.HEIGHT);
         Monster billy = new Monster(handler, spawnPoints[2] * Tile.WIDTH,
                                              spawnPoints[3] * Tile.HEIGHT,
-                                    new Billy(handler, spawnPoints[0] * Tile.WIDTH,
-                                                       -1 * Tile.HEIGHT));
+                                    billyBrain);
         entityManager.addEntity(billy);
-        handler.setBilly(billy);
         // Billy spawn ends
 
         // Lilly spawn begins
@@ -143,16 +143,14 @@ public class World {
                                     new Lilly(handler, 0,
                                             spawnPoints[1] * Tile.HEIGHT));
         entityManager.addEntity(lilly);
-        handler.setLilly(lilly);
         // Lilly spawn ends
 
         // Tilly spawn begins
         Monster tilly = new Monster(handler, spawnPoints[6] * Tile.WIDTH,
                                              spawnPoints[7] * Tile.HEIGHT,
-                                    new Silly(handler, 0,
-                                            -1 * Tile.HEIGHT));
+                                    new Tilly(handler, 0,
+                                            -1 * Tile.HEIGHT, billyBrain));
         entityManager.addEntity(tilly);
-        handler.setTilly(tilly);
         // Tilly spawn ends
 
         // Silly spawn begins

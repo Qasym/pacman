@@ -15,41 +15,8 @@ import com.Game.world.World;
 public class Handler {
     protected Game game;
     protected World world;
-    protected Monster billy, lilly, tilly, silly;
 
-    public Monster getBilly() {
-        return billy;
-    }
-
-    public Monster getLilly() {
-        return lilly;
-    }
-
-    public Monster getTilly() {
-        return tilly;
-    }
-
-    public Monster getSilly() {
-        return silly;
-    }
-
-    public void setBilly(Monster billy) {
-        this.billy = billy;
-    }
-
-    public void setLilly(Monster lilly) {
-        this.lilly = lilly;
-    }
-
-    public void setTilly(Monster tilly) {
-        this.tilly = tilly;
-    }
-
-    public void setSilly(Monster silly) {
-        this.silly = silly;
-    }
-
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
 
     public Handler(Game game) {
         this.game = game;

@@ -328,4 +328,12 @@ public abstract class MonsterBrain {
     public int getCurrentDirection() {
         return currentDirection;
     }
+
+    public int getChasePosX() {
+        return chasePosX;
+    }
+
+    public int getChasePosY() {
+        return chasePosY;
+    }
 }

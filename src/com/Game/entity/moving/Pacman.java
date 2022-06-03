@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 * This class is for the Pacman logic in Pacman game
 * */
 public class Pacman extends Entity {
-    private boolean powerBuff = false, speedBuff = false; //buffs I would like to add to my Pacman implementation
+    private boolean powerBuff = false, speedBuff = false; // buffs I would like to add to my Pacman implementation
     private int score;
     private boolean dead; // to indicate if pacman is dead;
 
@@ -155,20 +155,20 @@ public class Pacman extends Entity {
         // if we move upwards, we have to check top left&right corners of collision box
         if (handler.getKeyManager().up) {
             if (!collidesWithTile(collisionBox.x / Tile.WIDTH, // top left corner
-                                    (int)(collisionBox.y - speed) / Tile.HEIGHT)
+                                    (collisionBox.y - speed) / Tile.HEIGHT)
                 &&
                 !collidesWithTile((collisionBox.x + collisionBox.width) / Tile.WIDTH, // top right corner
-                                    (int)(collisionBox.y - speed) / Tile.HEIGHT)) {
+                                    (collisionBox.y - speed) / Tile.HEIGHT)) {
                 y -= speed;
             } else {
                 // if we do have a collision
                 int tillCollision = 0;
                 for (; tillCollision < speed; tillCollision++) {
                     if (collidesWithTile(collisionBox.x / Tile.WIDTH, // top left corner
-                                    (int)(collisionBox.y - tillCollision) / Tile.HEIGHT)
+                                    (collisionBox.y - tillCollision) / Tile.HEIGHT)
                         || // or
                         collidesWithTile((collisionBox.x + collisionBox.width) / Tile.WIDTH, // top right corner
-                                    (int)(collisionBox.y - tillCollision) / Tile.HEIGHT)) {
+                                    (collisionBox.y - tillCollision) / Tile.HEIGHT)) {
                         break;
                     }
                 }
@@ -181,20 +181,20 @@ public class Pacman extends Entity {
 
         // if we move rightwards, we have to check for top&bottom right corners
         } else if (handler.getKeyManager().right) {
-            if (!collidesWithTile((int)(speed + collisionBox.x + collisionBox.width) / Tile.WIDTH, // top right corner
+            if (!collidesWithTile((speed + collisionBox.x + collisionBox.width) / Tile.WIDTH, // top right corner
                                     collisionBox.y / Tile.HEIGHT)
                 &&
-                !collidesWithTile(  (int)(speed + collisionBox.x + collisionBox.width) / Tile.WIDTH, // bottom right corner
+                !collidesWithTile(  (speed + collisionBox.x + collisionBox.width) / Tile.WIDTH, // bottom right corner
                                     (collisionBox.y + collisionBox.height) / Tile.HEIGHT)) {
                 x += speed;
             } else {
                 // if we do have a collision
                 int tillCollision = 0;
                 for (; tillCollision < speed; tillCollision++) {
-                    if (collidesWithTile((int)(tillCollision + collisionBox.x + collisionBox.width) / Tile.WIDTH, // top right corner
+                    if (collidesWithTile((tillCollision + collisionBox.x + collisionBox.width) / Tile.WIDTH, // top right corner
                                     collisionBox.y / Tile.HEIGHT)
                         || //or
-                        collidesWithTile(  (int)(tillCollision + collisionBox.x + collisionBox.width) / Tile.WIDTH, // bottom right corner
+                        collidesWithTile(  (tillCollision + collisionBox.x + collisionBox.width) / Tile.WIDTH, // bottom right corner
                                     (collisionBox.y + collisionBox.height) / Tile.HEIGHT)) {
                         break;
                     }
@@ -208,20 +208,20 @@ public class Pacman extends Entity {
 
         // if we move leftwards, we have to check for top&bottom left corners
         } else if (handler.getKeyManager().left) {
-            if (!collidesWithTile((int)(collisionBox.x - speed) / Tile.WIDTH, // top left corner
+            if (!collidesWithTile((collisionBox.x - speed) / Tile.WIDTH, // top left corner
                                     collisionBox.y / Tile.HEIGHT)
                 &&
-                !collidesWithTile(  (int)(collisionBox.x - speed) / Tile.WIDTH, // bottom left corner
+                !collidesWithTile(  (collisionBox.x - speed) / Tile.WIDTH, // bottom left corner
                                     (collisionBox.y + collisionBox.height) / Tile.HEIGHT)) {
                 x -= speed;
             } else {
                 // if we do have a collision
                 int tillCollision = 0;
                 for (; tillCollision < speed; tillCollision++) {
-                    if (collidesWithTile((int)(collisionBox.x - tillCollision) / Tile.WIDTH, // top left corner
+                    if (collidesWithTile((collisionBox.x - tillCollision) / Tile.WIDTH, // top left corner
                                     collisionBox.y / Tile.HEIGHT)
                         || //or
-                        collidesWithTile(  (int)(collisionBox.x - tillCollision) / Tile.WIDTH, // bottom left corner
+                        collidesWithTile(  (collisionBox.x - tillCollision) / Tile.WIDTH, // bottom left corner
                                     (collisionBox.y + collisionBox.height) / Tile.HEIGHT)) {
                         break;
                     }
@@ -236,10 +236,10 @@ public class Pacman extends Entity {
         // if we move downwards, we have to check for bottom left&right corners
         } else if (handler.getKeyManager().down) {
             if (!collidesWithTile(collisionBox.x / Tile.WIDTH, // bottom left corner
-                                    (int)(speed + collisionBox.y + collisionBox.height) / Tile.HEIGHT)
+                                    (speed + collisionBox.y + collisionBox.height) / Tile.HEIGHT)
                 &&
                 !collidesWithTile(  (collisionBox.x + collisionBox.width) / Tile.WIDTH, // bottom right corner
-                                    (int)(speed + collisionBox.y + collisionBox.height) / Tile.HEIGHT)) {
+                                    (speed + collisionBox.y + collisionBox.height) / Tile.HEIGHT)) {
                 y += speed;
             } else {
                 // if we do have a collision

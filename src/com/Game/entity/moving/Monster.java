@@ -51,6 +51,10 @@ public class Monster extends Entity {
             g.fillRect((int) (collisionBox.x - handler.getGameCamera().getxOffset()),
                        (int) (collisionBox.y - handler.getGameCamera().getyOffset()),
                        collisionBox.width, collisionBox.height);
+            g.setColor(Color.BLUE);
+            g.fillOval((int) (brain.getChasePosX() - handler.getGameCamera().getxOffset()),
+                       (int) (brain.getChasePosY() - handler.getGameCamera().getyOffset()),
+                       15, 15);
         } else {
             g.drawImage(Assets.getMonsterUp(),
                         (int) (x - handler.getGameCamera().getxOffset()),

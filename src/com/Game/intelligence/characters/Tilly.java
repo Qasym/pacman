@@ -18,17 +18,17 @@ import org.jetbrains.annotations.NotNull;
 * extended vector ends on will be Tilly's actual target.
 * */
 public class Tilly extends MonsterBrain {
-    public Tilly(Handler handler, int scatterPosX, int scatterPosY) {
+    private final Billy billy;
+    public Tilly(Handler handler, int scatterPosX, int scatterPosY, Billy billy) {
         super(handler, scatterPosX, scatterPosY);
+        this.billy = billy;
     }
 
     @Override
     public void setChaseCoordinates() {
-        int billyX, billyY; // position of Billy
+        int billyX = billy.getBillyPositionX(); // position of Billy
+        int billyY = billy.getBillyPositionY();
         int pacmanX, pacmanY; // position of a tile in front of Pacman
-
-        billyX = handler.getBilly().getCollisionBox().x;
-        billyY = handler.getBilly().getCollisionBox().y;
 
         if (handler.getPacman().getCurrentDirection() == Pacman.UP) { // if pacman moves upwards
             pacmanX = handler.getPacman().getCollisionBox().x;
