@@ -25,6 +25,16 @@ public class Tilly extends MonsterBrain {
     }
 
     @Override
+    public void monsterStarter() {
+        if (handler.getPacman().getScore() < 35) {
+            this.monster.setSpeed(0);
+        } else {
+            this.monster.setSpeed(Entity.DEFAULT_SPEED);
+            setChaseState();
+        }
+    }
+
+    @Override
     public void setChaseCoordinates() {
         int billyX = billy.getBillyPositionX(); // position of Billy
         int billyY = billy.getBillyPositionY();

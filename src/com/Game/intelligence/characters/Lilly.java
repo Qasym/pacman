@@ -21,6 +21,10 @@ public class Lilly extends MonsterBrain {
         super(handler, scatterPosX, scatterPosY);
     }
 
+    // Lilly starts immediately, so we don't need to implement this method
+    @Override
+    public void monsterStarter() {}
+
     @Override
     public void setChaseCoordinates() {
         if (handler.getPacman().getCurrentDirection() == Pacman.UP) { // if pacman moves upwards

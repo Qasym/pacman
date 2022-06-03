@@ -1,5 +1,6 @@
 package com.Game.intelligence.characters;
 
+import com.Game.entity.Entity;
 import com.Game.intelligence.MonsterBrain;
 import com.Game.tile.Tile;
 import com.Game.utils.Handler;
@@ -20,8 +21,25 @@ import com.Game.utils.Handler;
 * not specified how 8 tiles are calculated
 * */
 public class Silly extends MonsterBrain {
+    private long lastTime;
+    private double delta;
+
     public Silly(Handler handler, int scatterPosX, int scatterPosY) {
         super(handler, scatterPosX, scatterPosY);
+        lastTime = System.currentTimeMillis();
+    }
+
+    // When 15 seconds pass, we release the ghost
+    @Override
+    public void monsterStarter() {
+        delta += (System.currentTimeMillis() - lastTime) / 1000.0;
+        lastTime = System.currentTimeMillis();
+        if (delta < 15) {
+            this.monster.setSpeed(0);
+        } else {
+            this.monster.setSpeed(Entity.DEFAULT_SPEED);
+            setChaseState();
+        }
     }
 
     @Override

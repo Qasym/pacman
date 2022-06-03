@@ -15,7 +15,7 @@ public abstract class Entity {
     protected float x, y; //position variables, they are floating point to achieve smoothness
     protected Handler handler; //handler holds all the necessary objects such as world and game
     protected Rectangle collisionBox; // Rectangle object to hold the collision box
-    protected static final int DEFAULT_SPEED = 7;
+    public static final int DEFAULT_SPEED = 7;
 
     /*
      * I have to explain about collision bounds

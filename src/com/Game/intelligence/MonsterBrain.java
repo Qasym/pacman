@@ -72,24 +72,32 @@ public abstract class MonsterBrain {
         currentState = State.CHASE;
         this.scatterPosY = scatterPosY;
         this.scatterPosX = scatterPosX;
-        lastTime = System.nanoTime();
+        lastTime = System.currentTimeMillis();
         currentDirection = DOWN;
         availableDirections[currentDirection] = true;
         this.handler = handler;
     }
 
     /*
+    * Some monsters start their movement after certain event
+    * happens, such as player scoring 60 or when some certain
+    * amount of time passes
+    *
+    * This method ensures that monsters start the chase properly
+    * as the player progresses
+    * */
+    public abstract void monsterStarter();
+
+    /*
     * This method is needed for monster to decide
     * its next move
-    *
-    * This method is abstract since each monster has unique
-    * decisions to make
     * */
     public void decide() {
         trackState(monster);
         setAvailableDirections();
         setChaseCoordinates();
         this.currentDirection = calculateBestDirection();
+        monsterStarter();
     }
 
     /*
@@ -104,23 +112,20 @@ public abstract class MonsterBrain {
     * properly track when we have to switch out states
     * */
     public void trackState(Monster monster) {
-        long now = System.nanoTime();
-        delta += (now - lastTime) / 1e9; // count how many seconds passed
+        long now = System.currentTimeMillis();
+        delta += (now - lastTime) / 1000.0; // count how many seconds passed
         lastTime = now;
 
         if (currentState == State.CHASE) {
             if (delta > (double) CHASE_TIME) {
-                delta = 0;
                 setScatterState();
             }
         } else if (currentState == State.SCATTER) {
             if (delta > (double) SCATTER_TIME) {
-                delta = 0;
                 setChaseState();
             }
         } else if (currentState == State.FRIGHTENED) {
             if (delta > (double) FRIGHTENED_TIME) {
-                delta = 0;
                 setChaseState();
             }
         } else { // EATEN state
@@ -298,33 +303,25 @@ public abstract class MonsterBrain {
     }
 
     public void setChaseState() {
+        delta = 0;
         currentState = State.CHASE;
     }
 
     public void setScatterState() {
+        delta = 0;
         currentState = State.SCATTER;
     }
 
     public void setFrightenedState() {
+        delta = 0;
         currentState = State.FRIGHTENED;
     }
 
     public void setEatenState() {
+        delta = 0;
         currentState = State.EATEN;
     }
 
-    public void setDirectionUp() {
-        currentDirection = UP;
-    }
-    public void setDirectionDown() {
-        currentDirection = DOWN;
-    }
-    public void setDirectionLeft() {
-        currentDirection = LEFT;
-    }
-    public void setDirectionRight() {
-        currentDirection = RIGHT;
-    }
     public int getCurrentDirection() {
         return currentDirection;
     }

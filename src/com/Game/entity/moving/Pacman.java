@@ -272,6 +272,10 @@ public class Pacman extends Entity {
         score++;
     }
 
+    public int getScore() {
+        return score;
+    }
+
     public int getCurrentDirection() {
         return currentDirection;
     }

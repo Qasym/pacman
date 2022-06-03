@@ -15,6 +15,10 @@ public class Billy extends MonsterBrain {
         super(handler, scatterPosX, scatterPosY);
     }
 
+    // Billy starts immediately, so we don't need to implement this method
+    @Override
+    public void monsterStarter() {}
+
     @Override
     public void setChaseCoordinates() {
         chasePosX = (int) handler.getPacman().getX();
