@@ -154,10 +154,10 @@ public class World {
         // Tilly spawn ends
 
         // Silly spawn begins
-//        entityManager.addEntity(new Monster(handler, spawnPoints[8] * Tile.WIDTH,
-//                                                     spawnPoints[9] * Tile.HEIGHT,
-//                                                     new Tilly(handler, spawnPoints[0] * Tile.WIDTH,
-//                                                                        spawnPoints[1] * Tile.HEIGHT)));
+        entityManager.addEntity(new Monster(handler, spawnPoints[8] * Tile.WIDTH,
+                                                     spawnPoints[9] * Tile.HEIGHT,
+                                                     new Silly(handler, spawnPoints[0] * Tile.WIDTH,
+                                                                        spawnPoints[1] * Tile.HEIGHT)));
         // Silly spawn ends
     }
 
