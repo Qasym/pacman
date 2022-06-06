@@ -24,9 +24,12 @@ public class Silly extends MonsterBrain {
     private long lastTime;
     private double delta;
 
+    private boolean isFirstTime = true; // flag to properly initialize Silly's states
+
     public Silly(Handler handler, int scatterPosX, int scatterPosY) {
         super(handler, scatterPosX, scatterPosY);
         lastTime = System.currentTimeMillis();
+        setName("Silly");
     }
 
     // When 15 seconds pass, we release the ghost
@@ -38,7 +41,10 @@ public class Silly extends MonsterBrain {
             this.monster.setSpeed(0);
         } else {
             this.monster.setSpeed(Entity.DEFAULT_SPEED);
-            setChaseState();
+            if (isFirstTime) {
+                isFirstTime = false;
+                setChaseState();
+            }
         }
     }
 

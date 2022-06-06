@@ -1,12 +1,10 @@
 package com.Game.intelligence.characters;
 
-import com.Game.entity.Entity;
 import com.Game.entity.moving.Monster;
 import com.Game.entity.moving.Pacman;
 import com.Game.intelligence.MonsterBrain;
 import com.Game.tile.Tile;
 import com.Game.utils.Handler;
-import org.jetbrains.annotations.NotNull;
 
 /*
 * Lilly is the Pinky from the original game
@@ -17,22 +15,33 @@ import org.jetbrains.annotations.NotNull;
 * 4 tiles in front of pacman
 * */
 public class Lilly extends MonsterBrain {
-    private long lastTime;
-    private double delta;
+    // variables needed to track time properly
+    private long lilly_lastTime;
+    private double lilly_delta;
+
+    private boolean isFirstTime = true; // flag to properly initialize Lilly's states
+
     public Lilly(Handler handler, int scatterPosX, int scatterPosY) {
         super(handler, scatterPosX, scatterPosY);
-        lastTime = System.currentTimeMillis();
+        lilly_lastTime = System.currentTimeMillis();
+        setName("Lilly");
     }
 
-    // Lilly starts immediately, so we don't need to implement this method
+    // Lilly starts after 2 seconds, so that she doesn't collide with Billy
     @Override
     public void monsterStarter() {
         this.monster.setSpeed(0);
-        delta += (System.currentTimeMillis() - lastTime) / 1000.0;
-        lastTime = System.currentTimeMillis();
-        if (delta > 2) {
+
+        long now = System.currentTimeMillis();
+        lilly_delta += (now - lilly_lastTime) / 1000.0;
+        lilly_lastTime = now;
+
+        if (lilly_delta > 2) {
             this.monster.setSpeed(Monster.DEFAULT_SPEED);
-            setChaseState();
+            if (isFirstTime) {
+                isFirstTime = false;
+                setChaseState();
+            }
         }
     }
 

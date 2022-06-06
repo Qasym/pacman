@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class Billy extends MonsterBrain {
     public Billy(Handler handler, int scatterPosX, int scatterPosY) {
         super(handler, scatterPosX, scatterPosY);
+        setName("Billy");
     }
 
     // Billy starts immediately, so we don't need to implement this method

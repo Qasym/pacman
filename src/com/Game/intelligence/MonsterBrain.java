@@ -57,12 +57,13 @@ public abstract class MonsterBrain {
     protected int chasePosX, chasePosY; // direct monster in CHASE state
 
     // time tracking for switching the phases
-    public final int SCATTER_TIME = 7, CHASE_TIME = 20, FRIGHTENED_TIME = 5;
+    public final int SCATTER_TIME = 7, CHASE_TIME = 15, FRIGHTENED_TIME = 5;
     private long lastTime;
     private double delta;
 
     // Monster reference
     protected Monster monster = null;
+    protected String name = null; // variable to store monster's name for debugging purposes
 
     // Turning points
     protected static Point[] turningPoints = null;
@@ -332,5 +333,9 @@ public abstract class MonsterBrain {
 
     public int getChasePosY() {
         return chasePosY;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

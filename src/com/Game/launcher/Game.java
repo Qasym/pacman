@@ -11,7 +11,7 @@ import com.Game.states.SettingsState;
 import com.Game.states.State;
 import com.Game.utils.Handler;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 /*

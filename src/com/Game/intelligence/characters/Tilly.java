@@ -1,12 +1,10 @@
 package com.Game.intelligence.characters;
 
 import com.Game.entity.Entity;
-import com.Game.entity.moving.Monster;
 import com.Game.entity.moving.Pacman;
 import com.Game.intelligence.MonsterBrain;
 import com.Game.tile.Tile;
 import com.Game.utils.Handler;
-import org.jetbrains.annotations.NotNull;
 
 /*
 * Tilly is the Inky from the original game
@@ -18,10 +16,13 @@ import org.jetbrains.annotations.NotNull;
 * extended vector ends on will be Tilly's actual target.
 * */
 public class Tilly extends MonsterBrain {
-    private final Billy billy;
+    private boolean isFirstTime = true; // flag to properly initialize Tilly's states
+    private final Billy billy; // Tilly needs to know where Billy is
+
     public Tilly(Handler handler, int scatterPosX, int scatterPosY, Billy billy) {
         super(handler, scatterPosX, scatterPosY);
         this.billy = billy;
+        setName("Tilly");
     }
 
     @Override
@@ -30,7 +31,10 @@ public class Tilly extends MonsterBrain {
             this.monster.setSpeed(0);
         } else {
             this.monster.setSpeed(Entity.DEFAULT_SPEED);
-            setChaseState();
+            if (isFirstTime) {
+                isFirstTime = false;
+                setChaseState();
+            }
         }
     }
 
