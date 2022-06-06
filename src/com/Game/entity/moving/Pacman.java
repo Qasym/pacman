@@ -45,7 +45,7 @@ public class Pacman extends Entity {
 
     @Override
     public void tick() {
-        if (dead) {
+        if (isDead()) {
             setSpeed(0);
         }
 

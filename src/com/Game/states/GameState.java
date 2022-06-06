@@ -1,5 +1,6 @@
 package com.Game.states;
 
+import com.Game.audio.AudioManager;
 import com.Game.gfx.Assets;
 import com.Game.intelligence.MonsterBrain;
 import com.Game.ui.ImageButton;
@@ -9,10 +10,19 @@ import com.Game.utils.Utils;
 import com.Game.world.World;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
-import java.util.Arrays;
 
 public class GameState extends State {
+    /*
+    * This switch is needed to optimally use the created instance of World
+    * during the GameState construction phase
+    *
+    * When we go back to menu state and again play the game, we don't create
+    * a new instance of GameState, but we have to create a new instance of world
+    *
+    * switched - is a perfect variable for this
+    * */
+    private boolean switched = false;
+
     private World world;
     private final UIManager uiManager;
 
@@ -21,8 +31,7 @@ public class GameState extends State {
         // initializing the monster AI
         initializeAI();
 
-        // initializing the world
-        world = new World(handler,"res/worlds/base_world");
+        world = new World(handler, "res/worlds/base_world");
         handler.setWorld(world);
 
         // initializing UI for when the game finishes
@@ -32,8 +41,18 @@ public class GameState extends State {
             handler.setWorld(world);
         }));
         uiManager.addObject(new ImageButton(300f, 600f, 300, 150, Assets.getExitButton(), () -> {
-            System.exit(0);
+            handler.getMouseManager().setUiManager(((MenuState)handler.getGame().menuState).getUiManager());
+            State.setState(handler.getGame().menuState);
+            switched = true;
+            AudioManager.playMenuMusic();
         }));
+    }
+
+    public void reinitializeState() {
+        if (switched) {
+            world = new World(handler, "res/worlds/base_world");
+            handler.setWorld(world);
+        }
     }
 
     @Override

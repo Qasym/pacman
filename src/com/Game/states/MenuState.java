@@ -31,6 +31,7 @@ public class MenuState extends State {
         uiManager.addObject(new ImageButton(300f, 300f, 300, 150, Assets.getPlayButton(), () -> {
             AudioManager.stopMusic();
             handler.getMouseManager().setUiManager(null);
+            ((GameState)handler.getGame().gameState).reinitializeState();
             State.setState(handler.getGame().gameState);
         }));
         uiManager.addObject(new ImageButton(300f, 700f, 300, 150, Assets.getOptionsButton(), () -> {
