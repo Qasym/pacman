@@ -12,6 +12,8 @@
 - Sprites
   - [Piskelapp](https://www.piskelapp.com/p/create/sprite)
   - [Clickminded](https://www.clickminded.com/button-generator/)
+- Font
+  - [Google fonts](https://fonts.google.com/specimen/Kdam+Thmor+Pro?subset=latin&preview.size=28#standard-styles)
 - Music
   - [Chillhop Music](https://chillhop.com/creators/)
       - Sleepy Fish - Fireplace

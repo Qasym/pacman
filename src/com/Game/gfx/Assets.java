@@ -1,18 +1,20 @@
 package com.Game.gfx;
 
 import com.Game.audio.AudioManager;
+import com.Game.ui.Text;
 import com.Game.utils.Utils;
 
 import javax.sound.sampled.AudioSystem;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
 // An asset is any image, sound or piece of music in our game
 public class Assets {
+    // Font
+    public static Font font;
 
-    /*
-    * This subclass holds all the assets needed for Pacman
-    * */
+    // This subclass holds all the assets needed for Pacman
     static class PacmanAssets {
         private static boolean initialized = false; //this boolean is needed to check if sprites are initialized or not
 
@@ -63,9 +65,8 @@ public class Assets {
         }
     }
 
-    /*
-     * This subclass holds all the assets needed for Monster
-     * */
+
+    // This subclass holds all the assets needed for Monster
     static class MonsterAssets {
         private static boolean initialized = false; //this boolean is needed to check if sprites are initialized or not
 
@@ -173,6 +174,10 @@ public class Assets {
         return uiSprites[2];
     }
 
+    public static Font getFont(){
+        return font;
+    }
+
     public static BufferedImage getWall() {
         return (tileSprites[0] == null) ? null : tileSprites[0].crop(0, 0, 20, 16); //tile width=20, height=16
     }
@@ -198,6 +203,9 @@ public class Assets {
     * This method is called only once
     * */
     public static void init() {
+        // Fonts
+        font = Text.loadFont("res/fonts/game_font.ttf", 32);
+
         // Entities' sprites
         entitySprites = new SpriteSheet[5];
 

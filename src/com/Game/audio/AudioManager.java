@@ -12,18 +12,6 @@ public class AudioManager {
     private static boolean musicOn = true;
 
     /*
-    * For some unknown reason to me, this playMenuMusic() and
-    * stopMusic() methods work very strangely
-    *
-    * For some reason, they work differently each start of the game
-    * Sometimes they throw error "Runtime exception", sometimes they don't
-    * todo: find the cause
-    *
-    * Also, music is played with a little bit of delay
-    * todo: fix delay
-    *  */
-
-    /*
     * We first check if the setting is on, if it's not, we don't play the music
     * if it is on, we get a Clip object, and open an audio-file(if it's not already open)
     * */

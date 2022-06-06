@@ -4,6 +4,7 @@ import com.Game.audio.AudioManager;
 import com.Game.gfx.Assets;
 import com.Game.intelligence.MonsterBrain;
 import com.Game.ui.ImageButton;
+import com.Game.ui.Text;
 import com.Game.ui.UIManager;
 import com.Game.utils.Handler;
 import com.Game.utils.Utils;
@@ -69,6 +70,8 @@ public class GameState extends State {
         world.render(g);
         if (handler.getWorld().getEntityManager().getPacman().isDead()) {
             uiManager.render(g);
+            Text.drawString(g, "Score: " + handler.getWorld().getEntityManager().getPacman().getScore(),
+                            false, 300, 150, Assets.getFont(), Color.WHITE);
         }
     }
 
