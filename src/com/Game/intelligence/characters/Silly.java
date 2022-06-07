@@ -34,7 +34,7 @@ public class Silly extends MonsterBrain {
 
     // When 15 seconds pass, we release the ghost
     @Override
-    public void monsterStarter() {
+    public void activateMonster() {
         delta += (System.currentTimeMillis() - lastTime) / 1000.0;
         lastTime = System.currentTimeMillis();
         if (delta < 15) {

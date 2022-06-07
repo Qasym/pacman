@@ -3,7 +3,9 @@ package com.Game.world;
 import com.Game.entity.EntityManager;
 import com.Game.entity.moving.Monster;
 import com.Game.entity.moving.Pacman;
+import com.Game.entity.statics.apples.AngryBuff;
 import com.Game.entity.statics.apples.Apple;
+import com.Game.entity.statics.apples.SpeedBuff;
 import com.Game.intelligence.characters.Billy;
 import com.Game.intelligence.characters.Lilly;
 import com.Game.intelligence.characters.Silly;
@@ -14,8 +16,6 @@ import com.Game.utils.Utils;
 
 import java.awt.Graphics;
 
-/*
-* */
 public class World {
     /*
     * My map is transposed (I don't know why I made it that way)
@@ -61,13 +61,21 @@ public class World {
 
         // Adding pacman
         this.entityManager = new EntityManager(handler,
-                                            new Pacman(handler,
-                                                    spawnPoints[0] * Tile.WIDTH,
-                                                    spawnPoints[1] * Tile.HEIGHT));
+                                               new Pacman(handler,
+                                                          spawnPoints[0] * Tile.WIDTH,
+                                                          spawnPoints[1] * Tile.HEIGHT));
         // Adding monsters
         initializeMonsters();
 
         // Adding apples
+        initializeApples();
+    }
+
+    // This method adds apples to the game
+    private void initializeApples() {
+        int[] speedBuffPositions = new int[]{26, 6, 1, 1};
+        int[] powerBuffPositions = new int[]{26, 21, 1, 26};
+
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (i == spawnPoints[0] && j == spawnPoints[1]) {
@@ -75,6 +83,23 @@ public class World {
                     continue;
                 }
                 if (tilePositions != null && tilePositions[i][j] == 1) {
+                    if (i == speedBuffPositions[0]) {
+                        if (j == speedBuffPositions[1]) {
+                            entityManager.addEntity(new SpeedBuff(handler, i * Tile.WIDTH, j * Tile.HEIGHT));
+                            continue;
+                        } else if (j == powerBuffPositions[1]) {
+                            entityManager.addEntity(new AngryBuff(handler, i * Tile.WIDTH, j * Tile.HEIGHT));
+                            continue;
+                        }
+                    } else if (i == speedBuffPositions[2]) {
+                        if (j == speedBuffPositions[3]) {
+                            entityManager.addEntity(new SpeedBuff(handler, i * Tile.WIDTH, j * Tile.HEIGHT));
+                            continue;
+                        } else if (j == powerBuffPositions[3]) {
+                            entityManager.addEntity(new AngryBuff(handler, i * Tile.WIDTH, j * Tile.HEIGHT));
+                            continue;
+                        }
+                    }
                     entityManager.addEntity(new Apple(handler, i * Tile.WIDTH, j * Tile.HEIGHT));
                 }
             }
@@ -112,6 +137,7 @@ public class World {
         }
     }
 
+    // Loads up all the fields of this class
     private void loadWorld(String path) {
         // A string (split by any whitespace) representation of base_world file
         String[] tokens = Utils.loadFileAsString(path).split("\\s+");
@@ -147,33 +173,38 @@ public class World {
         // Billy spawn begins
         Billy billyBrain = new Billy(handler, spawnPoints[0] * Tile.WIDTH,
                 -1 * Tile.HEIGHT);
-        Monster billy = new Monster(handler, spawnPoints[2] * Tile.WIDTH,
-                                             spawnPoints[3] * Tile.HEIGHT,
-                                    billyBrain);
-        entityManager.addEntity(billy);
+        Monster billy = new Monster(handler,
+                                    spawnPoints[2] * Tile.WIDTH,
+                                    spawnPoints[3] * Tile.HEIGHT, billyBrain);
+        entityManager.addMonster(billy);
         // Billy spawn ends
 
         // Lilly spawn begins
-        Monster lilly = new Monster(handler, spawnPoints[4] * Tile.WIDTH,
-                                             spawnPoints[5] * Tile.HEIGHT,
+        Monster lilly = new Monster(handler,
+                                    spawnPoints[4] * Tile.WIDTH,
+                                    spawnPoints[5] * Tile.HEIGHT,
                                     new Lilly(handler, 0,
-                                            spawnPoints[1] * Tile.HEIGHT));
-        entityManager.addEntity(lilly);
+                                              spawnPoints[1] * Tile.HEIGHT));
+        entityManager.addMonster(lilly);
         // Lilly spawn ends
 
         // Tilly spawn begins
-        Monster tilly = new Monster(handler, spawnPoints[6] * Tile.WIDTH,
-                                             spawnPoints[7] * Tile.HEIGHT,
-                                    new Tilly(handler, 0,
-                                            -1 * Tile.HEIGHT, billyBrain));
-        entityManager.addEntity(tilly);
+        Monster tilly = new Monster(handler,
+                                    spawnPoints[6] * Tile.WIDTH,
+                                    spawnPoints[7] * Tile.HEIGHT,
+                                    new Tilly(handler,
+                                              0,
+                                              -1 * Tile.HEIGHT, billyBrain));
+        entityManager.addMonster(tilly);
         // Tilly spawn ends
 
         // Silly spawn begins
-        entityManager.addEntity(new Monster(handler, spawnPoints[8] * Tile.WIDTH,
-                                                     spawnPoints[9] * Tile.HEIGHT,
-                                                     new Silly(handler, spawnPoints[0] * Tile.WIDTH,
-                                                                        spawnPoints[1] * Tile.HEIGHT)));
+        entityManager.addMonster(new Monster(handler,
+                                             spawnPoints[8] * Tile.WIDTH,
+                                             spawnPoints[9] * Tile.HEIGHT,
+                                             new Silly(handler,
+                                                       spawnPoints[0] * Tile.WIDTH,
+                                                       spawnPoints[1] * Tile.HEIGHT)));
         // Silly spawn ends
     }
 
@@ -187,14 +218,6 @@ public class World {
 
     public int getHeight() {
         return height;
-    }
-
-    public int getPacmanSpawnX() {
-        return spawnPoints[0];
-    }
-
-    public int getPacmanSpawnY() {
-        return spawnPoints[1];
     }
 
     public int getPortal1X() {
@@ -213,6 +236,4 @@ public class World {
         return portal2Y;
     }
 }
-// todo: finish exit button callback to main menu, not exit
-// todo: display score
 // todo: implement buffs

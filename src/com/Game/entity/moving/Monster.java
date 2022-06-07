@@ -3,12 +3,15 @@ package com.Game.entity.moving;
 import com.Game.entity.Entity;
 import com.Game.gfx.Assets;
 import com.Game.intelligence.MonsterBrain;
+import com.Game.tile.Tile;
 import com.Game.utils.Handler;
 
 import java.awt.*;
 
 /*
 * This class is for the monster logic in Pacman game
+*
+* This class deals with the "physical" aspects of the monster
 * */
 public class Monster extends Entity {
     private final MonsterBrain brain;
@@ -38,7 +41,7 @@ public class Monster extends Entity {
 
         // check if monster collided (ate) pacman
         if (collisionBox.intersects(handler.getPacman().getCollisionBox())) {
-            handler.getPacman().eatenByMonster();
+            handler.getPacman().eatenByMonster(this);
         }
     }
 

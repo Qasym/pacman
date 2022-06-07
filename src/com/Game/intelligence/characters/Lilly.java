@@ -29,7 +29,7 @@ public class Lilly extends MonsterBrain {
 
     // Lilly starts after 2 seconds, so that she doesn't collide with Billy
     @Override
-    public void monsterStarter() {
+    public void activateMonster() {
         this.monster.setSpeed(0);
 
         long now = System.currentTimeMillis();

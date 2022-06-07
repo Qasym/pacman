@@ -8,6 +8,8 @@ import com.Game.input.MouseManager;
 import com.Game.launcher.Game;
 import com.Game.world.World;
 
+import java.util.ArrayList;
+
 /*
 * Handler class is a simple class that holds all the necessary
 * objects, and sole purpose of this class is to ease the access to those
@@ -16,7 +18,7 @@ public class Handler {
     protected Game game;
     protected World world;
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     public Handler(Game game) {
         this.game = game;
@@ -68,5 +70,9 @@ public class Handler {
 
     public Pacman getPacman() {
         return world.getEntityManager().getPacman();
+    }
+
+    public ArrayList<Monster> getMonsters() {
+        return world.getEntityManager().getMonsters();
     }
 }

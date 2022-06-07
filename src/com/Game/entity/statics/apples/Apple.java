@@ -7,6 +7,7 @@ import com.Game.tile.Tile;
 import com.Game.utils.Handler;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /*
 * Apple class is a class that is responsible for
@@ -19,12 +20,15 @@ public class Apple extends StaticEntity {
                         DEFAULT_COLLISION_BOUNDS_WIDTH = 5,
                         DEFAULT_COLLISION_BOUNDS_HEIGHT = 5;
 
-    private boolean eaten = false; // this variable controls if this apple is interactable&visible or not
+    protected boolean eaten = false; // this variable controls if this apple is interactable&visible or not
 
     // apple respawn timer variables
     // operates in a very similar way as animations (in the same way)
-    private static final long respawnRate = 60000; // in milliseconds
-    private long lastTime, timer;
+    protected static final long respawnRate = 60000; // in milliseconds
+    protected long lastTime, timer;
+
+    // apple sprite
+    protected BufferedImage appleSprite;
 
     public Apple(Handler handler, float x, float y) {
         // I want my apples to be 4 times smaller than the pacman
@@ -38,16 +42,20 @@ public class Apple extends StaticEntity {
         collisionBox.y = (int)(this.y + DEFAULT_COLLISION_BOUNDS_Y);
         collisionBox.width = DEFAULT_COLLISION_BOUNDS_WIDTH;
         collisionBox.height = DEFAULT_COLLISION_BOUNDS_HEIGHT;
+
+        // Assigning apple sprite
+        appleSprite = Assets.getAppleSprite();
     }
 
     @Override
     public void tick() {
-        if (eaten) {
+        if (isEaten()) {
             timer += System.currentTimeMillis() - lastTime;
             lastTime = System.currentTimeMillis();
 
             if (timer >= respawnRate) {
                 eaten = false;
+                timer = 0;
                 tick();
             }
         } else { // if we are not eaten
@@ -59,21 +67,21 @@ public class Apple extends StaticEntity {
 
     @Override
     public void render(Graphics g) {
-        if (eaten) return; // if this apple is eaten we don't draw it
-
-        boolean checkingCollisions = Handler.DEBUG; // variable for testing purposes
-        if (checkingCollisions) {
-            // Temporary code to check collision related stuff;
-            g.setColor(Color.BLUE);
-            g.drawRect((int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), width, height);
-            g.setColor(Color.RED);
-            g.fillRect( (int)(collisionBox.x - handler.getGameCamera().getxOffset()),
-                    (int)(collisionBox.y - handler.getGameCamera().getyOffset()),
-                    collisionBox.width, collisionBox.height);
-        } else {
-            g.drawImage(Assets.getAppleSprite(),
-                    (int) (x - handler.getGameCamera().getxOffset()),
-                    (int) (y - handler.getGameCamera().getyOffset()), null);
+        if (!isEaten()) { // if this apple is not eaten we draw it
+            boolean checkingCollisions = Handler.DEBUG; // variable for testing purposes
+            if (checkingCollisions) {
+                g.setColor(Color.BLUE);
+                g.drawRect((int) (x - handler.getGameCamera().getxOffset()),
+                           (int) (y - handler.getGameCamera().getyOffset()), width, height);
+                g.setColor(Color.RED);
+                g.fillRect((int)(collisionBox.x - handler.getGameCamera().getxOffset()),
+                           (int)(collisionBox.y - handler.getGameCamera().getyOffset()),
+                           collisionBox.width, collisionBox.height);
+            } else {
+                g.drawImage(appleSprite,
+                            (int) (x - handler.getGameCamera().getxOffset()),
+                            (int) (y - handler.getGameCamera().getyOffset()), null);
+            }
         }
     }
 

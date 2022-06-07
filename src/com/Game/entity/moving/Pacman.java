@@ -8,6 +8,7 @@ import com.Game.utils.Handler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /*
 * This class is for the Pacman logic in Pacman game
@@ -263,8 +264,13 @@ public class Pacman extends Entity {
         }
     }
 
-    public void eatenByMonster() {
-        dead = true;
+    public void eatenByMonster(Monster monster) {
+        if (hasPowerBuff()) {
+            monster.getBrain().setEatenState();
+            score += 20; // give 20 points for eating a monster
+        } else {
+            dead = true;
+        }
     }
 
     public boolean isDead() {
@@ -281,5 +287,22 @@ public class Pacman extends Entity {
 
     public int getCurrentDirection() {
         return currentDirection;
+    }
+
+    // When pacman receives power buff, all monster fear him
+    public void givePowerBuff() {
+        powerBuff = true;
+        ArrayList<Monster> monsters = handler.getMonsters();
+        for (int i = 0; i < monsters.size(); i++) {
+            monsters.get(i).getBrain().setFrightenedState();
+        }
+    }
+
+    public void removePowerBuff() {
+        powerBuff = false;
+    }
+
+    public boolean hasPowerBuff() {
+        return powerBuff;
     }
 }

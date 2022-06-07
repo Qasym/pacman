@@ -18,7 +18,7 @@ public class Billy extends MonsterBrain {
 
     // Billy starts immediately, so we don't need to implement this method
     @Override
-    public void monsterStarter() {}
+    public void activateMonster() {}
 
     @Override
     public void setChaseCoordinates() {

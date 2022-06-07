@@ -26,7 +26,7 @@ public class Tilly extends MonsterBrain {
     }
 
     @Override
-    public void monsterStarter() {
+    public void activateMonster() {
         if (handler.getPacman().getScore() < 35) {
             this.monster.setSpeed(0);
         } else {

@@ -6,7 +6,7 @@ import java.io.File;
 /*
 * This simple class is needed to display text on the screen
 *
-* The only usage is to display score after Pacman dies
+* One usage is to display score after Pacman dies
 * */
 public class Text {
     // Loads font for the game
