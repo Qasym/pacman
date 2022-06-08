@@ -314,8 +314,9 @@ public abstract class MonsterBrain {
 
     // checks if a given monster is at spawn
     public boolean isAtSpawn(@NotNull Monster monster) {
-        return monster.getX() / Tile.WIDTH == monster.getSpawnPosX() / Tile.WIDTH &&
-               monster.getY() / Tile.HEIGHT == monster.getSpawnPosY() / Tile.HEIGHT;
+        // collision box coordinates should be used because they're guaranteed to be inside non-solid tiles
+        return monster.getCollisionBox().x / Tile.WIDTH == (int) monster.getSpawnPosX() / Tile.WIDTH &&
+               monster.getCollisionBox().y / Tile.HEIGHT == (int) monster.getSpawnPosY() / Tile.HEIGHT;
     }
 
     /*
