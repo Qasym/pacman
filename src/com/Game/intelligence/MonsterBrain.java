@@ -272,7 +272,8 @@ public abstract class MonsterBrain {
             x2 = (monster.getCollisionBox().x - Tile.WIDTH) / Tile.WIDTH; // bottom-left x
             y2 = (monster.getCollisionBox().y + Entity.DEFAULT_COLLISION_BOUNDS_HEIGHT) / Tile.HEIGHT; // bottom-left y
             if (isFrightened) {
-                return true;
+                return !monster.collidesWithTile(x1, y1) &&
+                       !monster.collidesWithTile(x2, y2);
             } else {
                 return !monster.collidesWithTile(x1, y1) &&
                        !monster.collidesWithTile(x2, y2) &&
