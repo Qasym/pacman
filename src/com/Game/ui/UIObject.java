@@ -76,7 +76,4 @@ public abstract class UIObject {
         return height;
     }
 
-    public boolean isHovering() {
-        return hovering;
-    }
 }

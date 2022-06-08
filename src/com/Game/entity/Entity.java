@@ -19,40 +19,48 @@ public abstract class Entity {
     public static final int DEFAULT_SPEED = 7;
 
     /*
-     * I have to explain about collision bounds
-     * 0 is the top left corner of entity sprite
-     * 1 is the top left corner of collision box
-     * 2 is the top right corner of collision box
-     * 3 is the bottom left corner of collision box
-     * 4 is the bottom right corner of collision box
-     * 5 is the bottom right corner of entity sprite
-     *
-     * 0
-     * |
-     * | <- DEFAULT_COLLISION_BOUNDS_Y
-     * |
-     * |   DEFAULT_COLLISION_BOUNDS_X
-     * |    |
-     * |    \/
-     * -----------1 -DEFAULT_COLLISION_BOUNDS_WIDTH- 2
-     *            D
-     *            E
-     *            F
-     *            H
-     *            E
-     *            I
-     *            G
-     *            H
-     *            T
-     *            3 -DEFAULT_COLLISION_BOUNDS_WIDTH- 4
-     *
-     *                                                           5
-     *
-     * */
-    public static final int   DEFAULT_COLLISION_BOUNDS_X = 7, // these variables are relative to the pacman sprite
-                        DEFAULT_COLLISION_BOUNDS_Y = 7, // meaning that the bounds are from top-left corner of pacman sprite
-                        DEFAULT_COLLISION_BOUNDS_WIDTH = 18,
-                        DEFAULT_COLLISION_BOUNDS_HEIGHT = 18;
+    * I have to explain about collision bounds
+    * 0 is the top left corner of entity sprite
+    * 1 is the top left corner of collision box
+    * 2 is the top right corner of collision box
+    * 3 is the bottom left corner of collision box
+    * 4 is the bottom right corner of collision box
+    * 5 is the bottom right corner of entity sprite
+    *
+    * 0
+    * |
+    * | <- DEFAULT_COLLISION_BOUNDS_Y
+    * |
+    * |   DEFAULT_COLLISION_BOUNDS_X
+    * |    |
+    * |    \/
+    * -----------1 -DEFAULT_COLLISION_BOUNDS_WIDTH- 2
+    *            D
+    *            E
+    *            F
+    *            H
+    *            E
+    *            I
+    *            G
+    *            H
+    *            T
+    *            3 -DEFAULT_COLLISION_BOUNDS_WIDTH- 4
+    *
+    *                                                           5
+    *
+    * */
+
+    // -- // SEPARATOR // -- //
+
+    /*
+    * these variables are relative to the pacman sprite
+    * meaning that the bounds are from top-left corner of pacman sprite
+    * */
+    public static final int
+            DEFAULT_COLLISION_BOUNDS_X = 7,
+            DEFAULT_COLLISION_BOUNDS_Y = 7,
+            DEFAULT_COLLISION_BOUNDS_WIDTH = 18,
+            DEFAULT_COLLISION_BOUNDS_HEIGHT = 18;
 
 
     protected int speed; //the "speed" at which our entities move

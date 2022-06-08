@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class EntityManager {
     private Handler handler;
     private Pacman pacman;
-    private ArrayList<Entity> entities;
-    private ArrayList<Monster> monsters;
+    private final ArrayList<Entity> entities;
+    private final ArrayList<Monster> monsters;
 
     public EntityManager(Handler handler, Pacman pacman) {
         this.handler = handler;
@@ -68,19 +68,11 @@ public class EntityManager {
         this.pacman = pacman;
     }
 
-    public void setEntities(ArrayList<Entity> entities) {
-        this.entities = entities;
-    }
-
     public Handler getHandler() {
         return handler;
     }
 
     public Pacman getPacman() {
         return pacman;
-    }
-
-    public ArrayList<Entity> getEntities() {
-        return entities;
     }
 }

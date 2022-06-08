@@ -94,3 +94,4 @@ public class GameState extends State {
         return uiManager;
     }
 }
+// todo: fix UI elements click-ability when the game is over

@@ -3,10 +3,10 @@ package com.Game.entity.moving;
 import com.Game.entity.Entity;
 import com.Game.gfx.Assets;
 import com.Game.intelligence.MonsterBrain;
-import com.Game.tile.Tile;
 import com.Game.utils.Handler;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /*
 * This class is for the monster logic in Pacman game
@@ -16,6 +16,7 @@ import java.awt.*;
 public class Monster extends Entity {
     private final MonsterBrain brain;
     public final static int SLOWDOWN = DEFAULT_SPEED - 3;
+    private BufferedImage sprite = Assets.getMonsterRight();
 
     public Monster(Handler handler, float x, float y, MonsterBrain brain) {
         super(handler, x, y, DEFAULT_ENTITY_WIDTH, DEFAULT_ENTITY_HEIGHT);
@@ -62,7 +63,7 @@ public class Monster extends Entity {
                        (int) (brain.getChasePosY() - handler.getGameCamera().getyOffset()),
                        15, 15);
         } else {
-            g.drawImage(Assets.getMonsterUp(),
+            g.drawImage(sprite,
                         (int) (x - handler.getGameCamera().getxOffset()),
                         (int) (y - handler.getGameCamera().getyOffset()), null);
         }
@@ -70,12 +71,16 @@ public class Monster extends Entity {
 
     private void move() {
         if (brain.getCurrentDirection() == MonsterBrain.UP) {
+            sprite = Assets.getMonsterUp();
             y -= speed;
         } else if (brain.getCurrentDirection() == MonsterBrain.DOWN) {
+            sprite = Assets.getMonsterDown();
             y += speed;
         } else if (brain.getCurrentDirection() == MonsterBrain.LEFT) {
+            sprite = Assets.getMonsterLeft();
             x -= speed;
         } else if (brain.getCurrentDirection() == MonsterBrain.RIGHT) {
+            sprite = Assets.getMonsterRight();
             x += speed;
         } else {
             System.out.println("Unknown direction of a monster");

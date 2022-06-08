@@ -1,6 +1,5 @@
 package com.Game.intelligence.characters;
 
-import com.Game.entity.Entity;
 import com.Game.intelligence.MonsterBrain;
 import com.Game.tile.Tile;
 import com.Game.utils.Handler;

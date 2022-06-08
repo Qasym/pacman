@@ -1,6 +1,5 @@
 package com.Game.intelligence.characters;
 
-import com.Game.entity.moving.Monster;
 import com.Game.entity.moving.Pacman;
 import com.Game.intelligence.MonsterBrain;
 import com.Game.tile.Tile;

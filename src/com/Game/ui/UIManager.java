@@ -12,7 +12,7 @@ public class UIManager {
 
     public UIManager(Handler handler) {
         this.handler = handler;
-        allObjects = new ArrayList<UIObject>();
+        allObjects = new ArrayList<>();
     }
 
     public void tick() {
@@ -41,9 +41,5 @@ public class UIManager {
 
     public void addObject(UIObject object) {
         allObjects.add(object);
-    }
-
-    public void removeObject(UIObject object) {
-        allObjects.remove(object);
     }
 }

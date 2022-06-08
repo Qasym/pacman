@@ -13,8 +13,8 @@ public class Display {
     private JFrame frame; //The appearing window
     private Canvas canvas; //Game graphics, we add graphics/sprites through this, allows us to draw things into the screen
 
-    private int width, height; //These two variable actually represent pixels;
-    private String title; //Title of the game
+    private final int width, height; //These two variable actually represent pixels;
+    private final String title; //Title of the game
 
     public Display(String title, int width, int height) {
         this.width = width;

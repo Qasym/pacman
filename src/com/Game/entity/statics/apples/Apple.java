@@ -15,10 +15,15 @@ import java.awt.image.BufferedImage;
 * Those yellow balls in the original pacman game
 * */
 public class Apple extends StaticEntity {
-    private final int   DEFAULT_COLLISION_BOUNDS_X = 1, // these variables are relative to the apple sprite origin
-                        DEFAULT_COLLISION_BOUNDS_Y = 1, // meaning that the bounds are from top-left corner of apple sprite
-                        DEFAULT_COLLISION_BOUNDS_WIDTH = 5,
-                        DEFAULT_COLLISION_BOUNDS_HEIGHT = 5;
+    /*
+    * these variables are relative to the apple sprite origin
+    * meaning that the bounds are from top-left corner of apple sprite
+    * */
+    public final int
+            DEFAULT_COLLISION_BOUNDS_X = 1,
+            DEFAULT_COLLISION_BOUNDS_Y = 1,
+            DEFAULT_COLLISION_BOUNDS_WIDTH = 5,
+            DEFAULT_COLLISION_BOUNDS_HEIGHT = 5;
 
     protected boolean eaten = false; // this variable controls if this apple is interactable&visible or not
 

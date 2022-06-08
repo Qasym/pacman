@@ -1,11 +1,7 @@
 package com.Game.entity.statics.apples;
 
 import com.Game.gfx.Assets;
-import com.Game.tile.Tile;
-import com.Game.ui.Text;
 import com.Game.utils.Handler;
-
-import java.awt.*;
 
 /* This class holds the sprite of speedBuff apple
     Whenever player eats this apple, he gets speedBuff

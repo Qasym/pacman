@@ -1,6 +1,5 @@
 package com.Game.states;
 
-import com.Game.launcher.Game;
 import com.Game.utils.Handler;
 
 import java.awt.*;

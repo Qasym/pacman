@@ -2,7 +2,6 @@ package com.Game.states;
 
 import com.Game.audio.AudioManager;
 import com.Game.gfx.Assets;
-import com.Game.launcher.Game;
 import com.Game.ui.ImageButton;
 import com.Game.ui.UIManager;
 import com.Game.utils.Handler;

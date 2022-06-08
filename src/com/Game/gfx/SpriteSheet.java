@@ -7,7 +7,8 @@ import java.awt.image.BufferedImage;
 *
 * Sprite-sheet is a png file which contains multiple
 * png files within, so when we load one png file, we actually
-* load other png files as well, one shot - multi-kill*/
+* load other png files as well, one shot - multi-kill
+* */
 public class SpriteSheet {
     private BufferedImage sheet;
 

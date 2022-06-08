@@ -35,8 +35,6 @@ public class GameCamera {
     * world size in pixels
     * */
     public void checkBlankSpace() {
-//        xOffset = 0;
-//        yOffset = 0;
         if (xOffset < 0) {
             xOffset = 0;
         } else if (xOffset + handler.getGameWidth() > Tile.WIDTH * handler.getWorld().getWidth()) {
