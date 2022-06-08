@@ -55,7 +55,7 @@ public class AngryBuff extends Apple {
     public void render(Graphics g) {
         super.render(g);
         if (handler.getPacman().hasPowerBuff()) {
-            Text.drawString(g, "Can eat Monsters", false, Tile.WIDTH, Tile.HEIGHT, Assets.getFont(), Color.RED);
+            Text.drawString(g, "Can eat Monsters", false, Tile.WIDTH, Tile.HEIGHT, Assets.getFont(), Color.WHITE);
         }
     }
 }

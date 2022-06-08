@@ -277,8 +277,13 @@ public class Pacman extends Entity {
         return dead;
     }
 
+    private int coefficient = 1; // giveSpeedBuff() updates this value
     public void updateScore() {
-        score++;
+        score += coefficient;
+    }
+
+    private void setCoefficient(int coefficient) {
+        this.coefficient = coefficient;
     }
 
     public int getScore() {
@@ -296,6 +301,29 @@ public class Pacman extends Entity {
         for (int i = 0; i < monsters.size(); i++) {
             monsters.get(i).getBrain().setFrightenedState();
         }
+    }
+
+    // When pacman receives speed buff, he gains more points and slows down monsters
+    public void giveSpeedBuff() {
+        speedBuff = true;
+        setCoefficient(2);
+        ArrayList<Monster> monsters = handler.getMonsters();
+        for (int i = 0; i < monsters.size(); i++) {
+            monsters.get(i).slowMeDown();
+        }
+    }
+
+    public void removeSpeedBuff() {
+        speedBuff = false;
+        setCoefficient(1);
+        ArrayList<Monster> monsters = handler.getMonsters();
+        for (int i = 0; i < monsters.size(); i++) {
+            monsters.get(i).resetSpeed();
+        }
+    }
+
+    public boolean hasSpeedBuff() {
+        return speedBuff;
     }
 
     public void removePowerBuff() {

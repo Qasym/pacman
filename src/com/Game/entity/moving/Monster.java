@@ -15,10 +15,10 @@ import java.awt.*;
 * */
 public class Monster extends Entity {
     private final MonsterBrain brain;
+    public final static int SLOWDOWN = DEFAULT_SPEED - 3;
 
     public Monster(Handler handler, float x, float y, MonsterBrain brain) {
         super(handler, x, y, DEFAULT_ENTITY_WIDTH, DEFAULT_ENTITY_HEIGHT);
-        speed = DEFAULT_SPEED;
         this.brain = brain;
         brain.setMonster(this);
     }
@@ -84,5 +84,17 @@ public class Monster extends Entity {
 
     public MonsterBrain getBrain() {
         return brain;
+    }
+
+    public String getName() {
+        return brain.getName();
+    }
+
+    public void slowMeDown() {
+        speed = SLOWDOWN;
+    }
+
+    public void resetSpeed() {
+        speed = DEFAULT_SPEED;
     }
 }

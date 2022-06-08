@@ -40,7 +40,11 @@ public class Silly extends MonsterBrain {
         if (delta < 15) {
             this.monster.setSpeed(0);
         } else {
-            this.monster.setSpeed(Entity.DEFAULT_SPEED);
+            if (!handler.getPacman().hasSpeedBuff()) {
+                this.monster.resetSpeed();
+            } else {
+                this.monster.slowMeDown();
+            }
             if (isFirstTime) {
                 isFirstTime = false;
                 setChaseState();

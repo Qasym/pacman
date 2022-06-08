@@ -37,7 +37,11 @@ public class Lilly extends MonsterBrain {
         lilly_lastTime = now;
 
         if (lilly_delta > 2) {
-            this.monster.setSpeed(Monster.DEFAULT_SPEED);
+            if (!handler.getPacman().hasSpeedBuff()) {
+                this.monster.resetSpeed();
+            } else {
+                this.monster.slowMeDown();
+            }
             if (isFirstTime) {
                 isFirstTime = false;
                 setChaseState();

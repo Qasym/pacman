@@ -137,9 +137,9 @@ public abstract class Entity {
     }
 
     private boolean isAtTile(int x, int y) {
-        return collisionBox.x / Tile.WIDTH == x && collisionBox.y / Tile.HEIGHT == y
-                &&
-               (collisionBox.x + collisionBox.width) / Tile.WIDTH == x && (collisionBox.y + collisionBox.height) / Tile.HEIGHT == y;
+        return collisionBox.x / Tile.WIDTH == x && collisionBox.y / Tile.HEIGHT == y &&
+               (collisionBox.x + collisionBox.width) / Tile.WIDTH == x &&
+               (collisionBox.y + collisionBox.height) / Tile.HEIGHT == y;
     }
 
     public abstract void tick();
