@@ -377,24 +377,30 @@ public abstract class MonsterBrain {
     }
 
     public void setChaseState() {
-        delta = 0;
-        currentState = State.CHASE;
+        if (handler.getPacman().hasPowerBuff()) {
+            setFrightenedState();
+        } else if (currentState != State.CHASE) {
+            delta = 0;
+            currentState = State.CHASE;
+        }
     }
 
     public void setScatterState() {
-        delta = 0;
-        currentState = State.SCATTER;
+        if (handler.getPacman().hasPowerBuff()) {
+            setFrightenedState();
+        } else if (currentState != State.SCATTER) {
+            delta = 0;
+            currentState = State.SCATTER;
+        }
     }
 
     public void setFrightenedState() {
         if (currentState != State.FRIGHTENED) {
-            delta = 0;
             currentState = State.FRIGHTENED;
         }
     }
 
     public void setEatenState() {
-        delta = 0;
         currentState = State.EATEN;
     }
 
