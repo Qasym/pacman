@@ -2,9 +2,10 @@ package com.Game.utils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 /*
@@ -25,7 +26,8 @@ public class Utils {
     public static String loadFileAsString(String path) {
         StringBuilder stringBuilder = new StringBuilder();
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+            File worldFile = Utils.getResourceAsFile(path);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(worldFile.getPath()));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line).append("\n");
@@ -48,5 +50,24 @@ public class Utils {
             System.exit(102);
         }
         return null;
+    }
+
+    // Source: https://stackoverflow.com/a/35466006/11955017
+    public static File getResourceAsFile(String resourcePath) {
+        File file = null;
+        try {
+            InputStream inputStream = Utils.class.getResourceAsStream(resourcePath);
+            assert inputStream != null;
+            Path path = Files.createTempFile(String.valueOf(inputStream.hashCode()), ".tmp");
+            Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
+            file = path.toFile();
+            file.deleteOnExit();
+            inputStream.close();
+            return file;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(103);
+        }
+        return file;
     }
 }

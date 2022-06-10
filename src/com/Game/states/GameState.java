@@ -32,13 +32,13 @@ public class GameState extends State {
         // initializing the monster AI
         initializeAI();
 
-        world = new World(handler, "res/worlds/base_world");
+        world = new World(handler, "/worlds/base_world");
         handler.setWorld(world);
 
         // initializing UI for when the game finishes
         uiManager = new UIManager(handler);
         uiManager.addObject(new ImageButton(300f, 300f, 300, 150, Assets.getReplayButton(), () -> {
-            world = new World(handler, "res/worlds/base_world"); // restarting;
+            world = new World(handler, "/worlds/base_world"); // restarting;
             handler.setWorld(world);
         }));
         uiManager.addObject(new ImageButton(300f, 600f, 300, 150, Assets.getExitButton(), () -> {
@@ -51,7 +51,7 @@ public class GameState extends State {
 
     public void reinitializeState() {
         if (switched) {
-            world = new World(handler, "res/worlds/base_world");
+            world = new World(handler, "/worlds/base_world");
             handler.setWorld(world);
         }
     }
@@ -82,7 +82,7 @@ public class GameState extends State {
     * Turning point is a tile at which monster can turn
     * */
     private void initializeAI() {
-        String[] file = Utils.loadFileAsString("res/worlds/base_world_turns.txt").split("\\s+");
+        String[] file = Utils.loadFileAsString("/worlds/base_world_turns.txt").split("\\s+");
         Point[] points = new Point[file.length / 2];
         for (int i = 0, j = 0; i < file.length; i += 2) {
             points[j++] = new Point(Utils.parseInt(file[i]), Utils.parseInt(file[i + 1]));

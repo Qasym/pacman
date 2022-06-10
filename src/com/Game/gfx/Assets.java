@@ -7,7 +7,7 @@ import com.Game.utils.Utils;
 import javax.sound.sampled.AudioSystem;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.util.Objects;
 
 // An asset is any image, sound or piece of music in our game
 public class Assets {
@@ -252,7 +252,7 @@ public class Assets {
     * */
     public static void init() {
         // Fonts
-        font = Text.loadFont("res/fonts/game_font.ttf", 32);
+        font = Text.loadFont("/fonts/game_font.ttf", 32);
 
         // Entities' sprites
         entitySprites = new SpriteSheet[7];
@@ -306,7 +306,9 @@ public class Assets {
 
         // Initializing sounds
         try {
-            AudioManager.addMusic(AudioSystem.getAudioInputStream(new File("res/sounds/Fireplace.wav").getAbsoluteFile()));
+            String musicPath = "/sounds/Fireplace.wav";
+            AudioManager.addMusic(AudioSystem.getAudioInputStream(Objects.requireNonNull(Utils.getResourceAsFile(musicPath))
+                                                                         .getAbsoluteFile()));
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(103);

@@ -1,5 +1,7 @@
 package com.Game.ui;
 
+import com.Game.utils.Utils;
+
 import java.awt.*;
 import java.io.File;
 
@@ -12,8 +14,10 @@ public class Text {
     // Loads font for the game
     public static Font loadFont(String path, float size) {
         try {
-            // todo: make app runnable in jar
-            return Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(Font.PLAIN, size);
+            File fontFile = Utils.getResourceAsFile(path);
+            assert fontFile != null;
+            return Font.createFont(Font.TRUETYPE_FONT, fontFile)
+                       .deriveFont(Font.PLAIN, size);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(102);
