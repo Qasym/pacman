@@ -71,14 +71,30 @@ public class Assets {
         private static boolean initialized = false; //this boolean is needed to check if sprites are initialized or not
 
         public static final byte UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3; //constants for easy access
-        public static BufferedImage[] monster = new BufferedImage[4]; //this array will store sprites for pacman
+        public static BufferedImage[] monster = new BufferedImage[4]; //this array will store sprites for monsters
+        public static BufferedImage[] monsterFrightened = new BufferedImage[4]; // sprites for frightened monsters
+        public static BufferedImage[] monsterEaten = new BufferedImage[4]; // sprites for eaten monsters
 
         public static void loadMonster(SpriteSheet sheet) {
             initialized = true;
-            monster[MonsterAssets.RIGHT] = sheet.crop(32, 0, 32, 50); //picture of pacman going right
-            monster[MonsterAssets.LEFT] = sheet.crop(0, 0, 32, 50); //picture of pacman going left
-            monster[MonsterAssets.UP] = sheet.crop(0, 50, 32, 50); //picture of pacman going up
-            monster[MonsterAssets.DOWN] = sheet.crop(32, 50, 32, 50); //picture of pacman going down
+            monster[MonsterAssets.RIGHT] = sheet.crop(32, 0, 32, 50); //picture of monster going right
+            monster[MonsterAssets.LEFT] = sheet.crop(0, 0, 32, 50); //picture of monster going left
+            monster[MonsterAssets.UP] = sheet.crop(0, 50, 32, 50); //picture of monster going up
+            monster[MonsterAssets.DOWN] = sheet.crop(32, 50, 32, 50); //picture of monster going down
+        }
+
+        public static void loadMonsterFrightened(SpriteSheet sheet) {
+            monsterFrightened[MonsterAssets.RIGHT] = sheet.crop(32, 0, 32, 50); //picture of monster going right
+            monsterFrightened[MonsterAssets.LEFT] = sheet.crop(0, 0, 32, 50); //picture of monster going left
+            monsterFrightened[MonsterAssets.UP] = sheet.crop(0, 50, 32, 50); //picture of monster going up
+            monsterFrightened[MonsterAssets.DOWN] = sheet.crop(32, 50, 32, 50); //picture of monster going down
+        }
+
+        public static void loadMonsterEaten(SpriteSheet sheet) {
+            monsterEaten[MonsterAssets.RIGHT] = sheet.crop(32, 0, 32, 50); //picture of monster going right
+            monsterEaten[MonsterAssets.LEFT] = sheet.crop(0, 0, 32, 50); //picture of monster going left
+            monsterEaten[MonsterAssets.UP] = sheet.crop(0, 50, 32, 50); //picture of monster going up
+            monsterEaten[MonsterAssets.DOWN] = sheet.crop(32, 50, 32, 50); //picture of monster going down
         }
     }
 
@@ -96,6 +112,38 @@ public class Assets {
 
     public static BufferedImage getMonsterDown() {
         return MonsterAssets.initialized ? MonsterAssets.monster[MonsterAssets.DOWN] : null;
+    }
+
+    public static BufferedImage getMonsterFrightenedRight() {
+        return MonsterAssets.initialized ? MonsterAssets.monsterFrightened[MonsterAssets.RIGHT] : null;
+    }
+
+    public static BufferedImage getMonsterFrightenedLeft() {
+        return MonsterAssets.initialized ? MonsterAssets.monsterFrightened[MonsterAssets.LEFT] : null;
+    }
+
+    public static BufferedImage getMonsterFrightenedUp() {
+        return MonsterAssets.initialized ? MonsterAssets.monsterFrightened[MonsterAssets.UP] : null;
+    }
+
+    public static BufferedImage getMonsterFrightenedDown() {
+        return MonsterAssets.initialized ? MonsterAssets.monsterFrightened[MonsterAssets.DOWN] : null;
+    }
+
+    public static BufferedImage getMonsterEatenRight() {
+        return MonsterAssets.initialized ? MonsterAssets.monsterEaten[MonsterAssets.RIGHT] : null;
+    }
+
+    public static BufferedImage getMonsterEatenLeft() {
+        return MonsterAssets.initialized ? MonsterAssets.monsterEaten[MonsterAssets.LEFT] : null;
+    }
+
+    public static BufferedImage getMonsterEatenUp() {
+        return MonsterAssets.initialized ? MonsterAssets.monsterEaten[MonsterAssets.UP] : null;
+    }
+
+    public static BufferedImage getMonsterEatenDown() {
+        return MonsterAssets.initialized ? MonsterAssets.monsterEaten[MonsterAssets.DOWN] : null;
     }
 
     public static BufferedImage[] getPacmanUpAnimation() {
@@ -207,7 +255,7 @@ public class Assets {
         font = Text.loadFont("res/fonts/game_font.ttf", 32);
 
         // Entities' sprites
-        entitySprites = new SpriteSheet[5];
+        entitySprites = new SpriteSheet[7];
 
         // pacman sprite
         entitySprites[0] = new SpriteSheet(Utils.loadImage("/textures/entities/Pac-Man.png"));
@@ -221,6 +269,14 @@ public class Assets {
         entitySprites[2] = new SpriteSheet(Utils.loadImage("/textures/entities/apple.png"));
         entitySprites[3] = new SpriteSheet(Utils.loadImage("/textures/entities/angry.png"));
         entitySprites[4] = new SpriteSheet(Utils.loadImage("/textures/entities/speed.png"));
+
+        // monster frightened sprite
+        entitySprites[5] = new SpriteSheet(Utils.loadImage("/textures/entities/Monster_frightened.png"));
+        MonsterAssets.loadMonsterFrightened(entitySprites[5]);
+
+        // monster eaten sprite
+        entitySprites[6] = new SpriteSheet(Utils.loadImage("/textures/entities/Monster_eaten.png"));
+        MonsterAssets.loadMonsterEaten(entitySprites[6]);
 
         // Tile sprites
         tileSprites = new SpriteSheet[2];

@@ -3,6 +3,7 @@ package com.Game.entity.moving;
 import com.Game.entity.Entity;
 import com.Game.gfx.Assets;
 import com.Game.intelligence.MonsterBrain;
+import com.Game.tile.Tile;
 import com.Game.utils.Handler;
 
 import java.awt.*;
@@ -41,7 +42,9 @@ public class Monster extends Entity {
         collisionBox.y = (int) (y + DEFAULT_COLLISION_BOUNDS_Y);
 
         // check if monster collided (ate) pacman
-        if (collisionBox.intersects(handler.getPacman().getCollisionBox())) {
+        if (collisionBox.intersects(handler.getPacman().getCollisionBox()) ||
+            (handler.getPacman().getCollisionBox().x / Tile.WIDTH == collisionBox.x / Tile.WIDTH &&
+            handler.getPacman().getCollisionBox().y / Tile.HEIGHT == collisionBox.y / Tile.HEIGHT)) {
             handler.getPacman().eatenByMonster(this);
         }
     }
@@ -70,17 +73,14 @@ public class Monster extends Entity {
     }
 
     private void move() {
+        sprite = brain.getCurrentSprite();
         if (brain.getCurrentDirection() == MonsterBrain.UP) {
-            sprite = Assets.getMonsterUp();
             y -= speed;
         } else if (brain.getCurrentDirection() == MonsterBrain.DOWN) {
-            sprite = Assets.getMonsterDown();
             y += speed;
         } else if (brain.getCurrentDirection() == MonsterBrain.LEFT) {
-            sprite = Assets.getMonsterLeft();
             x -= speed;
         } else if (brain.getCurrentDirection() == MonsterBrain.RIGHT) {
-            sprite = Assets.getMonsterRight();
             x += speed;
         } else {
             System.out.println("Unknown direction of a monster");

@@ -2,11 +2,13 @@ package com.Game.intelligence;
 
 import com.Game.entity.Entity;
 import com.Game.entity.moving.Monster;
+import com.Game.gfx.Assets;
 import com.Game.tile.Tile;
 import com.Game.utils.Handler;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 /*
@@ -415,4 +417,51 @@ public abstract class MonsterBrain {
     public String getName() {
         return name;
     }
+
+    public BufferedImage getCurrentSprite() {
+        if (currentDirection == UP) {
+            if (currentState == State.CHASE || currentState == State.SCATTER) {
+                return Assets.getMonsterUp();
+            } else if (currentState == State.FRIGHTENED) {
+                return Assets.getMonsterFrightenedUp();
+            } else if (currentState == State.EATEN) {
+                return Assets.getMonsterEatenUp();
+            } else {
+                throw new RuntimeException("Invalid state");
+            }
+        } else if (currentDirection == DOWN) {
+            if (currentState == State.CHASE || currentState == State.SCATTER) {
+                return Assets.getMonsterDown();
+            } else if (currentState == State.FRIGHTENED) {
+                return Assets.getMonsterFrightenedDown();
+            } else if (currentState == State.EATEN) {
+                return Assets.getMonsterEatenDown();
+            } else {
+                throw new RuntimeException("Invalid state");
+            }
+        } else if (currentDirection == LEFT) {
+            if (currentState == State.CHASE || currentState == State.SCATTER) {
+                return Assets.getMonsterLeft();
+            } else if (currentState == State.FRIGHTENED) {
+                return Assets.getMonsterFrightenedLeft();
+            } else if (currentState == State.EATEN) {
+                return Assets.getMonsterEatenLeft();
+            } else {
+                throw new RuntimeException("Invalid state");
+            }
+        } else if (currentDirection == RIGHT) {
+            if (currentState == State.CHASE || currentState == State.SCATTER) {
+                return Assets.getMonsterRight();
+            } else if (currentState == State.FRIGHTENED) {
+                return Assets.getMonsterFrightenedRight();
+            } else if (currentState == State.EATEN) {
+                return Assets.getMonsterEatenRight();
+            } else {
+                throw new RuntimeException("Invalid state");
+            }
+        } else {
+            throw new RuntimeException("Invalid direction");
+        }
+    }
+
 }

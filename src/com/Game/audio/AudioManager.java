@@ -39,8 +39,6 @@ public class AudioManager {
             if (clip.isActive()) {
                 clip.stop();
 //                 clip.close(); // I don't know why it doesn't work if I do this
-            } else {
-                throw new RuntimeException("Something wrong with the clip");
             }
         } catch (Exception e) {
             e.printStackTrace();
