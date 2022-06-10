@@ -1,6 +1,13 @@
 ## Requirements:
 - Java 17
 
+## How to play?:
+- [Download](https://github.com/Qasym/pacman/releases/tag/v1.0.0) the .jar file
+- Run the following command in terminal:
+  ```
+  java -jar Pacman.jar
+  ```
+
 ## Statuses used in the project:
 - 0   >> Project closed voluntarily
 - -1  >> Unknown error
